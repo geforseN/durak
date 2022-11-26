@@ -2,7 +2,7 @@
   <header>
     <ul class="flex gap-2 px-4 py-1 bg-emerald-200">
       <li>
-        <a href="/">Home</a>
+        <a class="underline" href="/">Home</a>
       </li>
       <li>
         <span>Text</span>
