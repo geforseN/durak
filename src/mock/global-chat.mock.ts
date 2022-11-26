@@ -1,4 +1,4 @@
-import type {Day} from "@/types/global-chat.types";
+import type { Day } from "@/types/global-chat.types";
 
 export const mockChat: Day[] = [
   {
@@ -24,8 +24,8 @@ export const mockChat: Day[] = [
         time: "12:13:02",
         sender: "P2",
         senderId: "2",
-      }
-    ]
+      },
+    ],
   },
   {
     value: "27 ноября",
@@ -43,9 +43,7 @@ export const mockChat: Day[] = [
         time: "0:1:02",
         sender: "P2",
         senderId: "2",
-      }
-    ]
-  }
-]
-
-
+      },
+    ],
+  },
+];
