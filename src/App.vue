@@ -1,20 +1,8 @@
 <template>
-  <vue-header :profileId="dataFromServer.profileId"></vue-header>
-  <global-chat :days="mockChat"></global-chat>
-  <main class="grid grid-cols-12 auto-rows-auto">
-    <available-rooms class="col-start-4 col-span-6" :rooms="mockRoomsData" />
-  </main>
+  <header-vue profile-id="1" />
+  <router-view />
 </template>
 
 <script setup lang="ts">
-  import { mockRoomsData } from "@/mock/available-rooms.mock";
-  import { mockChat } from "@/mock/global-chat.mock";
-  import AvailableRooms from "@/components/available-rooms.vue";
-  import VueHeader from "@/components/vue-header.vue";
-  import GlobalChat from "@/components/global-chat.vue";
-  const dataFromServer = {
-    profileId: "qweqwerty123",
-  };
+  import HeaderVue from "@/components/header-vue.vue";
 </script>
-
-<style scoped></style>
