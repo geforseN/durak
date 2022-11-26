@@ -4,9 +4,9 @@
       <div class="flex flex-col" v-for="day of props.days">
         <div class="self-center opacity-70 text-sm">{{ day.value }}</div>
         <div v-for="message of day.messages">
-          <a :href="`profile/${message.senderId}`" class="bold underline">{{
-            message.sender
-          }}</a>
+          <router-link :to="`profile/${message.senderId}`" class="bold underline">
+            {{ message.sender }}
+          </router-link>
           <span>: </span>
           <span class="opacity-40">{{ message.time }}</span>
           <pre class="ml-2 inline" v-if="message.type === 'text'">{{ message.text }}</pre>

@@ -9,9 +9,9 @@
           class="border border-amber-500 flex flex-col items-center"
         >
           <img :src="player.img_href" :alt="`${player.name} profile picture`" />
-          <a class="underline" :href="`profiles/${player.profile_id}`" target="_blank">
+          <router-link class="underline" :to="`/profiles/${player.profile_id}`" target="_blank">
             {{ player.name }}
-          </a>
+          </router-link>
         </div>
       </div>
     </div>
