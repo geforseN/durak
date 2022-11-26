@@ -17,15 +17,18 @@
       <div>
         <label class="sr-only" for="global-chat-input">Введите сообщение</label>
         <input
+          maxlength="120"
           class="input-border wh-full"
           id="global-chat-input"
           v-model="input"
-          placeholder="Нажмите ENTER, что-бы отправить сообщение в чат."
+          placeholder="Нажмите ENTER, что-бы отправить сообщение в чат.   Максимальное количество букв - 120 "
+          @keyup.enter="handleMessage"
         />
       </div>
       <button
         class="btn-bg btn-border px-2 py-[1px]"
         title="Отправить сообщение в общий чат"
+        @click="handleMessage"
       >
         Оправить
       </button>
@@ -40,8 +43,12 @@
   const input = ref("");
 
   const props = defineProps<{
-    days: Day[];
+    days?: Day[];
   }>();
+
+  const handleMessage = () => {
+    input.value = "";
+  }
 </script>
 
 <style scoped>
