@@ -3,9 +3,7 @@
     <h1 class="bg-emerald-200 header-text p-4 header-border">Hello World!</h1>
   </div>
 </template>
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
   .flex-full-center {
