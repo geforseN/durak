@@ -1,14 +1,12 @@
 import { defineStore } from "pinia";
 import { reactive } from "vue";
 
-type Milliseconds = number;
-
 export type Notification = {
   message: string;
   type: "Error" | "Warning" | "Success";
-  id: number;
-  duration: Milliseconds;
-  header?: string
+  id: string; // randomUUID from crypto:node
+  durationInMS: number;
+  header?: string;
 };
 
 const useNotificationStore = defineStore("alerts", () => {
