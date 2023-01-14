@@ -14,19 +14,17 @@ const useNotificationStore = defineStore("alerts", () => {
 
   function addNotificationInQueue(newNotification: Notification): void {
     notificationQueue.push(newNotification);
-    new Promise(() => setTimeout(() => {}, newNotification.duration)).then(
-      () => {
-        const notificationToRemoveIndex = notificationQueue.findIndex(
-          (notification) => notification.id === newNotification.id,
-        );
-        notificationQueue.splice(notificationToRemoveIndex, 1);
-      },
-    );
-  };
+    setTimeout(() => {
+      const notificationToRemoveIndex = notificationQueue.findIndex(
+        (notification) => notification.id === newNotification.id,
+      );
+      notificationQueue.splice(notificationToRemoveIndex, 1);
+    }, newNotification.durationInMS)
+  }
 
   return {
     notificationQueue,
-    addNotificationInQueue
+    addNotificationInQueue,
   };
 });
 
