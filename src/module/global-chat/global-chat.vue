@@ -31,20 +31,20 @@ import { globalChat } from "@/socket";
 import useNotificationStore from "@/stores/notification.store";
 
 import GlobalChatMessages from "@/module/global-chat/global-chat-messages.vue";
-import generateNotificationFromError from "@/utils/generateNotificationFromError";
-import checkInputLength from "@/utils/check-input-length";
+import generateNotificationFromError from "@/utils/generate-notification-from-error";
+import assertInputLength from "@/utils/assert-input-length";
 
 const input = ref("");
 const { addNotificationInQueue } = useNotificationStore();
 
 const handleMessage = () => {
   try {
-    checkInputLength(input.value);
+    assertInputLength(input.value);
+    globalChat.emit("client:sendMessage", input.value);
+    input.value = "";
   } catch (error) {
     const notification = generateNotificationFromError(error as Error);
     addNotificationInQueue(notification);
   }
-  globalChat.emit("client:sendMessage", input.value);
-  input.value = "";
 };
 </script>
