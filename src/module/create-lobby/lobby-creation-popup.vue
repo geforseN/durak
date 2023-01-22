@@ -47,7 +47,7 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import { gameLobbies } from "@/socket";
-import gameTypesDictionary from "../utils/game-types-dictionary";
+import gameTypesDictionary from "@/utils/game-types-dictionary";
 import type {
   GameType,
   MaxUserCount,
@@ -80,5 +80,4 @@ const colorizeMaxUserCountBorder = (maxUserCount: number) => {
     ? "border-2 border-orange-500"
     : "border-2 border-black";
 };
-
 </script>
