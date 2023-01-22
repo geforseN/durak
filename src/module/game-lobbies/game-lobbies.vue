@@ -121,5 +121,3 @@ gameLobbies.on("startGame", (gameUrl: string) => {
 });
 
 </script>
-
-<style scoped></style>
