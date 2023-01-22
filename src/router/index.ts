@@ -34,6 +34,11 @@ const router = createRouter({
       name: "user-profile",
       component: () => import("../views/user-profile.vue"),
     },
+    {
+      path: "/game/:gameId/",
+      name: "durak-game",
+      component: () => import("../views/durak-game.vue"),
+    },
   ],
 });
 export default router;
