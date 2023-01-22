@@ -1,10 +1,10 @@
-import type { Notification } from "@/stores/notification.store";
-import { v4 as uuidv4 } from 'uuid';
+import type { NotificationAlert } from "@/stores/notification.store";
+import { v4 as uuidV4 } from 'uuid';
 
 export default function generateNotificationFromError(
   error: Error,
-  notification?: Notification,
-): Notification {
+  notification?: NotificationAlert,
+): NotificationAlert {
   return {
     message: error.message,
     durationInMS: notification?.durationInMS || 5_000,
