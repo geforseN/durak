@@ -13,12 +13,12 @@ import formatTime from "@/utils/intl/format-time";
 
 const messages = ref<UserMessage[]>([]);
 
-globalChat.on("server:sendMessage", (message: UserMessage) => {
+globalChat.on("sendMessage", (message: UserMessage) => {
   message.date = formatTime(message.date as number);
   messages.value.push(message);
 });
 
-globalChat.on("server:restoreHistory", (globalChatHistory: UserMessage[]) => {
+globalChat.on("restoreHistory", (globalChatHistory: UserMessage[]) => {
   messages.value = globalChatHistory.reduce((chat, message) => {
     message.date = formatTime(message.date as number);
     chat.push(message);
