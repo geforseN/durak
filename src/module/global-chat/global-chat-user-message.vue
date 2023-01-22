@@ -1,6 +1,7 @@
 <template>
-  <div class="grid grid-flow-col grid-cols-[min-content_1fr_max-content]">
-    <router-link :to="'profile/' + message.urlToProfile" class="bold underline">
+  <div class="grid grid-flow-col grid-cols-[max-content_1fr_max-content]">
+    <router-link :to="'profile/' + message.sender.urlToProfile" class="bold block underline flex">
+      <img :src="message.sender.photoUrl" :alt="`${message.sender.nickname} profile picture`" class="max-h-8 aspect-square">
       {{ message.sender.nickname }}:
     </router-link>
     <p class="hyphens ml-1 break-all bg-blue-400">
@@ -17,7 +18,6 @@ import type { UserMessage } from "@/module/global-chat/types";
 
 const { message } = defineProps<{ message: UserMessage }>();
 </script>
-
 
 <style scoped>
 .hyphens {
