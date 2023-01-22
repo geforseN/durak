@@ -1,10 +1,16 @@
 import { io } from "socket.io-client";
 
-const socket = io(import.meta.env.VITE_SOCKET_SERVER_ADDRESS + "/", {
+const BASE_SOCKET_URI = import.meta.env.VITE_SOCKET_SERVER_ADDRESS;
+
+const socket = io(BASE_SOCKET_URI + "/", {
   withCredentials: true,
 });
 
-export const globalChat = io(import.meta.env.VITE_SOCKET_SERVER_ADDRESS + "/global-chat", {
+export const globalChat = io(BASE_SOCKET_URI + "/global-chat", {
+  withCredentials: true,
+});
+
+export const gameLobbies = io(BASE_SOCKET_URI + "/game-lobbies", {
   withCredentials: true,
 });
 
