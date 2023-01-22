@@ -12,8 +12,13 @@
 </template>
 
 <script setup lang="ts">
-  import { useRoute } from "vue-router";
-  const route = useRoute();
+import { useRoute } from "vue-router";
+import { onMounted, ref } from "vue";
+import { ConnectStatus, type User } from "@/module/global-chat/types";
+
+const route = useRoute();
+const host = import.meta.env.VITE_SOCKET_SERVER_ADDRESS;
+const { urlToProfile } = route.params;
 
   const props = defineProps<{
     profileId: string;
