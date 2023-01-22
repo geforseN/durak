@@ -40,7 +40,7 @@ const { addNotificationInQueue } = useNotificationStore();
 const handleMessage = () => {
   try {
     assertInputLength(input.value);
-    globalChat.emit("client:sendMessage", input.value);
+    globalChat.emit("sendMessage", input.value);
     input.value = "";
   } catch (error) {
     const notification = generateNotificationFromError(error as Error);
