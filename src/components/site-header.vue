@@ -1,40 +1,29 @@
 <template>
   <header>
-    <ul class="flex gap-2 px-4 py-1 bg-emerald-200">
+    <ul class="flex items-center gap-2 px-4 py-1 bg-emerald-200">
       <li>
         <router-link to="/" class="underline">Home</router-link>
       </li>
-      <li>
-        <router-link to="/auth" class="underline">Auth</router-link>
-      </li>
-      <li>
-        <span>Text</span>
-      </li>
-      <li class="ml-auto">
-        <router-link :to="`/profile/${profileId}`" class="underline">
-          {{ username }}
+      <li class="ml-auto" v-if="username">
+        <router-link :to="`/profile/${urlToProfile}`" class="inline-block border border-black h-10 w-10">
+          <img :src="photoUrl" :alt="`${username} profile picture`" :title="username">
         </router-link>
       </li>
+      <template v-if="!username">
+        <li class="ml-auto">
+          <router-link to="/auth/registration" class="underline">Зарегистрироваться</router-link>
+        </li>
+        <li>
+          <router-link to="/auth/login" class="underline">Войти</router-link>
+        </li>
+      </template>
     </ul>
   </header>
 </template>
 <script setup lang="ts">
-import socket from "@/socket";
-import { ref } from "vue";
+import { useUserStore } from "@/stores/user.store";
+import { storeToRefs } from "pinia";
 
-// !!!!!!!!!!!!!!!!!11111!!!!!!!!!!!!!!!!!
-// user.store.ts
-const username = ref();
-const profileId = 1;
-
-socket.on("connect_error", (error) => console.log(error))
-
-socket.on("user:success", (usernameFromSocket) => {
-  username.value = usernameFromSocket;
-});
-
-socket.on("user:connected", (nickname) => {
-  console.log(`${nickname} теперь в сети`);
-});
+const { photoUrl, username, urlToProfile } = storeToRefs(useUserStore());
 
 </script>
