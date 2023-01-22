@@ -1,6 +1,6 @@
-import type { GameType, MaxUser } from "./__config__.type";
+import type { GameType, MaxUserCount } from "./__config__.type";
 
 export type LobbySettings = {
-  maxUsers: MaxUser;
-  gameType: GameType;
-};
+  maxUserCount: MaxUserCount,
+  gameType: GameType
+}
