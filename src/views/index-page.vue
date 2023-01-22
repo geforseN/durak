@@ -1,19 +1,25 @@
 <template>
   <div class="w-full flex flex-col items-center gap-6">
-    <global-chat />
-    <button class="mx-auto self-end w-max bg-green-600 px-4 py-4" @click="">
+    <global-chat class="w-[40rem] h-[20rem]" />
+    <button v-if="!isCreatingLobby" class="mx-auto self-end min-w-[20rem] font-bold w-max bg-blue-600 px-4 py-4"
+            @click="isCreatingLobby = true">
       Создать комнату
     </button>
-    <create-room />
-    <main class="grid grid-cols-12 auto-rows-auto">
-      <available-rooms class="col-start-4 col-span-6" :rooms="mockRoomsData" />
-    </main>
+    <button v-if="isCreatingLobby" class="mx-auto self-end min-w-[20rem] font-bold w-max bg-red-600 px-4 py-4"
+            @click="isCreatingLobby = false">
+      Выйти из создания комнаты
+    </button>
+    <initiate-lobby-creation v-show="isCreatingLobby" />
+    <game-lobbies class="w-[40rem]" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { mockRoomsData } from "@/mock/available-rooms.mock";
-import AvailableRooms from "@/components/available-rooms.vue";
+import GameLobbies from "@/module/game-lobbies/game-lobbies.vue";
 import GlobalChat from "@/module/global-chat/global-chat.vue";
-import CreateRoom from "@/components/create-room.vue";
+import InitiateLobbyCreation from "@/components/initiate-lobby-creation.vue";
+import { ref } from "vue";
+
+const isCreatingLobby = ref(false);
+
 </script>
