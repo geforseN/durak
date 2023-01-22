@@ -51,8 +51,8 @@ import gameTypesDictionary from "@/utils/game-types-dictionary";
 import type {
   GameType,
   MaxUserCount,
-} from "@/module/game-lobbies/types/__config__.type";
-import type { LobbySettings } from "@/module/game-lobbies/types/lobby-settings.type";
+  LobbySettings
+} from "@/module/game-lobbies/types";
 
 const allowedMaxUserCount: MaxUserCount[] = [2, 3, 4, 5, 6];
 const allowedGameTypes: GameType[] = ["basic", "perevodnoy"];

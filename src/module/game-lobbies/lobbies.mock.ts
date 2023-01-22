@@ -1,4 +1,4 @@
-import type { Lobby } from "@/module/game-lobbies/types/lobby.type";
+import type { Lobby } from "@/module/game-lobbies/types";
 
 export const mockGameLobbies: Lobby[] = [
   {

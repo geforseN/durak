@@ -60,7 +60,7 @@ import { ref } from "vue";
 import { gameLobbies } from "@/socket";
 import type { User } from "@/module/global-chat/types";
 import gameTypesDictionary from "../../utils/game-types-dictionary";
-import type { Lobby } from "@/module/game-lobbies/types/lobby.type";
+import type { Lobby } from "@/module/game-lobbies/types";
 import { useUserStore } from "@/stores/user.store";
 
 const lobbies = ref<Lobby[]>([]);
