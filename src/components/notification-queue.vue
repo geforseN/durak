@@ -14,9 +14,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { storeToRefs } from "pinia";
-import socket, { globalChat } from "@/socket";
-import useNotificationStore from "@/stores/notification.store";
-import type { Notification } from "@/stores/notification.store";
+import { socket ,gameLobbies, globalChat } from "@/socket";
+import { useNotificationStore, type NotificationAlert } from "@/stores/notification.store";
 
 const notificationStore = useNotificationStore();
 const { notificationQueue } = storeToRefs(notificationStore);

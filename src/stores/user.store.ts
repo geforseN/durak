@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import socket from "@/socket";
+import { socket } from "@/socket";
 import { type User, ConnectStatus } from "@/module/global-chat/types";
 import generateNotificationFromError from "@/utils/generate-notification-from-error";
 import { useNotificationStore } from "@/stores/notification.store";
