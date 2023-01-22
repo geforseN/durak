@@ -49,20 +49,22 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import useNotificationStore from "@/stores/notification.store";
 import { gameLobbies } from "@/socket";
 import type { User } from "@/module/global-chat/types";
-import { mockGameLobbies } from "@/module/game-lobbies/lobbies.mock";
-import generateNotificationFromError from "@/utils/generate-notification-from-error";
-import gameTypesNames from "../../utils/game-types-names";
+import gameTypesDictionary from "../../utils/game-types-dictionary";
 import type { Lobby } from "@/module/game-lobbies/types/lobby.type";
-
-const notificationStore = useNotificationStore();
+import { useUserStore } from "@/stores/user.store";
 
 const lobbies = ref<Lobby[]>([]);
 
+const userStore = useUserStore();
+
 const joinLobby = (lobbyId: string, cellIndex: number = -1) => {
   gameLobbies.emit("joinLobby", lobbyId, cellIndex);
+};
+
+const startGame = (lobbyId: string) => {
+  gameLobbies.emit("startGame", lobbyId);
 };
 
 function lobbyMatcher(this: { lobbyId: string }, lobby: Lobby) {
@@ -74,8 +76,8 @@ function userMatcher(this: { accName: string }, user: User) {
 }
 
 gameLobbies.on("restoreLobbies", (lobbiesToRestore: Lobby[]) => {
-  lobbies.value.concat(lobbiesToRestore)
-})
+  lobbies.value = lobbiesToRestore;
+});
 
 gameLobbies.on("lobbyCreated", (lobby: Lobby) => {
   console.log("lobby", lobby.id);
@@ -83,24 +85,18 @@ gameLobbies.on("lobbyCreated", (lobby: Lobby) => {
 });
 
 gameLobbies.on("addedUser", (user: User, lobbyId: string) => {
-  try {
-    const lobbyIndex = lobbies.value.findIndex((lobby) => lobby.id === lobbyId);
-    if (lobbyIndex === -1) throw new Error("Не найдена комната");
-    console.log(lobbyIndex);
-    lobbies.value[lobbyIndex].users.push(user);
-  } catch (error) {
-    if (error instanceof Error) {
-      const notification = generateNotificationFromError(error);
-      notificationStore.addNotificationInQueue(notification);
-    } else {
-      console.log(error);
-    }
-  }
+  const lobbyIndex = lobbies.value.findIndex(lobbyMatcher, { lobbyId });
+  lobbies.value[lobbyIndex].users.push(user);
+});
+
+gameLobbies.on("updateLobbyAdmin", (adminAccName: string, lobbyId: string) => {
+  const lobbyIndex = lobbies.value.findIndex(lobbyMatcher, { lobbyId });
+  lobbies.value[lobbyIndex].adminAccName = adminAccName;
 });
 
 gameLobbies.on("deleteLobby", (lobbyId: string) => {
-  const lobbyIndexToRemove = lobbies.value.findIndex(lobbyMatcher, { lobbyId });
-  lobbies.value.splice(lobbyIndexToRemove, 1);
+  const lobbyIndex = lobbies.value.findIndex(lobbyMatcher, { lobbyId });
+  lobbies.value.splice(lobbyIndex, 1);
 });
 
 gameLobbies.on("removePlayer", (accName: string, lobbyId: string) => {
@@ -112,7 +108,9 @@ gameLobbies.on("removePlayer", (accName: string, lobbyId: string) => {
   lobbies.value[lobbyIndex].users.splice(userIndexToRemove, 1);
 });
 
-
+gameLobbies.on("startGame", (gameUrl: string) => {
+  console.log("Not Implemented", gameUrl);
+});
 
 </script>
 
