@@ -3,11 +3,19 @@
     <div
       class="flex flex-col gap-y-1 p-1 m-3 border-2 border-orange-500 bg-purple-100"
       v-for="lobby of lobbies"
+      :key="lobby.id"
     >
       <div class="flex justify-between">
-        <span class="flex items-center px-2 bg-purple-400 rounded-xl">{{
-          gameTypesNames[lobby.settings.gameType]
-        }}</span>
+        <span class="flex items-center px-2 bg-purple-400 rounded-xl">
+          {{ gameTypesDictionary[lobby.settings.gameType] }}
+        </span>
+        <button
+          v-if="lobby.adminAccName === userStore.accName"
+          class="bg-green-600 focus:bg-green-500 border-2 border-black px-2 py-[1px] justify-self-center"
+          @click="startGame(lobby.id)"
+        >
+          Начать игру
+        </button>
         <button
           class="bg-blue-600 focus:bg-blue-500 border-2 border-black px-2 py-[1px]"
           @click="joinLobby(lobby.id)"
@@ -15,20 +23,20 @@
           Присоединиться
         </button>
       </div>
-      <div class="flex h-36">
-        <template v-for="userIndex of lobby.settings.maxUsers">
-          <!-- TODO: img size issue -->
+      <div class="flex border-r-4 border-black">
+        <template v-for="userIndex of lobby.settings.maxUserCount">
           <div
             v-if="lobby.users[userIndex - 1]"
-            class="grid grid-rows-[1fr_fit-content] flex-1 border border-4 p-2 border-black bg-purple-200"
+            class="grid grid-rows-[1fr_fit-content] flex-1 border-r-0 border-4 justify-center border-black bg-purple-200 relative"
           >
             <img
               :src="lobby.users[userIndex - 1].photoUrl"
               :alt="`${lobby.users[userIndex - 1].nickname} profile picture`"
-              class="aspect-square max-w-[80%]"
+              class="max-h-28 max-w-[28rem] block"
             />
             <router-link
-              class="underline"
+              class="underline text-lg font-bold font-mono absolute bottom-0 left-[50%] translate-x-[-50%] "
+              :class="lobby.users[userIndex - 1].accName === lobby.adminAccName ? 'bg-yellow-300' : 'bg-white'"
               :to="`/profile/${lobby.users[userIndex - 1].urlToProfile}`"
               target="_blank"
             >
@@ -37,7 +45,7 @@
           </div>
           <button
             v-else
-            class="bg-purple-300 flex-1 border border-4 border-black"
+            class="bg-purple-300 flex-1 border-r-0 border-4 border-black"
           >
             {{ userIndex }}
           </button>
