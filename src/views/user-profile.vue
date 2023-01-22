@@ -1,11 +1,9 @@
 <template>
   <main>
     <div class="flex">
-      <img src="https://picsum.photos/400/" :alt="`${props.username} profile picture`" />
+      <img :src="profile.photoUrl" :alt="`${profile.nickname} profile picture`" />
       <div>
-        <h2>{{ props.username || "unknown" }}</h2>
-        <span>{{ route || "unknown" }}</span>
-        <span>{{ route.params["id"] || "unknown" }}</span>
+        <h2>{{ profile.nickname }}</h2>
       </div>
     </div>
   </main>
@@ -20,9 +18,20 @@ const route = useRoute();
 const host = import.meta.env.VITE_SOCKET_SERVER_ADDRESS;
 const { urlToProfile } = route.params;
 
-  const props = defineProps<{
-    profileId: string;
-    username: string;
-  }>();
+const profile = ref<Omit<User, "id" | "isInvisible" | "accName" | "urlToProfile">>({
+  nickname: "",
+  connectStatus: ConnectStatus.offline,
+  photoUrl: "",
+});
+
+onMounted(async () => {
+  const req = new Request(`${host}/api/profile/${urlToProfile}`, { method: "GET", mode: "cors"});
+  const profileData = await fetch(req);
+  const { nickname, connectStatus, photoUrl } = await profileData.json();
+  profile.value = {
+    nickname,
+    photoUrl,
+    connectStatus,
+  };
+});
 </script>
-<style scoped></style>
