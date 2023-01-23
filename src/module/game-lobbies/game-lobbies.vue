@@ -58,6 +58,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { gameLobbies } from "@/socket";
+import { lobbyMatcher, userMatcher } from "@/utils/matchers";
+import type { Lobby } from "@/module/game-lobbies/types";
 import type { User } from "@/module/global-chat/types";
 import gameTypesDictionary from "../../utils/game-types-dictionary";
 import type { Lobby } from "@/module/game-lobbies/types";
