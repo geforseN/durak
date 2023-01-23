@@ -99,17 +99,7 @@ gameLobbies.on("addedUser", (user: User, lobbyId: string) => {
   lobbies.value[lobbyIndex].users.push(user);
 });
 
-gameLobbies.on("updateLobbyAdmin", (adminAccName: string, lobbyId: string) => {
-  const lobbyIndex = lobbies.value.findIndex(lobbyMatcher, { lobbyId });
-  lobbies.value[lobbyIndex].adminAccName = adminAccName;
-});
-
-gameLobbies.on("deleteLobby", (lobbyId: string) => {
-  const lobbyIndex = lobbies.value.findIndex(lobbyMatcher, { lobbyId });
-  lobbies.value.splice(lobbyIndex, 1);
-});
-
-gameLobbies.on("removePlayer", (accName: string, lobbyId: string) => {
+gameLobbies.on("removeUser", (accName: string, lobbyId: string) => {
   const lobbyIndex = lobbies.value.findIndex(lobbyMatcher, { lobbyId });
   const userIndexToRemove = lobbies.value[lobbyIndex].users.findIndex(
     userMatcher,
@@ -118,8 +108,17 @@ gameLobbies.on("removePlayer", (accName: string, lobbyId: string) => {
   lobbies.value[lobbyIndex].users.splice(userIndexToRemove, 1);
 });
 
-gameLobbies.on("startGame", (gameUrl: string) => {
-  console.log("Not Implemented", gameUrl);
+gameLobbies.on("updateLobbyAdmin", (adminAccName: string, lobbyId: string) => {
+  const lobbyIndex = lobbies.value.findIndex(lobbyMatcher, { lobbyId });
+  lobbies.value[lobbyIndex].adminAccName = adminAccName;
 });
 
+gameLobbies.on("lobbyCreated", (lobby: Lobby) => {
+  lobbies.value.push(lobby);
+});
+
+gameLobbies.on("deleteLobby", (lobbyId: string) => {
+  const lobbyIndex = lobbies.value.findIndex(lobbyMatcher, { lobbyId });
+  lobbies.value.splice(lobbyIndex, 1);
+});
 </script>
