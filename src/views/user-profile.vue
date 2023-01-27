@@ -16,16 +16,16 @@ import { ConnectStatus, type User } from "@/module/global-chat/types";
 
 const route = useRoute();
 const host = import.meta.env.VITE_SOCKET_SERVER_ADDRESS;
-const { urlToProfile } = route.params;
+const { personalLink } = route.params;
 
-const profile = ref<Omit<User, "id" | "isInvisible" | "accName" | "urlToProfile">>({
+const profile = ref<Omit<User, "id" | "isInvisible" | "accname" | "personalLink">>({
   nickname: "",
   connectStatus: ConnectStatus.offline,
   photoUrl: "",
 });
 
 onMounted(async () => {
-  const req = new Request(`${host}/api/profile/${urlToProfile}`, { method: "GET", mode: "cors"});
+  const req = new Request(`${host}/api/profile/${personalLink}`, { method: "GET", mode: "cors"});
   const profileData = await fetch(req);
   const { nickname, connectStatus, photoUrl } = await profileData.json();
   profile.value = {

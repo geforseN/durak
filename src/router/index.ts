@@ -30,7 +30,7 @@ const router = createRouter({
       component: () => import("../views/auth/user-forgot-credentials.vue"),
     },
     {
-      path: "/profile/:urlToProfile/",
+      path: "/profile/:personalLink/",
       name: "user-profile",
       component: () => import("../views/user-profile.vue"),
     },

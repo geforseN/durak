@@ -9,8 +9,8 @@
     />
     <router-link
       class="underline text-lg font-bold font-mono absolute bottom-0 left-[50%] translate-x-[-50%] "
-      :class="user.accName === adminAccName ? 'bg-yellow-300' : 'bg-white'"
-      :to="`/profile/${user.urlToProfile}`"
+      :class="user.accname === adminAccName ? 'bg-yellow-300' : 'bg-white'"
+      :to="`/profile/${user.personalLink}`"
       target="_blank"
     >
       {{ user.nickname }}

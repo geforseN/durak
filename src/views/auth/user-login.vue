@@ -4,13 +4,13 @@
     <form class="flex flex-col gap-y-6 w-[40rem]">
       <h1 class="text-3xl font-semibold">Вход в учетную запись</h1>
       <div>
-        <label class="text-xl" for="login-accName">Имя аккаунта </label>
+        <label class="text-xl" for="login-accname">Имя аккаунта </label>
         <input
-          v-model="accName"
+          v-model="accname"
           required
           maxlength="128"
           class="py-2 px-2 border-2 border-black w-full h-full"
-          id="login-accName"
+          id="login-accname"
         />
       </div>
       <div>
@@ -84,7 +84,7 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-const { accName, password } = storeToRefs(useAuthStore());
+const { accname, password } = storeToRefs(useAuthStore());
 
 const yandexUrl =
   "https://oauth.yandex.ru/authorize?response_type=token&client_id=8430c9f64f184909aa0a2977f1a27386&force_confirm=yes";

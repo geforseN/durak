@@ -4,24 +4,24 @@ export const mockGameLobbies: Lobby[] = [
   {
     users: [
       {
-        accName: "admin",
-        urlToProfile: "__unknown__user__",
+        accname: "admin",
+        personalLink: "__unknown__user__",
         photoUrl: "https://randomuser.me/api/portraits/lego/6.jpg",
         nickname: "GeForseN-",
         connectStatus: 2,
       },
       {
-        accName: "second",
-        urlToProfile: "second2",
+        accname: "second",
+        personalLink: "second2",
         nickname: "SeConDNiCk",
         photoUrl: "https://randomuser.me/api/portraits/men/25.jpg",
         connectStatus: 2,
       },
       {
-        accName: "third",
+        accname: "third",
         photoUrl: "https://randomuser.me/api/portraits/women/88.jpg",
         nickname: "kovvka",
-        urlToProfile: "kittyG",
+        personalLink: "kittyG",
         connectStatus: 2,
       },
     ],
@@ -29,36 +29,37 @@ export const mockGameLobbies: Lobby[] = [
     settings: {
       gameType: "basic",
       maxUserCount: 4,
+      cardCount: 36
     },
-    adminAccName: "admin",
+    adminAccname: "admin",
   }, {
     users: [
       {
-        accName: "admin",
-        urlToProfile: "__unknown__user__",
+        accname: "admin",
+        personalLink: "__unknown__user__",
         photoUrl: "https://randomuser.me/api/portraits/lego/6.jpg",
         nickname: "GeForseN-",
         connectStatus: 2,
       },
       {
-        accName: "second",
-        urlToProfile: "second2",
+        accname: "second",
+        personalLink: "second2",
         nickname: "SeConDNiCk",
         photoUrl: "https://randomuser.me/api/portraits/men/25.jpg",
         connectStatus: 2,
       },
       {
-        accName: "third",
+        accname: "third",
         photoUrl: "https://randomuser.me/api/portraits/women/88.jpg",
         nickname: "kovvka",
-        urlToProfile: "kittyG",
+        personalLink: "kittyG",
         connectStatus: 2,
       },
       {
-        accName: "third",
+        accname: "third",
         photoUrl: "https://randomuser.me/api/portraits/women/88.jpg",
         nickname: "kovvka",
-        urlToProfile: "kittyG",
+        personalLink: "kittyG",
         connectStatus: 2,
       },
     ],
@@ -66,7 +67,8 @@ export const mockGameLobbies: Lobby[] = [
     settings: {
       gameType: "basic",
       maxUserCount: 6,
+      cardCount: 52
     },
-    adminAccName: "admin",
+    adminAccname: "admin",
   },
 ];

@@ -10,11 +10,11 @@ type UserA = Omit<User, "id" | "isInvisible">
 export const useUserStore = defineStore("user", () => {
   const { addNotificationInQueue } = useNotificationStore();
 
-  const accName = ref("");
+  const accname = ref("");
   const username = ref("");
   const photoUrl = ref("");
   const connectStatus = ref<ConnectStatus>(ConnectStatus.offline);
-  const urlToProfile = ref("");
+  const personalLink = ref("");
 
   socket.on("connect_error", (error) => {
     const notification = generateNotificationFromError(error);
@@ -23,18 +23,18 @@ export const useUserStore = defineStore("user", () => {
 
   socket.on("authenticationSuccess", (user: UserA) => {
     username.value = user.nickname;
-    accName.value = user.accName;
+    accname.value = user.accname;
     photoUrl.value = user.photoUrl;
     connectStatus.value = user.connectStatus;
-    urlToProfile.value = user.urlToProfile;
+    personalLink.value = user.personalLink;
   });
 
   return {
-    accName,
+    accname,
     username,
     photoUrl,
     connectStatus,
-    urlToProfile,
+    personalLink,
   };
 });
 

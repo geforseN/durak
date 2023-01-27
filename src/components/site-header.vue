@@ -5,7 +5,7 @@
         <router-link to="/" class="underline">Главная</router-link>
       </li>
       <li class="ml-auto" v-if="username">
-        <router-link :to="`/profile/${urlToProfile}`" class="inline-block border border-black h-10 w-10">
+        <router-link :to="`/profile/${personalLink}`" class="inline-block border border-black h-10 w-10">
           <img :src="photoUrl" :alt="`${username} profile picture`" :title="username">
         </router-link>
       </li>
@@ -24,5 +24,5 @@
 import { useUserStore } from "@/stores/user.store";
 import { storeToRefs } from "pinia";
 
-const { photoUrl, username, urlToProfile } = storeToRefs(useUserStore());
+const { photoUrl, username, personalLink } = storeToRefs(useUserStore());
 </script>

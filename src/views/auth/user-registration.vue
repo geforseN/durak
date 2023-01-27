@@ -4,15 +4,15 @@
     <form class="flex flex-col gap-y-6 w-[40rem]">
       <h1 class="text-4xl font-semibold">Регистрация учетной записи</h1>
       <div>
-        <label class="text-xl" for="reg-accName">
+        <label class="text-xl" for="reg-accname">
           Уникальное имя учетной записи
         </label>
         <input
           type="text"
-          v-model="accName"
+          v-model="accname"
           required
           maxlength="128"
-          id="reg-accName"
+          id="reg-accname"
           class="py-2 px-2 border-2 border-black w-full h-full"
         />
       </div>
@@ -103,7 +103,7 @@ const router = useRouter();
 
 const {
   email,
-  accName,
+  accname,
   password,
   repeatedPassword,
 } = storeToRefs(useAuthStore());

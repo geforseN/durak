@@ -11,7 +11,7 @@
           <game-lobby-user
             v-if="lobby.users[userIndex - 1]"
             :user="lobby.users[userIndex - 1]"
-            :admin-acc-name="lobby.adminAccName" />
+            :admin-acc-name="lobby.adminAccname" />
           <button
             v-else
             class="bg-purple-300 flex-1 border-r-0 border-4 border-black"
@@ -45,27 +45,26 @@ gameLobbies.on("startGame", (gameUrl: string) => {
   router.push(`/game/${gameUrl}`);
 });
 
+gameLobbies.on("lobbyCreated", (lobby: Lobby) => {
+  lobbies.value.push(lobby);
+});
+
 gameLobbies.on("addedUser", (user: User, lobbyId: string) => {
   const lobbyIndex = lobbies.value.findIndex(lobbyMatcher, { lobbyId });
   lobbies.value[lobbyIndex].users.push(user);
 });
 
-gameLobbies.on("removeUser", (accName: string, lobbyId: string) => {
+gameLobbies.on("removeUser", (accname: string, lobbyId: string) => {
   const lobbyIndex = lobbies.value.findIndex(lobbyMatcher, { lobbyId });
   const userIndexToRemove = lobbies.value[lobbyIndex].users.findIndex(
-    userMatcher,
-    { accName },
+    userMatcher, { accname },
   );
   lobbies.value[lobbyIndex].users.splice(userIndexToRemove, 1);
 });
 
-gameLobbies.on("updateLobbyAdmin", (adminAccName: string, lobbyId: string) => {
+gameLobbies.on("updateLobbyAdmin", (adminAccname: string, lobbyId: string) => {
   const lobbyIndex = lobbies.value.findIndex(lobbyMatcher, { lobbyId });
-  lobbies.value[lobbyIndex].adminAccName = adminAccName;
-});
-
-gameLobbies.on("lobbyCreated", (lobby: Lobby) => {
-  lobbies.value.push(lobby);
+  lobbies.value[lobbyIndex].adminAccname = adminAccname;
 });
 
 gameLobbies.on("deleteLobby", (lobbyId: string) => {

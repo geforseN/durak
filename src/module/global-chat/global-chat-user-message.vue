@@ -1,6 +1,6 @@
 <template>
   <div class="grid grid-flow-col grid-cols-[max-content_1fr_max-content]">
-    <router-link :to="'profile/' + message.sender.urlToProfile" class="bold block underline flex">
+    <router-link :to="'profile/' + message.sender.personalLink" class="bold block underline flex">
       <img :src="message.sender.photoUrl" :alt="`${message.sender.nickname} profile picture`" class="max-h-8 aspect-square">
       {{ message.sender.nickname }}:
     </router-link>

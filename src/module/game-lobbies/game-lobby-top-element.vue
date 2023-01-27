@@ -4,7 +4,7 @@
       {{ gameTypesDictionary[lobby.settings.gameType] }}
     </span>
     <button
-      v-if="lobby.adminAccName === userStore.accName"
+      v-if="lobby.adminAccname === userStore.accname"
       class="bg-green-600 focus:bg-green-500 border-2 border-black px-2 py-[1px] justify-self-center"
       @click="createGame(lobby.id)"
     >
@@ -34,6 +34,6 @@ const joinLobby = (lobbyId: string, cellIndex: number = -1) => {
 };
 
 const createGame = (lobbyId: string) => {
-  gameLobbies.emit("createGame", userStore.accName, lobbyId);
+  gameLobbies.emit("createGame", userStore.accname, lobbyId);
 };
 </script>

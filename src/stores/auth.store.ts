@@ -3,13 +3,13 @@ import { ref } from "vue";
 
 const useAuthStore = defineStore("auth", () => {
   const email = ref("");
-  const accName = ref("");
+  const accname = ref("");
   const password = ref("");
   const repeatedPassword = ref("");
 
   return {
     email,
-    accName,
+    accname,
     password,
     repeatedPassword,
   };
