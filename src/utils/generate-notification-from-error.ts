@@ -8,7 +8,7 @@ export default function generateNotificationFromError(
   return {
     message: error.message,
     durationInMS: notification?.durationInMS || 5_000,
-    type: notification?.type || "Error",
+    type: notification?.type || "Warning",
     id: notification?.id || uuidV4(),
   };
 }
