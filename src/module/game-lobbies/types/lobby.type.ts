@@ -5,5 +5,5 @@ export type Lobby = {
   id: string;
   users: User[];
   settings: LobbySettings;
-  adminAccName: string;
+  adminAccname: string;
 };
