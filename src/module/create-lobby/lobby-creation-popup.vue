@@ -32,27 +32,29 @@
     <div id="radio-player-count" class="my-4 flex gap-3 w-full items-center justify-between">
       <h3>Количество карт:</h3>
       <div class="flex justify-between gap-x-4">
-        <div
-          v-for="cardCount of allowedCardCount"
-          :key="cardCount"
-          class="relative w-8 h-8 flex flex-col items-center justify-center rounded-sm border-2 border-black"
-          :class="cardCount === lobbySettings.cardCount && 'border-2 border-orange-500'"
-        >
-          <input
-            class="w-0 h-0 focus:outline focus:outline-2 focus:outline-cyan-400 focus:outline-offset-[18px]"
-            v-model="lobbySettings.cardCount"
-            type="radio"
-            name="card-count"
-            :value="cardCount"
-            :id="`card-count#${cardCount}`"
-          />
-          <label
-            :for="`card-count#${cardCount}`"
-            class="absolute w-full select-none text-2xl flex justify-center items-center"
+        <template v-for="cardCount of allowedCardCount">
+          <div
+            v-if="canMakeFirstDistribution(cardCount)"
+            :key="cardCount"
+            class="relative w-8 h-8 flex flex-col items-center justify-center rounded-sm border-2 border-black"
+            :class="cardCount === lobbySettings.cardCount && 'border-2 border-orange-500'"
           >
-            {{ cardCount }}
-          </label>
-        </div>
+            <input
+              class="w-0 h-0 focus:outline focus:outline-2 focus:outline-cyan-400 focus:outline-offset-[18px]"
+              v-model="lobbySettings.cardCount"
+              type="radio"
+              name="card-count"
+              :value="cardCount"
+              :id="`card-count#${cardCount}`"
+            />
+            <label
+              :for="`card-count#${cardCount}`"
+              class="absolute w-full select-none text-2xl flex justify-center items-center"
+            >
+              {{ cardCount }}
+            </label>
+          </div>
+        </template>
       </div>
     </div>
     <!--    -->
@@ -76,7 +78,7 @@
   </form>
 </template>
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, watch } from "vue";
 import { gameLobbies } from "@/socket";
 import gameTypesDictionary from "@/utils/game-types-dictionary";
 import type {
@@ -106,8 +108,19 @@ const resetSettings = () => {
   lobbySettings.cardCount = defaultCardCount;
 };
 
+const canMakeFirstDistribution = (cardCount: number) => cardCount - lobbySettings.maxUserCount * 6 >= 0;
+
+watch(lobbySettings, (newLS, oldLS) => {
+  if (!canMakeFirstDistribution(oldLS.cardCount)) {
+    const index = allowedCardCount.findIndex((count) => count === oldLS.cardCount);
+    newLS.cardCount = allowedCardCount[index + 1];
+  }
+})
+
 const createLobby = () => {
-  const { gameType, maxUserCount, cardCount } = lobbySettings;
+  let { gameType, maxUserCount, cardCount } = lobbySettings;
+  if (!canMakeFirstDistribution(cardCount)) {}
+  console.log({ gameType, maxUserCount, cardCount });
   gameLobbies.emit("createLobby", { gameType, maxUserCount, cardCount });
 };
 </script>
