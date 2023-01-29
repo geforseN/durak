@@ -10,6 +10,6 @@ export const globalChat = io(BASE_SOCKET_URI + "/global-chat", {
   withCredentials: true,
 });
 
-export const gameLobbies = io(BASE_SOCKET_URI + "/game-lobbies", {
+export const gameLobbies = io(BASE_SOCKET_URI + "/lobbies", {
   withCredentials: true,
 });
