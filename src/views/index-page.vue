@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full flex flex-col items-center gap-6">
+  <div class="flex-1 w-full flex flex-col items-center min-h-screen gap-6 bg-gray-700">
     <global-chat class="w-[40rem] h-[20rem]" />
     <create-lobby />
     <game-lobbies class="w-[40rem]" />
