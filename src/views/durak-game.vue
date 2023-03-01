@@ -73,6 +73,7 @@ import { io } from "socket.io-client";
 import { onMounted, reactive, ref } from "vue";
 import suitsDictionary from "@/utils/dictionary/suits.dictionary";
 import { BASE_SOCKET_URI as host } from "@/socket";
+import type { Card, DeskSlot, GameState, PlayerRole, UIStatus } from "@/module/card-game/types";
 
 const gameState = reactive({
   self: { info: { accname: "", photoUrl: "", connectStatus: 0, personalLink: "", nickname: "" }, cards: [] },
