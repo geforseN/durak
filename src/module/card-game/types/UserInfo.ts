@@ -9,14 +9,16 @@ export type UserInfo = {
 };
 
 export type UIStatus = "revealed" | "hidden" | "freeze";
-export type PlayerRole = "defender" | "attacker" | "player";
+export type PlayerRole = "Defender" | "Attacker" | "Player";
 
 export type Self = {
   cards: Card[];
   info: UserInfo;
+  role: PlayerRole;
 }
 
 export type Enemy = {
   cardCount: number;
   info: UserInfo;
+  role: PlayerRole;
 }
