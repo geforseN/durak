@@ -1,16 +1,11 @@
 import type { Card } from "@/module/card-game/types/Card";
 
-export type User = {
+export type UserInfo = {
   accname: string
   nickname: string
   photoUrl: string | null
   personalLink: string | null
-  connectStatus: {
-    ONLINE: "ONLINE",
-    AWAY: "AWAY",
-    OFFLINE: "OFFLINE"
-  },
-  role: PlayerRole
+  connectStatus: "ONLINE" | "AWAY" | "OFFLINE"
 };
 
 export type UIStatus = "revealed" | "hidden" | "freeze";
@@ -18,10 +13,10 @@ export type PlayerRole = "defender" | "attacker" | "player";
 
 export type Self = {
   cards: Card[];
-  info: User
+  info: UserInfo;
 }
 
 export type Enemy = {
   cardCount: number;
-  info: User;
+  info: UserInfo;
 }
