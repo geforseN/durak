@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import { useUserStore } from "@/stores/user.store";
-import gameTypesDictionary from "../../utils/game-types-dictionary";
+import gameTypesDictionary from "../../utils/dictionary/game-types.dictionary";
 import { gameLobbies } from "@/socket";
 import type { Lobby } from "@/module/game-lobbies/types";
 
