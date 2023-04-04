@@ -14,7 +14,7 @@ export const gameLobbies = io(BASE_SOCKET_URI + "/lobbies", {
   withCredentials: true,
 });
 
-export function getGameSocketSingleton(gameId: string): Socket {
+export function getGameSocketSingleton(gameId?: string): Socket {
   let gameSocket: Socket | null = null;
 
   if (gameId && !gameSocket) {
