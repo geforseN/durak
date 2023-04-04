@@ -1,6 +1,0 @@
-[submodule "server/durak-server"]
-	path = server/durak-server
-	url = https://github.com/geforseN/durak-server.git
-[submodule "src/durak-server"]
-	path = src/durak-server
-	url = https://github.com/geforseN/durak-server
