@@ -84,8 +84,12 @@ const emit = defineEmits<{
   (e: "lobbyCreated"): void;
 }>();
 
-const { lobbySettings, resetSettings, isProperCardCount, properCardCountValues } =
-  useLobbySettings();
+const {
+  lobbySettings,
+  properCardCountValues,
+  resetSettings,
+  isProperCardCount,
+} = useLobbySettings();
 
 const createLobby = () => {
   if (!isProperCardCount(lobbySettings.cardCount)) {
