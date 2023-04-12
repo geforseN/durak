@@ -3,42 +3,22 @@
     class="p-4 flex flex-col border-[4px] border-primary bg-secondary text-2xl"
   >
     <h2 class="text-4xl font-semibold">Параметры комнаты</h2>
-    <lobby-creation-popup-option id="radio-player-count">
-      <template #header><h3>Количество игроков:</h3></template>
-      <template #input>
-        <input
-          v-for="value of allowedMaxUserCount"
-          :key="value"
-          :value="value"
-          :data-title="value"
-          class="btn text-xl"
-          v-model="lobbySettings.maxUserCount"
-          type="radio"
+    <radio-input-group
+      group-id="radio-player-count"
           name="max-user-count"
-          :id="'max-user-count#' + value"
-        />
-      </template>
-    </lobby-creation-popup-option>
-    <div
-      id="radio-player-count"
-      class="my-4 flex gap-3 items-center justify-between"
+      :input-values="allowedMaxUserCount"
+      v-model:input.number="lobbySettings.maxUserCount"
     >
-      <h3>Количество карт:</h3>
-      <div class="btn-group">
-        <input
-          v-for="cardCount of properCardCountValues"
-          :key="cardCount"
-          class="btn text-xl"
-          v-model="lobbySettings.cardCount"
-          :data-title="cardCount"
-          type="radio"
+      <template #header><h3>Количество игроков:</h3></template>
+    </radio-input-group>
+    <radio-input-group
+      group-id="radio-card-count"
           name="card-count"
-          :value="cardCount"
-          :id="`card-count#${cardCount}`"
-        />
-      </div>
-    </div>
-    <!--    -->
+      :input-values="properCardCountValues"
+      v-model:input.number="lobbySettings.cardCount"
+    >
+      <template #header><h3>Количество карт:</h3></template>
+    </radio-input-group>
     <div
       id="select-game-type"
       class="my-4 flex gap-3 w-full items-center justify-between"
@@ -73,7 +53,7 @@
 </template>
 <script setup lang="ts">
 import { gameLobbies } from "@/socket";
-import LobbyCreationPopupOption from "./lobby-creation-popup-option.vue";
+import RadioInputGroup from "./lobby-creation-radio-input-group.vue";
 import gameTypesDictionary from "@/utils/dictionary/game-types.dictionary";
 import useLobbySettings, {
   allowedGameTypes,
