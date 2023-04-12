@@ -1,11 +1,11 @@
 <template>
   <form
-    class="p-4 flex flex-col border-[4px] border-primary bg-secondary text-2xl"
+    class="px-6 pt-4 pb-2 flex flex-col border-4 border-primary rounded-lg bg-secondary text-2xl"
   >
     <h2 class="text-4xl font-semibold">Параметры комнаты</h2>
     <radio-input-group
       group-id="radio-player-count"
-          name="max-user-count"
+      name="max-user-count"
       :input-values="allowedMaxUserCount"
       v-model:input.number="lobbySettings.maxUserCount"
     >
@@ -13,7 +13,7 @@
     </radio-input-group>
     <radio-input-group
       group-id="radio-card-count"
-          name="card-count"
+      name="card-count"
       :input-values="properCardCountValues"
       v-model:input.number="lobbySettings.cardCount"
     >
@@ -21,12 +21,12 @@
     </radio-input-group>
     <div
       id="select-game-type"
-      class="my-4 flex gap-3 w-full items-center justify-between"
+      class="my-4 flex gap-3 items-center justify-between"
     >
       <h3><label for="game-types">Тип игры</label></h3>
       <div>
         <select
-          class="select leading-8 select-bordered select-lg w-full max-w-xs"
+          class="text-2xl select bg-neutral leading-8 select-bordered text-secondary select-md text-center max-w-xs focus:outline-primary focus:outline-2"
           v-model="lobbySettings.gameType"
           id="game-types"
         >
@@ -43,7 +43,7 @@
       Создать комнату
     </button>
     <button
-      class="my-1 text-base"
+      class="my-1 text-base w-fit mx-auto px-2 py-0.5"
       type="reset"
       @click.prevent="resetSettings()"
     >
