@@ -33,13 +33,14 @@ export default function useLobbySettings() {
     if (isProperCardCount(oldLobbySettings.cardCount)) {
       return;
     }
-    const currentCardIndex = allowedCardCount.findIndex(
-      (count) => count === oldLobbySettings.cardCount,
+    const currentCardIndex = allowedCardCount.indexOf(
+      oldLobbySettings.cardCount,
     );
-    // FIXME
-    // IF currentCardIndex === allowedCardCount.length
-    // THEN allowedCardCount[currentCardIndex + 1] can make error
-    newLobbySettings.cardCount = allowedCardCount[currentCardIndex + 1];
+    const newCardCountIndex =
+      currentCardIndex === allowedCardCount.length - 1
+        ? currentCardIndex
+        : currentCardIndex + 1;
+    newLobbySettings.cardCount = allowedCardCount[newCardCountIndex];
   });
 
   const properCardCountValues = computed(() => {
