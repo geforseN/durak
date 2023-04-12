@@ -3,10 +3,10 @@ import type {
   MaxUserCount,
   CardCount,
   GameType,
-  LobbySettings as GameSettings,
+  LobbySettings,
 } from "@/module/game-lobbies/types";
 
-const defaultSettings: GameSettings = {
+const defaultSettings: LobbySettings = {
   maxUserCount: 2,
   cardCount: 36,
   gameType: "basic",
@@ -17,7 +17,7 @@ export const allowedCardCount: CardCount[] = [24, 36, 52];
 export const allowedGameTypes: GameType[] = ["basic", "perevodnoy"];
 
 export default function useLobbySettings() {
-  const lobbySettings = reactive<GameSettings>(defaultSettings);
+  const lobbySettings = reactive<LobbySettings>(defaultSettings);
 
   const resetSettings = () => {
     lobbySettings.maxUserCount = defaultSettings.maxUserCount;
@@ -25,12 +25,14 @@ export default function useLobbySettings() {
     lobbySettings.gameType = defaultSettings.gameType;
   };
 
-  const canMakeFirstDistribution = (cardCount: number) => {
+  const isProperCardCount = (cardCount: number) => {
     return cardCount >= lobbySettings.maxUserCount * 6;
   };
 
   watch(lobbySettings, (newLobbySettings, oldLobbySettings) => {
-    if (canMakeFirstDistribution(oldLobbySettings.cardCount)) return;
+    if (isProperCardCount(oldLobbySettings.cardCount)) {
+      return;
+    }
     const currentCardIndex = allowedCardCount.findIndex(
       (count) => count === oldLobbySettings.cardCount,
     );
@@ -38,12 +40,12 @@ export default function useLobbySettings() {
   });
 
   const properCardCountValues = computed(() => {
-    return allowedCardCount.filter(canMakeFirstDistribution);
+    return allowedCardCount.filter(isProperCardCount);
   });
 
   return {
     resetSettings,
-    canMakeFirstDistribution,
+    isProperCardCount,
     lobbySettings,
     properCardCountValues,
   };
