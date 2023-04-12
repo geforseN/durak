@@ -36,6 +36,9 @@ export default function useLobbySettings() {
     const currentCardIndex = allowedCardCount.findIndex(
       (count) => count === oldLobbySettings.cardCount,
     );
+    // FIXME
+    // IF currentCardIndex === allowedCardCount.length
+    // THEN allowedCardCount[currentCardIndex + 1] can make error
     newLobbySettings.cardCount = allowedCardCount[currentCardIndex + 1];
   });
 
