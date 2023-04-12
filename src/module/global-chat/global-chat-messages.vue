@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-blue-500 flex-1 overflow-y-scroll">
+  <section class="flex-1 overflow-y-scroll">
     <global-chat-user-message v-for="message of messages" :message="message" />
   </section>
 </template>
@@ -19,10 +19,9 @@ globalChat.on("sendMessage", (message: UserMessage) => {
 });
 
 globalChat.on("restoreHistory", (globalChatHistory: UserMessage[]) => {
-  messages.value = globalChatHistory.reduce((chat, message) => {
+  messages.value = globalChatHistory.map((message) => {
     message.date = formatTime(message.date as number);
-    chat.push(message);
-    return chat;
-  }, [] as UserMessage[]);
+    return message;
+  });
 });
 </script>
