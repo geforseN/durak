@@ -1,32 +1,50 @@
 import { defineStore } from "pinia";
 import { reactive } from "vue";
+import { v4 as uuidV4 } from "uuid";
 
 export type NotificationAlert = {
-  // on server: randomUUID from crypto:node
-  // on client: v4 as uuidV4 from npm:uuid
   id: string;
-
   message: string;
   type: "Error" | "Warning" | "Success";
   durationInMS: number;
   header?: string;
 };
 
+export const defaultNotification: NotificationAlert = {
+  durationInMS: 5_000,
+  message: "Произошла ошибка",
+  id: uuidV4(),
+  type: "Warning",
+};
+
 export const useNotificationStore = defineStore("alerts", () => {
   const notificationQueue = reactive<NotificationAlert[]>([]);
 
-  function addNotificationInQueue(newNotification: NotificationAlert): void {
-    notificationQueue.push(newNotification);
-    setTimeout(() => {
-      const notificationIndexToRemove = notificationQueue.findIndex(
-        (notification) => notification.id === newNotification.id,
-      );
-      notificationQueue.splice(notificationIndexToRemove, 1);
-    }, newNotification.durationInMS);
-  }
+  const removeNotification = (id: NotificationAlert["id"]) => {
+    const notificationIndexToRemove = notificationQueue.findIndex(
+      (notification) => notification.id === id,
+    );
+    notificationQueue.splice(notificationIndexToRemove, 1);
+  };
+
+  const addNotificationInQueue = (
+    newNotification: Partial<NotificationAlert> = {},
+  ) => {
+    const notification: NotificationAlert = {
+      ...defaultNotification,
+      ...newNotification,
+    };
+    notificationQueue.push(notification);
+    setTimeout(
+      removeNotification,
+      notification.durationInMS,
+      notification.id,
+    );
+  };
 
   return {
     notificationQueue,
+    removeNotification,
     addNotificationInQueue,
   };
 });
