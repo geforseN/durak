@@ -20,8 +20,8 @@ export const useGameStateStore = defineStore("game", () => {
 
   const changeRole = (role: PlayerRole, accname: string) => {
     const enemy = enemiesStore.findBy({ accname });
-    if (enemy) return enemy.role = role;
-    selfStore.changeRole(accname, role);
+    if (enemy) enemy.role = role;
+    else selfStore.changeRole(role, accname);
   };
 
   const setTrumpCard = (card: Card) => gameState.trumpCard = card;
