@@ -5,5 +5,5 @@ export default function formatTime(date: number) {
     second: "numeric",
     hour12: false,
   };
-  return Intl.DateTimeFormat(undefined, dateOptions).format(new Date(date));
+  return Intl.DateTimeFormat(undefined, dateOptions).format(date);
 }
