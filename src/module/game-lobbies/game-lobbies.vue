@@ -7,16 +7,16 @@
     >
       <game-lobby-top-element :lobby="lobby" />
       <div class="flex border-r-4 border-black">
-        <template v-for="userIndex of lobby.settings.maxUserCount">
+        <template v-for="userIndex of range(lobby.settings.maxUserCount)">
           <game-lobby-user
-            v-if="lobby.users[userIndex - 1]"
-            :user="lobby.users[userIndex - 1]"
-            :admin-acc-name="lobby.adminAccname" />
+            v-if="lobby.users[userIndex]"
+            :user="lobby.users[userIndex]"
+            :is-admin="lobby.users[userIndex].accname === lobby.adminAccname" />
           <button
             v-else
             class="bg-purple-300 flex-1 border-r-0 border-4 border-black"
           >
-            {{ userIndex }}
+            Слот пуст
           </button>
         </template>
       </div>
@@ -31,13 +31,13 @@ import GameLobbyUser from "@/module/game-lobbies/game-lobby-user.vue";
 import GameLobbyTopElement from "@/module/game-lobbies/game-lobby-top-element.vue";
 import { gameLobbies } from "@/socket";
 import { lobbyMatcher, userMatcher } from "@/utils/matchers";
-import type { Lobby } from "@/module/game-lobbies/types";
-import type { User } from "@/module/global-chat/types";
 
-const lobbies = ref<Lobby[]>([]);
+const lobbies = ref<any>([]);
 const router = useRouter();
-
-gameLobbies.on("restoreLobbies", (lobbiesToRestore: Lobby[]) => {
+const range = (len: number) => {
+  return [...new Array(len)].map((_, i) => i) as number[]
+}
+gameLobbies.on("restoreLobbies", (lobbiesToRestore) => {
   lobbies.value = lobbiesToRestore;
 });
 
@@ -45,11 +45,11 @@ gameLobbies.on("startGame", (gameUrl: string) => {
   router.push(`/game/${gameUrl}`);
 });
 
-gameLobbies.on("lobbyCreated", (lobby: Lobby) => {
+gameLobbies.on("lobbyCreated", (lobby) => {
   lobbies.value.push(lobby);
 });
 
-gameLobbies.on("addedUser", (user: User, lobbyId: string) => {
+gameLobbies.on("addedUser", (user, lobbyId: string) => {
   const lobbyIndex = lobbies.value.findIndex(lobbyMatcher, { lobbyId });
   lobbies.value[lobbyIndex].users.push(user);
 });

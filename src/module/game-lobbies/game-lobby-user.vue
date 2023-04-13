@@ -9,7 +9,7 @@
     />
     <router-link
       class="underline text-lg font-bold font-mono absolute bottom-0 left-[50%] translate-x-[-50%] "
-      :class="user.accname === adminAccName ? 'bg-yellow-300' : 'bg-white'"
+      :class="isAdmin ? 'bg-yellow-300' : 'bg-white'"
       :to="`/profile/${user.personalLink}`"
       target="_blank"
     >
@@ -21,5 +21,5 @@
 <script setup lang="ts">
 import type { User } from "@/module/global-chat/types";
 
-const { user, adminAccName } = defineProps<{ user: User, adminAccName: string }>();
+const { user, isAdmin } = defineProps<{ user: User, isAdmin: boolean }>();
 </script>
