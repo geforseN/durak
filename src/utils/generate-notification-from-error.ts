@@ -1,14 +1,18 @@
-import type { NotificationAlert } from "@/stores/notification.store";
-import { v4 as uuidV4 } from 'uuid';
+import { defaultNotification, type NotificationAlert } from "@/stores/notification.store";
+
 
 export default function generateNotificationFromError(
   error: Error,
-  notification?: NotificationAlert,
+  notification: Partial<NotificationAlert> = {},
 ): NotificationAlert {
+  const { message, durationInMS, type, id } = {
+    ...defaultNotification,
+    ...notification,
+  };
   return {
-    message: error.message,
-    durationInMS: notification?.durationInMS || 5_000,
-    type: notification?.type || "Warning",
-    id: notification?.id || uuidV4(),
+    message: error.message || message,
+    durationInMS,
+    type,
+    id,
   };
 }
