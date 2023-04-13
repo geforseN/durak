@@ -12,28 +12,29 @@ import type { UserMessage } from "@/module/global-chat/types";
 import formatTime from "@/utils/intl/format-time";
 
 const messages = ref<UserMessage[]>([]);
-const messagesWrapper = ref<HTMLElement>()
+const messagesWrapper = ref<HTMLElement>();
 
-const scrollToLastElement = (element: HTMLElement) => queueMicrotask(
-  () => element.scrollTo({ behavior: "smooth", top: element.scrollHeight })
-);
+const scrollToLastElement = ({ behavior = "auto" }: Omit<ScrollOptions, "top"> = {}) => {
+  return queueMicrotask(() => {
+    if (!messagesWrapper.value) return;
+    const top = messagesWrapper.value.scrollHeight;
+    messagesWrapper.value?.scrollTo({ behavior, top })
+  });
+}
 
 globalChat.on("sendMessage", (message: UserMessage) => {
   message.date = formatTime(message.date as number);
   messages.value.push(message);
-  if (!messagesWrapper.value) return;
-  scrollToLastElement(messagesWrapper.value);
+  scrollToLastElement({ behavior: "smooth" });
 });
-
 
 globalChat.on("restoreHistory", (globalChatHistory: UserMessage[]) => {
   messages.value = globalChatHistory.map((message) => {
-    if (typeof message.date === "number") {
+    if (typeof message.date === "number" && Number.isFinite(message.date)) {
       message.date = formatTime(message.date);
     }
     return message;
   });
-  if (!messagesWrapper.value) return;
-  scrollToLastElement(messagesWrapper.value);
-});
+  scrollToLastElement();
+})
 </script>
