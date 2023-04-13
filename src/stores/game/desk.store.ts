@@ -17,5 +17,14 @@ export const useGameDeskStore = defineStore("gameDesk", () => {
     deskSlots.value[index].attackCard = card;
   };
 
-  return { clear, insertAttackCard, insertDefendCard, deskSlots };
+  const insertCard = (card: Card, index: number, inserterId: string) => {
+    console.log(card, index, inserterId);
+    if (!deskSlots.value[index].defendCard) {
+      insertDefendCard(card, index);
+    } else {
+      insertAttackCard(card, index);
+    }
+  };
+
+  return { clear, insertAttackCard, insertDefendCard, insertCard, deskSlots };
 });
