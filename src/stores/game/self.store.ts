@@ -25,8 +25,9 @@ export const useGameSelfStore = defineStore("gameSelf", () => {
     self.value.cards.splice(cardIndex, 1);
   };
 
-  const changeRole = (accname: string, role: PlayerRole) => {
+  const changeRole = (role: PlayerRole, accname: string) => {
     if (accname === self.value.info.accname) self.value.role = role;
+    throw new Error("Self has not found");
   };
 
   return { pushCard, removeCard, changeRole, self };
