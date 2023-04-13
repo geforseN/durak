@@ -1,22 +1,14 @@
 <template>
-  <div class="flex flex-col justify-between border border-black p-2">
-    <global-chat-messages />
-    <div class="mt-2 grid grid-flow-col grid-cols-[1fr_max-content]">
-      <section>
+  <div class="flex flex-col justify-between border-primary border-4 p-1.5 pb-1 bg-secondary">
+    <global-chat-messages class="bg-info border-primary border-2" />
+    <div class="mt-2 flex items-stretch gap-0.5 ">
+      <div class="flex-1 ">
         <label class="sr-only" for="global-chat-input">Введите сообщение</label>
-        <input
-          class="border-2 border-black border-r-0 w-full h-full"
-          id="global-chat-input"
-          v-model="input"
-          placeholder="Нажмите ENTER, что-бы отправить сообщение в чат."
-          @keyup.enter="handleMessage"
-        />
-      </section>
-      <button
-        class="bg-amber-300 focus:bg-amber-400 border-2 border-black px-2 py-[1px]"
-        title="Отправить сообщение в общий чат"
-        @click="handleMessage"
-      >
+        <input class="p-1 border-2 border-neutral w-full h-full" id="global-chat-input" v-model="input"
+          placeholder="Нажмите ENTER, что-бы отправить сообщение в чат." @keyup.enter="handleMessage" />
+      </div>
+      <button class="btn btn-md h-full rounded-none border-2 border-neutral" title="Отправить сообщение в общий чат"
+        @click="handleMessage">
         Оправить
       </button>
     </div>
@@ -40,12 +32,8 @@ const handleMessage = () => {
     globalChat.emit("sendMessage", input.value);
     input.value = "";
   } catch (error) {
-    if (error instanceof Error) {
-      const notification = generateNotificationFromError(error);
-      addNotificationInQueue(notification);
-    } else {
-      console.log(error);
-    }
+    if (!(error instanceof Error)) return console.error(error);
+    addNotificationInQueue(generateNotificationFromError(error));
   }
 };
 </script>
