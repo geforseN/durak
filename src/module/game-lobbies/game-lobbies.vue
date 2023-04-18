@@ -1,29 +1,16 @@
 <template>
-  <div>
-    <div
-      class="flex flex-col gap-y-1 p-1 m-3 border-2 border-orange-500 bg-purple-100"
-      v-for="lobby of lobbies"
-      :key="lobby.id"
-    >
+  <div class="flex flex-wrap sm:flex-nowrap sm:flex-col">
+    <div v-for="lobby of lobbies" :key="lobby.id"
+         class="sm:max-w-none max-w-[260px] min-w-[200px] my-3 ml-3 mr-auto sm:mx-3
+           flex flex-grow flex-col gap-2 p-1 rounded-lg border-primary border-4 bg-secondary">
       <game-lobby-top-element :lobby="lobby" />
-      <div class="flex border-r-4 border-black">
-        <template v-for="userIndex of range(lobby.settings.maxUserCount)">
-          <game-lobby-user
-            v-if="lobby.users[userIndex]"
-            :user="lobby.users[userIndex]"
-            :is-admin="lobby.users[userIndex].accname === lobby.adminAccname" />
-          <button
-            v-else
-            class="bg-purple-300 flex-1 border-r-0 border-4 border-black"
-          >
-            Слот пуст
-          </button>
-        </template>
-      </div>
+      <game-lobby-slots :lobby="lobby" />
     </div>
   </div>
 </template>
 <script setup lang="ts">
+import GameLobbyTopElement from "@/module/game-lobbies/game-lobby-top-element.vue";
+import GameLobbySlots from "@/module/game-lobbies/game-lobby-slots.vue";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { gameLobbies } from "@/socket";
