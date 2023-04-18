@@ -23,52 +23,23 @@
     </div>
   </div>
 </template>
-
 <script setup lang="ts">
-import { ref } from "vue";
+import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
-import GameLobbyUser from "@/module/game-lobbies/game-lobby-user.vue";
-import GameLobbyTopElement from "@/module/game-lobbies/game-lobby-top-element.vue";
 import { gameLobbies } from "@/socket";
-import { lobbyMatcher, userMatcher } from "@/utils/matchers";
+import { useLobbiesStore } from "@/stores/lobbies.store";
 
-const lobbies = ref<any>([]);
+const lobbiesStore = useLobbiesStore();
+const { lobbies } = storeToRefs(lobbiesStore);
 const router = useRouter();
-const range = (len: number) => {
-  return [...new Array(len)].map((_, i) => i) as number[]
-}
-gameLobbies.on("restoreLobbies", (lobbiesToRestore) => {
-  lobbies.value = lobbiesToRestore;
-});
 
-gameLobbies.on("startGame", (gameUrl: string) => {
-  router.push(`/game/${gameUrl}`);
-});
-
-gameLobbies.on("lobbyCreated", (lobby) => {
-  lobbies.value.push(lobby);
-});
-
-gameLobbies.on("addedUser", (user, lobbyId: string) => {
-  const lobbyIndex = lobbies.value.findIndex(lobbyMatcher, { lobbyId });
-  lobbies.value[lobbyIndex].users.push(user);
-});
-
-gameLobbies.on("removeUser", (accname: string, lobbyId: string) => {
-  const lobbyIndex = lobbies.value.findIndex(lobbyMatcher, { lobbyId });
-  const userIndexToRemove = lobbies.value[lobbyIndex].users.findIndex(
-    userMatcher, { accname },
-  );
-  lobbies.value[lobbyIndex].users.splice(userIndexToRemove, 1);
-});
-
-gameLobbies.on("updateLobbyAdmin", (adminAccname: string, lobbyId: string) => {
-  const lobbyIndex = lobbies.value.findIndex(lobbyMatcher, { lobbyId });
-  lobbies.value[lobbyIndex].adminAccname = adminAccname;
-});
-
-gameLobbies.on("deleteLobby", (lobbyId: string) => {
-  const lobbyIndex = lobbies.value.findIndex(lobbyMatcher, { lobbyId });
-  lobbies.value.splice(lobbyIndex, 1);
+gameLobbies.on("restoreLobbies", lobbiesStore.restoreLobbies);
+gameLobbies.on("lobbyCreated", lobbiesStore.addLobby);
+gameLobbies.on("addedUser", lobbiesStore.addUserInLobby);
+gameLobbies.on("removeUser", lobbiesStore.removeUser);
+gameLobbies.on("updateLobbyAdmin", lobbiesStore.updateLobbyAdmin);
+gameLobbies.on("deleteLobby", lobbiesStore.deleteLobby);
+gameLobbies.on("startGame", async (gameUrl: string) => {
+  await router.push(`/game/${gameUrl}`);
 });
 </script>
