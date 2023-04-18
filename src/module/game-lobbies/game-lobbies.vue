@@ -1,7 +1,8 @@
 <template>
-  <div class="flex flex-wrap sm:flex-nowrap sm:flex-col">
+  <div class="w-full sm:w-auto grid justify-center
+  grid-cols-[minmax(250px,330px)] min-[400px]:grid-cols-2 sm:grid-cols-1">
     <div v-for="lobby of lobbies" :key="lobby.id"
-         class="sm:max-w-none max-w-[260px] min-w-[200px] my-3 ml-3 mr-auto sm:mx-3
+         class="m-3 sm:my-1.5
            flex flex-grow flex-col gap-2 p-1 rounded-lg border-primary border-4 bg-secondary">
       <game-lobby-top-element :lobby="lobby" />
       <game-lobby-slots :lobby="lobby" />
