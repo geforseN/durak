@@ -1,8 +1,9 @@
 <template>
   <div
-    :style="{'backgroundImage':`url(https://deckofcardsapi.com/static/img/${card.rank.at(-1)}${suitsDictionary[card.suit]}.png)`}"
+    :style="{'backgroundImage':`url(https://deckofcardsapi.com/static/img/${rank.at(-1)}${suitsDictionary[suit]}.png)`}"
     draggable="true"
     @dragstart="emit('cardDrag', $event, card)"
+    @dragend.prevent="emit('cardDragEnd', $event, card)"
     class="border-2 border-black h-[116px] w-[83px] rounded hover:scale-125 transition ease-out bg-cover bg-black"
   />
 </template>
@@ -16,9 +17,11 @@ export type Card = {
   suit: Suit,
   power?: number
 }
-const card = defineProps<Card>();
+const { rank, suit } = defineProps<Card>();
+
 const emit = defineEmits<{
   (e: "cardDrag", $event: Event, card: Card): void
+  (e: "cardDragEnd", $event: Event, card: Card): void
 }>();
 
 </script>
