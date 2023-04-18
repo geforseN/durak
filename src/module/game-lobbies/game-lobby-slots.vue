@@ -36,14 +36,6 @@ const lobbyUsers = computed(() => {
 });
 </script>
 <style scoped>
-.empty-slot-pattern {
-  --c: rgba(255, 255, 255, 0.7);
-  --t: transparent;
-  background-image: repeating-linear-gradient(45deg, var(--t) 0, var(--t) 32px, var(--c) 32px, var(--c) 44px, var(--t) 44px, var(--t) 56px, var(--c) 56px, var(--c) 68px, var(--t) 0),
-  repeating-linear-gradient(-45deg, var(--t) 0, var(--t) 32px, var(--c) 32px, var(--c) 44px, var(--t) 44px, var(--t) 56px, var(--c) 56px, var(--c) 68px, var(--t) 0),
-  linear-gradient(to bottom, #FC354C, #FC354C);
-}
-
 .vertical-squares-pattern {
   background-color: #c2a813;
   background-image: repeating-linear-gradient(
