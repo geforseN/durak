@@ -1,19 +1,21 @@
 <template>
-  <div class="flex justify-between">
-    <span class="flex items-center px-2 bg-purple-400 rounded-xl">
-      {{ gameTypesDictionary[lobby.settings.gameType] }}
-    </span>
-    <button
-      v-if="lobby.adminAccname === userStore.accname"
-      class="bg-green-600 focus:bg-green-500 border-2 border-black px-2 py-[1px] justify-self-center"
-      @click="createGame(lobby.id)"
-    >
+  <div class="flex flex-col sm:flex-row gap-1 justify-between">
+    <div class="flex sm:flex-1 gap-2 items-center">
+      <span class="badge badge-lg bg-neutral-700 border-black">
+        {{ gameTypesDictionary[lobby.settings.gameType] }}
+      </span>
+      <span class="badge badge-lg bg-neutral-700 border-black">
+        {{ lobby.settings.cardCount }}
+      </span>
+    </div>
+    <button v-if="lobby.adminAccname === userStore.accname"
+            class="btn btn-sm text-black bg-info hover:bg-info hover:saturate-[1.3] border-2 border-black"
+            @click="createGame(lobby.id)">
       Начать игру
     </button>
-    <button
-      class="bg-blue-600 focus:bg-blue-500 border-2 border-black px-2 py-[1px]"
-      @click="joinLobby(lobby.id)"
-    >
+    <button v-if="lobby.users.every(({ accname }) => accname !== userStore.accname)"
+            class="btn btn-sm text-black bg-success hover:bg-success hover:saturate-[1.3] border-black border-2"
+            @click="joinLobby(lobby.id)">
       Присоединиться
     </button>
   </div>
