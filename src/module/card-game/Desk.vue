@@ -11,8 +11,8 @@
         {{ index }}
       </div>
       <template v-else>
-        <game-card v-bind="slot.attackCard" />
-        <game-card v-if="slot.defendCard" v-bind="slot.defendCard"
+        <game-card :suit="slot.attackCard.suit" :rank="slot.attackCard.rank"/>
+        <game-card v-if="slot.defendCard" :suit="slot.defendCard.suit" :rank="slot.defendCard.rank"
                    class="absolute inset-1/2 -translate-y-[42%] -translate-x-[35%] z-10"
         />
       </template>
