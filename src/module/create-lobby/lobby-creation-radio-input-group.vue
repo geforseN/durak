@@ -14,11 +14,10 @@
         class="btn btn-sm min-[420px]:btn-md min-[420px]:text-xl"
         type="radio"
         :id="$attrs.name + '#' + value"
-        @change="$event => {
-          selectedInputId = ($event.target as HTMLInputElement).value;
-          emit('update:input', ($event.target as HTMLInputElement).value);
-        }
-        "
+        @change="(event) => {
+          selectedInputId = event.target.value;
+          emit('update:input', event.target.value);
+        }"
       />
     </div>
   </div>
