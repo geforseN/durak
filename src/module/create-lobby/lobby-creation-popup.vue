@@ -54,8 +54,11 @@ const {
 const { addNotificationInQueue } = useNotificationStore();
 
 const createLobby = () => {
-  if (!isProperCardCount(lobbySettings.cardCount)) {
-    return addNotificationInQueue({ durationInMS: 7_000, message: `Нельзя создать лобби \n с количеством карт: ${lobbySettings.cardCount}\n и количеством карт: ${lobbySettings.maxUserCount}` })
+  if (!isProperCardCount()) {
+    return addNotificationInQueue({
+      durationInMS: 7_000,
+      message: `Нельзя создать лобби \n с количеством карт: ${lobbySettings.cardCount}\n и количеством карт: ${lobbySettings.maxUserCount}`,
+    });
   }
   emit("lobbyCreated");
   gameLobbies.emit("createLobby", lobbySettings);
