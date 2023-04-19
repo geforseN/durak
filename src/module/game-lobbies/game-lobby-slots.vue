@@ -1,14 +1,12 @@
 <template>
-  <div class="flex flex-col sm:flex-row  justify-center gap-2">
-    <template v-for="(user, index) of lobbyUsers">
+  <div class="flex flex-col sm:flex-row justify-center gap-2">
+    <template v-for="(user, index) of lobbyUsers" :key="user?.accname">
       <game-lobby-user
         v-if="user"
         :user="user"
         :index="index + 1"
         :is-admin="user.accname === lobby.adminAccname"
-        class="sm:w-[86px] sm:h-[137px] md:h-[172px] md:w-[108px] lg:h-[207px] lg:w-[130px]
-        flex justify-between items-center gap-2
-        sm:grid h-10 sm:h-auto sm:grid-cols-[min-content_1fr] sm:grid-rows-[min-content_min-content_1fr]" />
+        class="sm:w-[86px] sm:h-[137px] md:h-[172px] md:w-[108px] lg:h-[207px] lg:w-[130px]" />
       <button
         v-else
         class="sm:w-[86px] sm:h-[137px] md:h-[172px] md:w-[108px] lg:h-[207px] lg:w-[130px]
