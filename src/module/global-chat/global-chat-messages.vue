@@ -20,9 +20,9 @@ const scrollToLastElement = ({ behavior = "auto" }: Omit<ScrollOptions, "top"> =
   return queueMicrotask(() => {
     if (!messagesWrapper.value) return;
     const top = messagesWrapper.value.scrollHeight;
-    messagesWrapper.value?.scrollTo({ behavior, top })
+    messagesWrapper.value?.scrollTo({ behavior, top });
   });
-}
+};
 
 globalChat.on("sendMessage", (message: UserMessage) => {
   message.date = formatTime(message.date as number);
@@ -38,5 +38,5 @@ globalChat.on("restoreHistory", (globalChatHistory: UserMessage[]) => {
     return message;
   });
   scrollToLastElement();
-})
+});
 </script>

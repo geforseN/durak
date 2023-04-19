@@ -3,11 +3,13 @@
     <global-chat-messages />
     <div class="mt-2 flex items-stretch gap-0.5">
       <div class="flex-1 ">
-        <label class="sr-only" for="global-chat-input">Введите сообщение</label>
-        <input class="p-1 border-2 border-neutral w-full h-full" id="global-chat-input" v-model="input"
+        <label class="sr-only" for="global-chat-input">Ввод сообщения для глобального чата</label>
+        <input
+          class="p-1 border-2 border-neutral w-full h-full" id="global-chat-input" v-model="input"
           placeholder="Нажмите ENTER, что-бы отправить сообщение в чат." @keyup.enter="handleMessage" />
       </div>
-      <button class="btn btn-md h-full rounded-none border-2 border-neutral" title="Отправить сообщение в общий чат"
+      <button
+        class="btn btn-md h-full rounded-none border-2 border-neutral" title="Отправить сообщение в общий чат"
         @click="handleMessage">
         Оправить
       </button>
