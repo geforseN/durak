@@ -1,7 +1,7 @@
 <template>
   <div :id="groupId" class="my-4 flex gap-0.5 max-[320px]:flex-col justify-between items-baseline">
     <label :for="$attrs.name + '#' + selectedInputId">
-      <slot name="header"></slot>
+      <slot></slot>
     </label>
     <div class="btn-group">
       <input
