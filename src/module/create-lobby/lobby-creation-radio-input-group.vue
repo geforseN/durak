@@ -1,5 +1,5 @@
 <template>
-  <div :id="groupId" class="my-4 flex gap-3 items-center justify-between">
+  <div :id="groupId" class="my-4 flex gap-0.5 max-[320px]:flex-col justify-between items-baseline">
     <label :for="$attrs.name + '#' + selectedInputId">
       <slot name="header"></slot>
     </label>
@@ -11,7 +11,7 @@
         :checked="input === value"
         :data-title="value"
         :value="value"
-        class="btn text-xl"
+        class="btn btn-sm min-[420px]:btn-md min-[420px]:text-xl"
         type="radio"
         :id="$attrs.name + '#' + value"
         @change="$event => {
