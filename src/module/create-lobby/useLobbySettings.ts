@@ -25,7 +25,7 @@ export default function useLobbySettings() {
     lobbySettings.gameType = defaultSettings.gameType;
   };
 
-  const isProperCardCount = (cardCount: number) => {
+  const isProperCardCount = (cardCount = lobbySettings.cardCount) => {
     return cardCount >= lobbySettings.maxUserCount * 6;
   };
 
