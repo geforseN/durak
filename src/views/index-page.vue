@@ -1,9 +1,8 @@
 <template>
-  <div class="flex-1 w-full flex flex-col items-center min-h-screen gap-6 bg-secondary
-  sm:bg-yellow-500 md:bg-green-500 lg:bg-red-500 xl:bg-purple-500 2xl:bg-amber-500">
-<!--    <global-chat class="w-[40rem] h-[20rem] m-4" />-->
-    <create-lobby />
-    <game-lobbies />
+  <div class="p-1 sm:p-2 w-full flex-1 flex flex-col items-center gap-6 bg-secondary">
+    <global-chat class="w-full max-w-md sm:max-w-xl h-[20rem]" />
+    <create-lobby class="w-full max-w-md sm:max-w-xl" />
+    <game-lobbies class="w-full sm:w-auto" />
   </div>
 </template>
 
