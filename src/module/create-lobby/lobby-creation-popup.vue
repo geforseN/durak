@@ -13,18 +13,13 @@
         <h3>Количество карт:</h3>
       </template>
     </radio-input-group>
-    <div id="select-game-type" class="my-4 flex gap-3 items-center justify-between">
-      <h3><label for="game-types">Тип игры</label></h3>
-      <div>
-        <select
-          class="text-2xl select bg-neutral leading-8 select-bordered text-secondary select-md text-center max-w-xs focus:outline-primary focus:outline-2"
-          v-model="lobbySettings.gameType" id="game-types">
-          <option v-for="gameType of allowedGameTypes" :value="gameType">
-            {{ gameTypesDictionary[gameType] || gameType }}
-          </option>
-        </select>
-      </div>
-    </div>
+    <select-group
+      v-model="lobbySettings.gameType"
+      id="game-types"
+      :options="allowedGameTypes"
+      :options-dictionary="gameTypesDictionary">
+      Тип игры
+    </select-group>
     <button
       class="mt-4 btn btn-lg bg-success border-info border-2 text-3xl font-bold hover:bg-success hover:border-info hover:hover:saturate-[1.3]"
       @click.prevent="createLobby()">
@@ -38,6 +33,7 @@
 <script setup lang="ts">
 import { gameLobbies } from "@/socket";
 import RadioInputGroup from "./lobby-creation-radio-input-group.vue";
+import SelectGroup from "./lobby-creation-select.vue";
 import gameTypesDictionary from "@/utils/dictionary/game-types.dictionary";
 import useLobbySettings, {
   allowedGameTypes,
