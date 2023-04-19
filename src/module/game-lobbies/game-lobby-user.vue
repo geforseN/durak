@@ -1,8 +1,10 @@
 <template>
-  <article class="p-1 border-2 border-primary rounded-lg bg-gray-100" >
+  <article
+    class="flex h-10 justify-between items-center gap-2 p-1 border-2 border-primary rounded-lg bg-gray-100
+      sm:grid sm:h-auto sm:grid-cols-[min-content_1fr] sm:grid-rows-[min-content_min-content_1fr]">
     <span
       :class="isAdmin ? 'bg-info' : 'bg-success'"
-      class="h-full sm:w-6 sm:h-6 sm:col-start-1 sm:row-start-1 flex justify-center items-center p-1 font-mono text-xl border border-black rounded ">
+      class="h-full aspect-square sm:w-6 sm:h-6 sm:col-start-1 sm:row-start-1 flex justify-center items-center p-1 font-mono text-xl border border-black rounded">
       {{ index }}
     </span>
     <router-link
@@ -12,7 +14,7 @@
       :to="`/profile/${user.personalLink}`"
       target="_blank"
     >
-      {{ user.nickname  }}
+      {{ user.nickname }}
     </router-link>
     <img :src="user.photoUrl" :alt="`${user.nickname} profile picture`"
          class="h-full sm:h-auto sm:place-self-end sm:col-start-2 sm:row-start-3 avatar border border-black rounded-xl" />
