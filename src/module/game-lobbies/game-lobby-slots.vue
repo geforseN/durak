@@ -42,16 +42,18 @@ const joinLobby = (cellIndex: number = -1) => {
 </script>
 <style scoped>
 .vertical-squares-pattern {
-  background-color: #c2a813;
+  --first: #c2a813;
+  --second: #ffffff;
+  background-color: var(--first);
   background-image: repeating-linear-gradient(
     45deg,
     transparent, transparent 5px,
-    #fff 5px, #fff 6px
+    var(--second) 5px, var(--second) 6px
   ),
   repeating-linear-gradient(
     -45deg,
     transparent, transparent 5px,
-    #fff 5px, #fff 6px
+    var(--second) 5px, var(--second) 6px
   );
 }
 </style>
