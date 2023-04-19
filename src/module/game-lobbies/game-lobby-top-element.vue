@@ -8,14 +8,16 @@
         {{ lobby.settings.cardCount }}
       </span>
     </div>
-    <button v-if="lobby.adminAccname === userStore.accname"
-            class="btn btn-sm text-black bg-info hover:bg-info hover:saturate-[1.3] border-2 border-black"
-            @click="createGame(lobby.id)">
+    <button
+      v-if="lobby.adminAccname === userStore.accname"
+      class="btn btn-sm text-black bg-info hover:bg-info hover:saturate-[1.3] border-2 border-black"
+      @click="createGame()">
       Начать игру
     </button>
-    <button v-if="lobby.users.every(({ accname }) => accname !== userStore.accname)"
-            class="btn btn-sm text-black bg-success hover:bg-success hover:saturate-[1.3] border-black border-2"
-            @click="joinLobby(lobby.id)">
+    <button
+      v-if="lobby.users.every(({ accname }) => accname !== userStore.accname)"
+      class="btn btn-sm text-black bg-success hover:bg-success hover:saturate-[1.3] border-black border-2"
+      @click="joinLobby()">
       Присоединиться
     </button>
   </div>
@@ -31,11 +33,11 @@ const userStore = useUserStore();
 
 const { lobby } = defineProps<{ lobby: Lobby }>();
 
-const joinLobby = (lobbyId: string, cellIndex: number = -1) => {
-  gameLobbies.emit("joinLobby", lobbyId, cellIndex);
+const joinLobby = (cellIndex: number = -1) => {
+  gameLobbies.emit("joinLobby", lobby.id, cellIndex);
 };
 
-const createGame = (lobbyId: string) => {
-  gameLobbies.emit("createGame", userStore.accname, lobbyId);
+const createGame = () => {
+  gameLobbies.emit("createGame", userStore.accname, lobby.id);
 };
 </script>
