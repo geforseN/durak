@@ -21,11 +21,12 @@
       Тип игры
     </select-group>
     <button
-      class="mt-4 btn btn-lg bg-success border-info border-2 text-3xl font-bold hover:bg-success hover:border-info hover:hover:saturate-[1.3]"
+      class="mt-4 h-auto btn btn-lg bg-success border-info border-2 text-3xl font-bold hover:bg-success hover:border-info hover:hover:saturate-[1.3]"
       @click.prevent="createLobby()">
       Создать комнату
     </button>
-    <button class="my-1 text-base w-fit mx-auto px-2 py-0.5" type="reset" @click.prevent="resetSettings()">
+    <button
+      type="reset" class="my-1 text-base w-fit mx-auto px-2 py-0.5" @click.prevent="resetSettings()">
       Сброс параметров
     </button>
   </form>
