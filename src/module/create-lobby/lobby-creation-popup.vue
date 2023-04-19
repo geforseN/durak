@@ -1,17 +1,17 @@
 <template>
-  <form class="px-6 pt-4 pb-2 flex flex-col border-4 border-primary rounded-lg bg-secondary text-2xl">
-    <h2 class="text-4xl font-semibold">Параметры комнаты</h2>
-    <radio-input-group group-id="radio-player-count" name="max-user-count" :input-values="allowedMaxUserCount"
-      v-model:input.number="lobbySettings.maxUserCount">
-      <template #header>
-        <h3>Количество игроков:</h3>
-      </template>
+  <form
+    class="w-full px-3 min-[350px]:px-4 sm:px-6 py-4 pb-2 text-xl min-[350px]:text-2xl
+      flex flex-col border-4 border-primary rounded-lg bg-secondary">
+    <h2 class="text-2xl min-[350px]:text-3xl min-[420px]:text-4xl font-semibold">Параметры комнаты</h2>
+    <radio-input-group
+      group-id="radio-player-count" name="max-user-count"
+      :input-values="allowedMaxUserCount" v-model:input.number="lobbySettings.maxUserCount">
+      Количество игроков
     </radio-input-group>
-    <radio-input-group group-id="radio-card-count" name="card-count" :input-values="properCardCountValues"
-      v-model:input.number="lobbySettings.cardCount">
-      <template #header>
-        <h3>Количество карт:</h3>
-      </template>
+    <radio-input-group
+      group-id="radio-card-count" name="card-count"
+      :input-values="properCardCountValues" v-model:input.number="lobbySettings.cardCount">
+      Количество карт
     </radio-input-group>
     <select-group
       v-model="lobbySettings.gameType"
