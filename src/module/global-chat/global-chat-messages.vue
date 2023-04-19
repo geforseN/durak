@@ -1,5 +1,7 @@
 <template>
-  <section class="flex-1 overflow-y-scroll" ref="messagesWrapper">
+  <section
+    class="flex-1 overflow-y-scroll bg-info border-neutral border-2"
+    ref="messagesWrapper">
     <global-chat-user-message v-for="message of messages" :message="message" />
   </section>
 </template>

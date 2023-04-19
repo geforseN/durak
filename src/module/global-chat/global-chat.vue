@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col justify-between border-primary border-4 p-1.5 pb-1 bg-secondary">
-    <global-chat-messages class="bg-info border-primary border-2" />
-    <div class="mt-2 flex items-stretch gap-0.5 ">
+  <div class="flex flex-col justify-between border-primary border-4 p-1.5">
+    <global-chat-messages />
+    <div class="mt-2 flex items-stretch gap-0.5">
       <div class="flex-1 ">
         <label class="sr-only" for="global-chat-input">Введите сообщение</label>
         <input class="p-1 border-2 border-neutral w-full h-full" id="global-chat-input" v-model="input"
