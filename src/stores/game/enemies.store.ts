@@ -9,11 +9,15 @@ export const useGameEnemiesStore = defineStore("gameEnemies", () => {
     return enemies.value.find((enemy) => enemy.info.accname === accname);
   };
 
+  const has = ({ accname }: { accname: string }) => {
+    return enemies.value.some((enemy) => enemy.info.accname === accname);
+  };
+
   const changeEnemyCardCount = (accname: string, cardCount: number) => {
     const enemy = findBy({ accname });
     if (!enemy) return alert("No such enemy");
     enemy.cardCount = cardCount;
   };
 
-  return { enemies, findBy, changeEnemyCardCount };
+  return { enemies, findBy, changeEnemyCardCount, has };
 });
