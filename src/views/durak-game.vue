@@ -68,26 +68,23 @@ const selfStore = useGameSelfStore();
 const deskStore = useGameDeskStore();
 const gameStateStore = useGameStateStore();
 
-const cardStyle = (card) => {
-  return {
-    backgroundImage: `url(https://deckofcardsapi.com/static/img/${card.rank.at(-1)}${suitsDictionary[card.suit]}.png)`,
-    backgroundSize: "cover",
-    backgroundColor: "black",
-  };
+const handleCardDropOnDesk = (event: any, slot: DeskSlot, slotIndex: number) => {
+  const card = JSON.parse(event.dataTransfer.getData("card"));
+  gameSocket.emit("superPlayer__putCardOnDesk", card, slotIndex);
 };
 
-const handleCardDrag = (event, card) => {
-  console.log("dragstart");
+const handleCardDrag = (event: any, card: Card) => {
+  console.log(event.target);
+  // console.log(event.currentTarget);
+  draggedCard.value = event.target;
   console.log(card);
   event.dataTransfer.setData("card", JSON.stringify(card));
+  console.log("__ASD__");
 };
 
-const handleCardDropOnDesk = (event, slot) => {
-  console.log("drop");
-  const card = JSON.parse(event.dataTransfer.getData("card"));
-  if (slot.attackCard === null) slot.attackCard = card;
-  else if (slot.defendCard === null) slot.defendCard = card;
-  console.log(gameState.desk, card, slot);
+const handleCardDragEnd = (event: any, card: Card) => {
+  draggedCard.value = null;
+  console.log("__asd__");
 };
 
 const stopMove = () => gameSocket.emit("superPlayer__stopMove");
