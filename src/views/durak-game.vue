@@ -69,6 +69,20 @@
 
 <script setup lang="ts">
 import { useRoute } from "vue-router";
+import { useNotificationStore } from "@/stores/notification.store";
+import type { Card, DeskSlot } from "@/module/card-game/types";
+import SelfDeck from "@/module/card-game/SelfDeck.vue";
+import GameCard from "@/module/card-game/Card.vue";
+import GameDesk from "@/module/card-game/Desk.vue";
+import EnemyProfile from "@/module/card-game/EnemyProfile.vue";
+import SuperUserInterface from "@/module/card-game/SuperUserInteface.vue";
+import {
+  useGameStateStore,
+  useGameDeskStore,
+  useGameSelfStore,
+  useGameEnemiesStore,
+} from "@/stores/game";
+import { ref } from "vue";
 import { io } from "socket.io-client";
 import { onMounted, reactive, ref } from "vue";
 import suitsDictionary from "@/utils/dictionary/suits.dictionary";
