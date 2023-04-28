@@ -1,6 +1,6 @@
 <template>
   <div
-    class="grid grid-cols-[minmax(250px,330px)] min-[400px]:grid-cols-2 sm:grid-cols-1 justify-center">
+    class="grid grid-cols-[minmax(250px,330px)] min-[400px]:grid-cols-2 sm:grid-cols-1 justify-center items-start">
     <div v-for="lobby of lobbies" :key="lobby.id"
          class="m-2 sm:m-2 flex flex-col gap-2 p-1 rounded-lg border-primary border-4 bg-secondary">
       <game-lobby-top-element :lobby="lobby" />
@@ -26,7 +26,10 @@ gameLobbies.on("addedUser", lobbiesStore.addUserInLobby);
 gameLobbies.on("removeUser", lobbiesStore.removeUser);
 gameLobbies.on("updateLobbyAdmin", lobbiesStore.updateLobbyAdmin);
 gameLobbies.on("deleteLobby", lobbiesStore.deleteLobby);
-gameLobbies.on("startGame", async (gameUrl: string) => {
-  await router.push(`/game/${gameUrl}`);
+gameLobbies.on("startGame", (gameId: string) => {
+  const path = `/game/${gameId}`;
+  router.replace({ path })
+    .then(() => console.log(`Successfully navigate to ${path}`))
+    .catch(console.error);
 });
 </script>
