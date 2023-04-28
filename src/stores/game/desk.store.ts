@@ -3,15 +3,15 @@ import { defineStore } from "pinia";
 import type { DeskSlot, Card } from "@/module/card-game/types";
 import { useGameSelfStore } from "@/stores/game/self.store";
 
+const getEmptySlot = () => ({ attackCard: null, defendCard: null });
 
 export const useGameDeskStore = defineStore("gameDesk", () => {
   const selfStore = useGameSelfStore();
   const deskSlots = ref<DeskSlot[]>([]);
 
   const clear = () => {
-    deskSlots.value = deskSlots.value.map(() => ({ attackCard: null, defendCard: null }));
+    deskSlots.value = deskSlots.value.map(getEmptySlot);
   };
-
 
   const insertDefendCard = (card: Card, index: number) => {
     deskSlots.value[index].defendCard = card;
