@@ -107,4 +107,41 @@ const handleCardDropOnDesk = (event, slot) => {
   console.log(gameState.desk, card, slot);
 };
 
+const stopMove = () => gameSocket.emit("superPlayer__stopMove");
+
+;[
+  { eventName: "state__restore", listener: gameStateStore.restore },
+  { eventName: "notification__send", listener: notificationStore.addNotificationInQueue },
+  { eventName: "player__changeRole", listener: gameStateStore.changeRole },
+  // { eventName: "attackUI__setStatus", callback: UIStore.setAttackUI },
+  // { eventName: "defendUI__setStatus", callback: UIStore.setDefendUI },
+  { eventName: "self__removeCard", listener: selfStore.removeCard },
+  { eventName: "player__receiveCards", listener: selfStore.pushCard },
+  { eventName: "enemy__changeCardCount", listener: enemiesStore.changeEnemyCardCount },
+  { eventName: "desk__clear", listener: deskStore.clear },
+  { eventName: "player__insertCard", listener: deskStore.insertCard },
+].forEach(({ eventName, listener }) => gameSocket.on(eventName, listener));
+
+gameSocket.on("talon__showTrumpCard", gameStateStore.setTrumpCard); // TODO
+gameSocket.on("player__allowedToMove", (accname: string) => {
+  if (selfStore.selfId !== accname && !enemiesStore.has({ accname })) {
+    throw new Error("Can't change allowedPlayerId");
+  }
+  gameStateStore.gameState.allowedPlayerId = accname;
+});
+gameSocket.on("desk__pushToDiscard", () => {
+});
+gameSocket.on("talon__distributeCards", (accname: string, cardCount: number) => {
+  // console.log(refOfBoard.value?.getBoundingClientRect());
+  // if (draggedCard.value) {
+  //   console.warn(draggedCard.value);
+  // }
+});
+gameSocket.on("talon__moveTrumpCardTo", (accname: string) => {
+});
+gameSocket.on("defender__lostRound", (accname: string, roundNumber: number) => {
+});
+gameSocket.on("defender__wonRound", (accname: string, roundNumber: number) => {
+});
+
 </script>
