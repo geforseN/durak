@@ -48,42 +48,25 @@ import {
 } from "@/stores/game";
 import { ref } from "vue";
 import { io } from "socket.io-client";
-import { onMounted, reactive, ref } from "vue";
-import suitsDictionary from "@/utils/dictionary/suits.dictionary";
-import { BASE_SOCKET_URI as host } from "@/socket";
-import type { Card, DeskSlot, GameState, PlayerRole, UIStatus } from "@/module/card-game/types";
 
-const gameState = reactive({
-  self: { info: { accname: "", photoUrl: "", connectStatus: 0, personalLink: "", nickname: "" }, cards: [] },
-  enemies: [],
-  desk: [],
-});
-const shouldShowAttackUI = ref(false);
-const shouldShowDefendUI = ref(false);
-const isLoaded = ref(false);
-
-const updateAttackUI = (bool: boolean) => shouldShowAttackUI.value = bool;
-const updateDefendUI = (bool: boolean) => shouldShowDefendUI.value = bool;
+const refOfBoard = ref<HTMLElement>();
+const draggedCard = ref<HTMLElement | null>(null);
 
 const route = useRoute();
-const gameSocket = io(`${host}/game/${route.params.gameId}`, { withCredentials: true });
-
-onMounted(() => gameSocket.emit("state__restore"));
-
-gameSocket.on("attackUI__shouldShow", updateAttackUI);
-gameSocket.on("defendUI__shouldShow", updateDefendUI);
-
-gameSocket.on("state__restore", (state) => {
-  console.log(state);
-  gameState.self = state.self;
-  gameState.enemies = state.enemies;
-  gameState.desk = state.desk;
-  isLoaded.value = true;
+const gameSocket = io(
+  `${import.meta.env.VITE_SOCKET_SERVER_ADDRESS}/game/${route.params.gameId}`,
+  { withCredentials: true },
+);
+gameSocket.onAny((event: any, ...args: any) => {
+  console.log(`got event ${event}`);
+  console.log(...args);
 });
 
-const putOnTable = () => {
-  gameSocket.emit("desk__putCard" /* card, slotIndex */);
-};
+const notificationStore = useNotificationStore();
+const enemiesStore = useGameEnemiesStore();
+const selfStore = useGameSelfStore();
+const deskStore = useGameDeskStore();
+const gameStateStore = useGameStateStore();
 
 const cardStyle = (card) => {
   return {
