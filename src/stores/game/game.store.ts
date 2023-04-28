@@ -1,4 +1,4 @@
-import { reactive } from "vue";
+import { computed, reactive } from "vue";
 import { defineStore } from "pinia";
 import { useGameEnemiesStore, useGameDeskStore, useGameSelfStore } from "@/stores/game";
 import type { Card, GameState, PlayerRole } from "@/module/card-game/types";
@@ -26,5 +26,7 @@ export const useGameStateStore = defineStore("game", () => {
 
   const setTrumpCard = (card: Card) => gameState.trumpCard = card;
 
-  return { gameState, restore, setTrumpCard, changeRole };
+  const allowedPlayerId = computed(() => gameState.allowedPlayerId);
+
+  return { gameState, restore, setTrumpCard, changeRole, allowedPlayerId };
 });
