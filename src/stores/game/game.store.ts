@@ -4,7 +4,7 @@ import { useGameEnemiesStore, useGameDeskStore, useGameSelfStore } from "@/store
 import type { Card, GameState, PlayerRole } from "@/module/card-game/types";
 
 export const useGameStateStore = defineStore("game", () => {
-  const gameState = reactive<{ trumpCard?: Card, allowedPlayerAccname?: string }>({});
+  const gameState: { trumpCard?: Card, allowedPlayerId?: string } = reactive({});
 
   const enemiesStore = useGameEnemiesStore();
   const selfStore = useGameSelfStore();
@@ -14,8 +14,8 @@ export const useGameStateStore = defineStore("game", () => {
     selfStore.self = newState.self;
     enemiesStore.enemies = newState.enemies;
     deskStore.deskSlots = newState.deskSlots;
-    setTrumpCard(newState.trumpCard);
-    gameState.allowedPlayerAccname = newState.allowedPlayerAccname;
+    gameState.trumpCard = newState.trumpCard;
+    gameState.allowedPlayerId = newState.allowedPlayerId;
   };
 
   const changeRole = (role: PlayerRole, accname: string) => {
