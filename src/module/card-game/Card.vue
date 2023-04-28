@@ -4,7 +4,7 @@
     draggable="true"
     @dragstart="emit('cardDrag', $event, card)"
     @dragend.prevent="emit('cardDragEnd', $event, card)"
-    class="border-2 border-black h-[116px] w-[83px] rounded hover:scale-125 transition ease-out bg-cover bg-black"
+    class="border-2 border-black h-[116px] w-[83px] rounded bg-cover bg-black"
   />
 </template>
 
