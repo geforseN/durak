@@ -7,5 +7,5 @@ export type GameState = {
   enemies: Enemy[],
   deskSlots: DeskSlot[],
   trumpCard: Card,
-  allowedPlayerAccname: string,
+  allowedPlayerId: string,
 }
