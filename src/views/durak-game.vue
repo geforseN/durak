@@ -1,72 +1,36 @@
 <template>
-  <div v-if="isLoaded">
+  <main class="min-h-[90vh] grid grid-rows-[min-content_1fr_min-content]"
+        ref="refOfBoard"
+  >
     <div class="bg-gray-800 flex justify-center items-center">
-      <div v-for="enemy of gameState.enemies">
-        <section class="bg-gray-400 relative">
-          <div class="flex border-4 border-black">
-            <img class="w-24 h-24"
-                 :src="enemy.info.photoUrl"
-                 :alt="`${enemy.info.nickname} profile picture`"
-            >
-            <div class="flex flex-col justify-between">
-              <div class="mx-0.5">
-                <a :href="enemy.info.personalLink" class="font-bold text-xl underline">{{ enemy.info.nickname }}</a>
-                <p class="text-xs opacity-50">{{ enemy.info.accname }}</p>
-              </div>
-              <div class="flex ml-0.5">
-                <div v-for="cardNumber of enemy.cardCount" class="h-[39px] w-[27px] bg-indigo-600 border">
-                  {{ cardNumber }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+      <div v-for="enemy of enemiesStore.enemies" :key="enemy.info.accname">
+        <enemy-profile
+          :enemy="enemy"
+          :isAllowedToMove="enemy.info.accname === gameStateStore.gameState.allowedPlayerId"
+        />
       </div>
     </div>
-    <div class="m-auto w-max grid grid-cols-3 grid-flow-row">
-      <div v-for="(slot, index) of gameState.desk"
-           class="relative bg-orange-400 border h-[160px] w-[114px] flex justify-center items-center font-bold text-3xl"
-           @drop="handleCardDropOnDesk($event, slot)"
-           @dragenter.prevent
-           @dragover.prevent
-      >
-        <div v-if="slot.attackCard === null"
-             class="bg-indigo-400 h-[116px] w-[83px] flex justify-center items-center">
-          {{ index }}
-        </div>
-        <template v-else>
-          <div v-if="slot.attackCard" :style="cardStyle(slot.attackCard)" class="h-[116px] w-[83px] rounded" />
-          <div v-if="slot.defendCard" :style="cardStyle(slot.defendCard)"
-               class="h-[116px] w-[83px] rounded absolute inset-1/2 -translate-y-[42%] -translate-x-[35%] z-10" />
-        </template>
-      </div>
-    </div>
-    <div class="min-h-[100px] w-full absolute bottom-6 flex justify-center">
-      <template v-if="gameState.self.cards.length > 0">
-        <div v-for="card of gameState.self.cards"
-             :style="cardStyle(card)"
-             draggable="true"
-             @dragstart="handleCardDrag($event, card)"
-             class="border-2 border-black h-[116px] w-[83px] rounded hover:scale-125 transition ease-out"
-        >
-        </div>
-      </template>
-    </div>
-    <div v-if="shouldShowAttackUI"
-         class="absolute z-20 bottom-6 left-2 border-2 border-black flex flex-col items-center gap-y-1 font-bold">
-      <button class="w-full bg-red-600 p-1" @click="gameSocket.emit('attack__stopAttack')">Закончить атаку</button>
-      <p>Атака</p>
-      <button class="w-full bg-indigo-600 p-1">Кинуть карту</button>
-    </div>
-    <div v-if="shouldShowDefendUI"
-         class="absolute z-20 bottom-6 right-2 border-2 border-black flex flex-col items-center gap-y-1 font-bold">
-      <button class="w-full bg-red-600 p-1" @click="gameSocket.emit('defend__takeCards')">Забрать карты</button>
-      <p>Защита</p>
-      <button class="w-full bg-indigo-600 p-1">Отбить карту</button>
-    </div>
-  </div>
+    <game-desk
+      :desk-slots="deskStore.deskSlots"
+      @drop-card-on-desk="handleCardDropOnDesk"
+    />
+    <template v-if="gameStateStore.gameState.trumpCard">
+      <game-card
+        class="absolute bottom-1/2 right-1/2 translate-x-[275px] "
+        :rank="gameStateStore.gameState.trumpCard.rank"
+        :suit="gameStateStore.gameState.trumpCard.suit"
+      />
+    </template>
+    <section class="flex flex-col">
+      <super-user-interface @stop-move="stopMove" />
+      <self-deck
+        @card-drag="handleCardDrag"
+        @card-drag-end="handleCardDragEnd"
+        :is-allowed-to-move="selfStore.self.info.accname === gameStateStore.gameState.allowedPlayerId"
+      />
+    </section>
+  </main>
 </template>
-
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { useNotificationStore } from "@/stores/notification.store";
