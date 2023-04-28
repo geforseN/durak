@@ -15,7 +15,7 @@ export const useGameEnemiesStore = defineStore("gameEnemies", () => {
 
   const changeEnemyCardCount = (accname: string, cardCount: number) => {
     const enemy = findBy({ accname });
-    if (!enemy) return alert("No such enemy");
+    if (!enemy) throw new Error("No such enemy");
     enemy.cardCount = cardCount;
   };
 
