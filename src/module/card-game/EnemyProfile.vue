@@ -10,12 +10,14 @@
         role === 'Player' && 'ring-gray-600 ring-offset-gray-300']">
         <img :src="info.photoUrl" :alt="`${info.nickname} profile picture`">
       </div>
+
     </div>
     <div class="flex flex-col justify-between">
-      <div class="flex items-baseline gap-x-1">
+      <div class="flex items-center gap-x-1">
         <a :href="info.personalLink"
            class="font-bold text-xl link text-black p-0 leading-normal">{{ info.nickname }}</a>
-        <p class="text-xs opacity-50 TODO REMOVE_ME">{{ info.accname }}</p>
+        <shield v-if="role === 'Defender'" />
+        <swords v-else-if="role=== 'Attacker'" />
       </div>
       <div class="flex">
         <div v-for="cardNumber of cardCount"
@@ -29,6 +31,8 @@
 
 <script setup lang="ts">
 import type { Enemy } from "@/module/card-game/types";
+import Shield from "@/components/svg/Shield.vue";
+import Swords from "@/components/svg/Swords.vue";
 
 const { enemy, isAllowedToMove } = defineProps<{
   enemy: Enemy,
