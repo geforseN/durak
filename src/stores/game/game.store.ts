@@ -3,6 +3,16 @@ import { defineStore } from "pinia";
 import { useGameEnemiesStore, useGameDeskStore, useGameSelfStore } from "@/stores/game";
 import type { Card, GameState, PlayerRole } from "@/module/card-game/types";
 
+type OmittedGameState = Omit<GameState, "self" | "enemies" | "deskSlots">
+
+const defaultGameState: OmittedGameState = {
+  roundNumber: 0,
+  isDiscardEmpty: true,
+  isTalonEmpty: false,
+  isTalonHasOneCard: false,
+  playersCount: 0,
+};
+
 export const useGameStateStore = defineStore("game", () => {
   const gameState: { trumpCard?: Card, allowedPlayerId?: string } = reactive({});
 
@@ -16,6 +26,11 @@ export const useGameStateStore = defineStore("game", () => {
     deskStore.deskSlots = newState.deskSlots;
     gameState.trumpCard = newState.trumpCard;
     gameState.allowedPlayerId = newState.allowedPlayerId;
+    gameState.isDiscardEmpty = newState.isDiscardEmpty;
+    gameState.isTalonEmpty = newState.isTalonEmpty;
+    gameState.isTalonHasOneCard = newState.isTalonHasOneCard;
+    gameState.playersCount = newState.playersCount;
+    gameState.roundNumber = newState.roundNumber;
   };
 
   const changeRole = (role: PlayerRole, accname: string) => {
