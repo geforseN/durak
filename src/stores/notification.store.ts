@@ -18,7 +18,7 @@ export const defaultNotification: NotificationAlert = {
 };
 
 export const useNotificationStore = defineStore("alerts", () => {
-  const notificationQueue = reactive<NotificationAlert[]>([]);
+  const notificationQueue: NotificationAlert[] = reactive([]);
 
   const removeNotification = (id: NotificationAlert["id"]) => {
     const notificationIndexToRemove = notificationQueue.findIndex(
