@@ -19,7 +19,7 @@ export const allowedGameTypes: GameType[] = ["basic", "perevodnoy"];
 const mostGreatestCardCountIndex = allowedCardCount.length - 1;
 
 export default function useLobbySettings() {
-  const lobbySettings = reactive<LobbySettings>({...defaultSettings});
+  const lobbySettings: LobbySettings = reactive({...defaultSettings});
 
   const resetSettings = () => {
     lobbySettings.maxUserCount = defaultSettings.maxUserCount;
