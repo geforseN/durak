@@ -14,7 +14,7 @@ const defaultGameState: OmittedGameState = {
 };
 
 export const useGameStateStore = defineStore("game", () => {
-  const gameState: { trumpCard?: Card, allowedPlayerId?: string } = reactive({});
+  const gameState: OmittedGameState = reactive({ ...defaultGameState });
 
   const enemiesStore = useGameEnemiesStore();
   const selfStore = useGameSelfStore();
