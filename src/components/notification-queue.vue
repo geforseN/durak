@@ -1,6 +1,6 @@
 <template>
   <div class="toast">
-    <div v-for="notification of notificationQueue" :id="notification.id"
+    <div v-for="notification of notificationQueue" :key="notification.id"
          class="alert" :class="backgroundColorMap[notification.type] || 'bg-neutral-500'">
       {{ notification.message }}
       <button class="btn" @click="removeNotification(notification.id)">Убрать</button>
