@@ -3,9 +3,14 @@ import type { DeskSlot } from "@/module/card-game/types/DeskSlot";
 import type { Card } from "@/module/card-game/types/Card";
 
 export type GameState = {
-  self: Self,
-  enemies: Enemy[],
-  deskSlots: DeskSlot[],
-  trumpCard: Card,
-  allowedPlayerId: string,
+  self: Self;
+  enemies: Enemy[];
+  deskSlots: DeskSlot[];
+  trumpCard?: Card;
+  allowedPlayerId?: string;
+  isDiscardEmpty: boolean;
+  isTalonEmpty: boolean;
+  isTalonHasOneCard: boolean;
+  playersCount: number;
+  roundNumber: number;
 }
