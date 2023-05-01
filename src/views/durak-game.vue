@@ -1,34 +1,37 @@
 <template>
-  <main class="min-h-[90vh] grid grid-rows-[min-content_1fr_min-content]"
-        ref="refOfBoard"
-  >
-    <div class="bg-gray-800 flex justify-center items-center">
-      <div v-for="enemy of enemiesStore.enemies" :key="enemy.info.accname">
-        <enemy-profile
-          :enemy="enemy"
-          :isAllowedToMove="enemy.info.accname === gameStateStore.gameState.allowedPlayerId"
-        />
+  <main
+    class="min-h-[90vh] flex flex-col justify-evenly items-center
+  bg-emerald-400 xxs:bg-neutral-500 xs:bg-indigo-600 sm:bg-yellow-500 md:bg-green-500 lg:bg-red-500 xl:bg-purple-500 2xl:bg-amber-500">
+    <div class="w-full h-full bg-red-900 flex justify-around">
+      <enemy-profile class="flex-1" v-for="enemy of enemiesStore.topEnemies" :key="enemy.id" :enemy="enemy"
+        :isAllowedToMove="enemy.id === gameStateStore.allowedPlayerId" />
+      </div>
+    <div class="w-full flex justify-around">
+      <div>
+        <side-enemy-profile v-for="enemy of enemiesStore.leftEnemies" :key="enemy.id" 
+          :enemy="enemy" :isAllowedToMove="enemy.id === gameStateStore.allowedPlayerId" />
+    </div>
+      <div class="bg-secondary">
+        <game-desk :desk-slots="deskStore.deskSlots" @drop-card-on-desk="handleCardDropOnDesk" />
+    <template v-if="gameStateStore.gameState.trumpCard">
+          <p> Trump Card: {{ gameStateStore.gameState.trumpCard?.rank + gameStateStore.gameState.trumpCard?.suit }}</p>
+    </template>
+      </div>
+      <div>
+        <side-enemy-profile v-for="enemy of enemiesStore.rightEnemies" :key="enemy.id" 
+        :enemy="enemy" :isAllowedToMove="enemy.id === gameStateStore.allowedPlayerId"/>
       </div>
     </div>
-    <game-desk
-      :desk-slots="deskStore.deskSlots"
-      @drop-card-on-desk="handleCardDropOnDesk"
-    />
-    <template v-if="gameStateStore.gameState.trumpCard">
-      <game-card
-        class="absolute bottom-1/2 right-1/2 translate-x-[275px] "
-        :rank="gameStateStore.gameState.trumpCard.rank"
-        :suit="gameStateStore.gameState.trumpCard.suit"
-      />
-    </template>
-    <section class="flex flex-col">
+    <div class="flex flex-col items-center">
+      <div v-if="selfStore.self.id === gameStateStore.allowedPlayerId" class="mb-4 text-xl">
+        <span class="flex gap-x-2 justify-center items-center">
+          <emoji-happy /> Время твоего хода <emoji-happy />
+        </span>
+        <span>У тебя есть XX секунд на ход</span>
+      </div>
       <super-user-interface @stop-move="stopMove" />
-      <self-deck
-        @card-drag="handleCardDrag"
-        @card-drag-end="handleCardDragEnd"
-        :is-allowed-to-move="selfStore.self.info.accname === gameStateStore.gameState.allowedPlayerId"
-      />
-    </section>
+      <self-deck @card-drag="handleCardDrag" @card-drag-end="handleCardDragEnd" />
+    </div>
   </main>
 </template>
 <script setup lang="ts">
