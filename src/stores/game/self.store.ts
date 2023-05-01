@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import type {
   PlayerRole,
   Self,
@@ -16,7 +16,7 @@ const defaultUserInfo: UserInfo = {
 };
 
 export const useGameSelfStore = defineStore("gameSelf", () => {
-  const self = ref<Self>({ cards: [], info: defaultUserInfo, role: "Player" });
+  const self = ref<Self>({ cards: [], info: defaultUserInfo, role: "Player", id: '' });
 
   const pushCard = (...cards: Card[]) => {
     self.value.cards.push(...cards);
@@ -37,5 +37,21 @@ export const useGameSelfStore = defineStore("gameSelf", () => {
     self.value.role = role;
   };
 
-  return { pushCard, removeCard, changeRole, self };
+  function cardMatcher(this: Card, card: Card) {
+    return card.suit === this.suit && card.rank === this.rank;
+  }
+
+  const has = ({ card }: { card: Card }) => {
+    return self.value.cards.some(cardMatcher, card);
+  };
+
+  const remove = ({ card }: { card: Card }) => {
+    const index = self.value.cards.findIndex(cardMatcher, card);
+    if (index === -1) throw new Error("Do not have such card");
+    return self.value.cards.splice(index, 1);
+  };
+
+  const selfId = computed(() => self.value.info.accname);
+
+  return { has, remove, pushCard, removeCard, changeRole, self, selfId };
 });
