@@ -1,15 +1,18 @@
 <template>
-  <div class="bg-gray-900 w-full flex justify-center">
-    <span v-if="isAllowedToMove">ALLOWED</span>
-    <template v-if="selfStore.self.cards.length > 0">
+  <div class="w-full max-w-5xl">
+    <div v-if="selfStore.self.cards?.length > 0"
+      class="h-max border-black border-2 w-full p-2 flex bg-primary justify-center rounded">
       <game-card
+        class="hover:scale-125 transition ease-out"
         v-for="card of selfStore.self.cards"
+        :key="card.suit + card.rank"
         :rank="card.rank"
         :suit="card.suit"
-        @card-drag="handleCardDrag"
-        @card-drag-end="handleCardDragEnd"
+        @card-drag="handleCardDrag($event, card)"
+        @card-drag-end="handleCardDragEnd($event, card)"
       />
-    </template>
+    </div>
+    <div v-else>У вас нет карт!</div>
   </div>
 </template>
 
@@ -17,7 +20,6 @@
 import GameCard, { type Card } from "@/module/card-game/Card.vue";
 import { useGameSelfStore } from "@/stores/game/self.store";
 
-const { isAllowedToMove } = defineProps<{ isAllowedToMove: boolean }>();
 const emit = defineEmits<{
   (name: "cardDrag", $event: Event, card: Card): void
   (name: "cardDragEnd", $event: Event, card: Card): void
@@ -27,8 +29,8 @@ const selfStore = useGameSelfStore();
 
 const handleCardDrag = (event: Event, card: Card) => {
   emit("cardDrag", event, card);
-}
+};
 const handleCardDragEnd = (event: Event, card: Card) => {
-  emit("cardDragEnd", event, card)
+  emit("cardDragEnd", event, card);
 };
 </script>
