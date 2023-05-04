@@ -4,7 +4,11 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [require("daisyui")],
+  plugins: [
+    require("daisyui"),
+    require("tailwindcss-debug-screens"),
+    require("@savvywombat/tailwindcss-grid-areas")
+  ],
   daisyui: {
     themes: ["garden"],
   },
