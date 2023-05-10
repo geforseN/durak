@@ -33,6 +33,12 @@
       <self-deck @card-drag="handleCardDrag" @card-drag-end="handleCardDragEnd" />
     </div>
   </main>
+  <div class="flex justify-center items-center gap-x-2">
+    <span>{{ gameStateStore.gameState.roundNumber }} раунд </span>
+    <span>{{ selfStore.self.role }}</span>
+    <span>{{ selfStore.self.info.nickname }} </span>
+    <img class="w-6 h-6" :src="selfStore.self.info.photoUrl" alt="Your profile picture">
+  </div>
 </template>
 <script setup lang="ts">
 import { useRoute } from "vue-router";
