@@ -53,14 +53,13 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useRoute } from "vue-router";
-import { useNotificationStore } from "@/stores/notification.store";
-import type { Card, DeskSlot } from "@/module/card-game/types";
+import * as EnemyProfile from "@/module/card-game/enemy-profile"
+import BasicCard from "@/module/card-game/BasicCard.vue";
 import SelfDeck from "@/module/card-game/SelfDeck.vue";
-import GameCard from "@/module/card-game/Card.vue";
 import GameDesk from "@/module/card-game/Desk.vue";
-import EnemyProfile from "@/module/card-game/EnemyProfile.vue";
 import SuperUserInterface from "@/module/card-game/SuperUserInteface.vue";
+import EmojiHappy from "@/components/svg/EmojiHappy.vue";
+import { useDurakGame } from "@/composable/useDurakGame"
 import {
   useGameStateStore,
   useGameDeskStore,
