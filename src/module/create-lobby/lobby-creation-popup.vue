@@ -1,7 +1,7 @@
 <template>
   <form
     class="w-full px-3 min-[350px]:px-4 sm:px-6 py-4 pb-2 text-xl min-[350px]:text-2xl
-      flex flex-col border-4 border-primary rounded-lg bg-secondary">
+      flex flex-col border-4 border-primary-focus rounded-lg bg-secondary-focus">
     <h2 class="text-2xl min-[350px]:text-3xl min-[420px]:text-4xl font-semibold">Параметры комнаты</h2>
     <radio-input-group
       group-id="radio-player-count" name="max-user-count"
