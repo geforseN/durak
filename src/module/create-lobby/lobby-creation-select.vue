@@ -7,7 +7,7 @@
       class="max-w-xs select select-sm text-xl min-[420px]:select-md min-[420px]:text-2xl
       bg-neutral select-bordered text-secondary text-center focus:outline-primary focus:outline-2"
       v-bind="$attrs" :id="id">
-      <option v-for="option of options" :value="option" :name="option">
+      <option v-for="option of options" :key="option" :value="option" :name="option">
         {{ optionsDictionary[option] || option }}
       </option>
     </select>
@@ -15,5 +15,5 @@
 </template>
 <script setup lang="ts">
 const { options, optionsDictionary, id } =
-  defineProps<{ options: unknown[], optionsDictionary: Record<string, string>, id: string }>();
+  defineProps<{ options: string[], optionsDictionary: Record<string, string>, id: string }>();
 </script>
