@@ -1,16 +1,16 @@
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 import type { DeskSlot, Card } from "@/module/card-game/types";
 import { useGameSelfStore } from "@/stores/game/self.store";
-
-const getEmptySlot = () => ({ attackCard: null, defendCard: null });
+import { useGameStateStore } from "./game.store";
 
 export const useGameDeskStore = defineStore("gameDesk", () => {
   const selfStore = useGameSelfStore();
+  const gameStateStore = useGameStateStore();
   const deskSlots = ref<DeskSlot[]>([]);
 
   const clear = () => {
-    deskSlots.value = deskSlots.value.map(getEmptySlot);
+    deskSlots.value = deskSlots.value.map(() => ({}));
   };
 
   const insertDefendCard = (card: Card, index: number) => {
@@ -32,5 +32,55 @@ export const useGameDeskStore = defineStore("gameDesk", () => {
     }
   };
 
-  return { clear, insertAttackCard, insertDefendCard, insertCard, deskSlots };
+  const ranks = computed(() => {
+    const cards = deskSlots.value.flatMap<Card>(Object.values);
+    const cardRanks = cards.map((card) => card.rank).filter((value) => value !== undefined);
+    return [...new Set(cardRanks)];
+  });
+
+  const emptySlots = computed(() => {
+    return deskSlots.value.filter((slot) => !slot.attackCard && !slot.defendCard);
+  });
+
+  const defendedSlots = computed<(Required<DeskSlot>)[]>(() => {
+    return deskSlots.value.filter((slot) => slot.attackCard && slot.defendCard);
+  });
+
+  const unbeatenSlots = computed<(Required<Pick<DeskSlot, "attackCard">>)[]>(() => {
+    return deskSlots.value.filter((slot) => slot.attackCard && !slot.defendCard);
+  });
+
+  const unbeatenTrumpSlots = computed(() => {
+    return unbeatenSlots.value.filter((unbeatenSlot) => {
+      return unbeatenSlot.attackCard.suit === gameStateStore.gameState.trumpCard?.suit;
+    });
+  });
+
+  const unbeatenBasicSlots = computed(() => {
+    return unbeatenSlots.value.filter((unbeatenSlot) => {
+      return unbeatenSlot.attackCard?.suit !== gameStateStore.gameState.trumpCard?.suit;
+    });
+  });
+
+  const isEmpty = computed(() => deskSlots.value.length === emptySlots.value.length);
+  const hasDefendedSlot = computed(() => !!defendedSlots.value.length);
+  const firstUnbeatenSlotRank = computed(() => unbeatenSlots.value[0].attackCard.rank);
+  const allowsTransferMove = computed(() => {
+    if (hasDefendedSlot.value || isEmpty.value || !firstUnbeatenSlotRank.value) return false;
+    return unbeatenSlots.value.every((slot) => slot.attackCard.rank === firstUnbeatenSlotRank.value);
+  });
+
+  return {
+    clear,
+    insertAttackCard,
+    insertDefendCard,
+    insertCard,
+    ranks,
+    deskSlots,
+    unbeatenSlots,
+    unbeatenTrumpSlots,
+    unbeatenBasicSlots,
+    allowsTransferMove,
+    firstUnbeatenSlotRank,
+  };
 });
