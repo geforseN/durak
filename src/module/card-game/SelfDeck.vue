@@ -3,7 +3,7 @@
     <div v-if="!selfStore.self.cards.length" class="text-white">У вас нет карт!</div>
     <template v-else>
       <button v-for="card of selfStore.self.cards">
-        <game-card
+        <self-card
           class="hover:scale-125 transition ease-out"
           :key="card.suit + card.rank"
           v-bind="card"
@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import GameCard from "@/module/card-game/Card.vue";
+import SelfCard from "@/module/card-game/SelfCard.vue";
 import { useGameSelfStore } from "@/stores/game/self.store";
 import type { Card } from "@/module/card-game/types";
 
