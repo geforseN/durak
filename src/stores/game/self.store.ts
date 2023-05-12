@@ -55,5 +55,8 @@ export const useGameSelfStore = defineStore("gameSelf", () => {
 
   const selfId = computed(() => self.value.info.accname);
 
-  return { has, remove, pushCard, removeCard, changeRole, self, selfId };
+  const isDefender = computed(() => self.value.role === 'Defender')
+  const isAttacker = computed(() => self.value.role === 'Attacker')
+
+  return { has, remove, pushCard, removeCard, changeRole, self, selfId, isAttacker, isDefender };
 });
