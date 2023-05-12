@@ -1,15 +1,15 @@
 <template>
-  <div class="flex flex-col justify-between border-primary border-4 p-1.5">
+  <div class="flex flex-col justify-between border-primary-focus border-4 p-1.5 bg-secondary-focus rounded">
     <global-chat-messages />
     <div class="mt-2 flex items-stretch gap-0.5">
-      <div class="flex-1 ">
+      <div class="flex-1">
         <label class="sr-only" for="global-chat-input">Ввод сообщения для глобального чата</label>
         <input
-          class="p-1 border-2 border-neutral w-full h-full" id="global-chat-input" v-model="input"
+          class="input px-2 w-full h-full input-bordered" id="global-chat-input" v-model="input"
           placeholder="Нажмите ENTER, что-бы отправить сообщение в чат." @keyup.enter="handleMessage" />
       </div>
       <button
-        class="btn btn-md h-full rounded-none border-2 border-neutral" title="Отправить сообщение в общий чат"
+        class="ml-0.5 btn btn-sm rounded border-2 border-neutral-700" title="Отправить сообщение в общий чат"
         @click="handleMessage">
         Оправить
       </button>
