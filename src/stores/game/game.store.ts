@@ -10,6 +10,7 @@ const defaultGameState: OmittedGameState = {
   isDiscardEmpty: true,
   isTalonEmpty: false,
   isTalonHasOneCard: false,
+  isDefenderGaveUp: false,
   playersCount: 0,
 };
 
@@ -29,6 +30,7 @@ export const useGameStateStore = defineStore("game", () => {
     gameState.isDiscardEmpty = newState.isDiscardEmpty;
     gameState.isTalonEmpty = newState.isTalonEmpty;
     gameState.isTalonHasOneCard = newState.isTalonHasOneCard;
+    gameState.isDefenderGaveUp = newState.isDefenderGaveUp;
     gameState.playersCount = newState.playersCount;
     gameState.roundNumber = newState.roundNumber;
   };

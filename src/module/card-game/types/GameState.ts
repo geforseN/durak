@@ -11,6 +11,7 @@ export type GameState = {
   isDiscardEmpty: boolean;
   isTalonEmpty: boolean;
   isTalonHasOneCard: boolean;
+  isDefenderGaveUp: boolean;
   playersCount: number;
   roundNumber: number;
 }
