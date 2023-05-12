@@ -1,4 +1,3 @@
-import { defineStore } from "pinia";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { io } from "socket.io-client";
@@ -38,11 +37,11 @@ export function useDurakGame({ debug = false }: { debug?: boolean } = {}) {
     event.dataTransfer.setData("card", JSON.stringify(card));
   };
 
-  const handleCardDragEnd = (event: any, card: Card) => {
+  const handleCardDragEnd = (_event: any, _card: Card) => {
     draggedCard.value = null;
   };
 
-  const handleCardDropOnDesk = (event: any, slot: DeskSlot, slotIndex: number) => {
+  const handleCardDropOnDesk = (event: any, _slot: DeskSlot, slotIndex: number) => {
     const card = JSON.parse(event.dataTransfer.getData("card"));
     gameSocket.emit("superPlayer__putCardOnDesk", card, slotIndex);
   };
@@ -65,11 +64,43 @@ export function useDurakGame({ debug = false }: { debug?: boolean } = {}) {
     { eventName: "talon__showTrumpCard", listener: gameStateStore.setTrumpCard },
     { eventName: "player__insertCard", listener: deskStore.insertCard },
     { eventName: "player__allowedToMove", listener: changeAllowedPlayer },
-    { eventName: "desk__pushToDiscard", listener: () => null },
-    { eventName: "talon__distributeCards", listener: (accname: string, cardCount: number) => null },
-    { eventName: "talon__moveTrumpCardTo", listener: (accname: string) => null },
-    { eventName: "defender__wonRound", listener: (accname: string, roundNumber: number) => null },
-    { eventName: "defender__lostRound", listener: (accname: string, roundNumber: number) => null },
+    {
+      eventName: "desk__pushToDiscard", listener: () => {
+        // TODO cool animation
+      }
+    },
+    {
+      eventName: "talon__distributeCards", listener: (_playerId: string, _cardCount: number) => {
+        // TODO cool animation
+      }
+    },
+    {
+      eventName: "talon__moveTrumpCardTo", listener: (_playerId: string) => {
+        // TODO cool animation
+      }
+    },
+    {
+      eventName: "defender__wonRound", listener: (_playerId: string, enddedRoundNumber: number) => {
+        gameStateStore.gameState.roundNumber = enddedRoundNumber + 1;
+        gameStateStore.gameState.isDefenderGaveUp = false;
+      }
+    },
+    {
+      eventName: "defender__lostRound", listener: (_playerId: string, enddedRoundNumber: number) => {
+        gameStateStore.gameState.roundNumber = enddedRoundNumber + 1;
+        gameStateStore.gameState.isDefenderGaveUp = false;
+      }
+    },
+    {
+      eventName: "talon__moveTrumpCardTo", listener: (_playerId) => {
+        gameStateStore.gameState.isTalonHasOneCard = false;
+        gameStateStore.gameState.isTalonEmpty = true;
+        // TODO cool animation
+      }
+    },
+    { eventName: "defender__gaveUp", listener: () => (gameStateStore.gameState.isDefenderGaveUp = true) },
+    { eventName: "talon__keepOnlyTrumpCard", listener: () => (gameStateStore.gameState.isTalonHasOneCard = true) },
+    { eventName: "discard__setIsNotEmpty", listener: () => (gameStateStore.gameState.isDiscardEmpty = false) },
     { eventName: "", listener: () => null },
   ]).forEach(({ eventName, listener }) => gameSocket.on(eventName, listener));
 
