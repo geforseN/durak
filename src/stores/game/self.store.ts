@@ -18,7 +18,7 @@ const defaultUserInfo: UserInfo = {
 export const useGameSelfStore = defineStore("gameSelf", () => {
   const self = ref<Self>({ cards: [], info: defaultUserInfo, role: "Player", id: '' });
 
-  const pushCard = (...cards: Card[]) => {
+  const pushCard = (cards: Card[]) => {
     self.value.cards.push(...cards);
   };
 
@@ -26,7 +26,9 @@ export const useGameSelfStore = defineStore("gameSelf", () => {
     const cardIndex = self.value.cards.findIndex(
       (card) => card.suit === suit && card.rank === rank,
     );
-    if (!cardIndex) throw new Error("Can not remove card from Self");
+    if (cardIndex === -1) {
+      throw new Error("Can not remove card from Self");
+    }
     self.value.cards.splice(cardIndex, 1);
   };
 
