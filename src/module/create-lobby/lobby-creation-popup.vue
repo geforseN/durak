@@ -4,13 +4,17 @@
       flex flex-col border-4 border-primary-focus rounded-lg bg-secondary-focus">
     <h2 class="text-2xl min-[350px]:text-3xl min-[420px]:text-4xl font-semibold">Параметры комнаты</h2>
     <radio-input-group
-      group-id="radio-player-count" name="max-user-count"
-      :input-values="allowedMaxUserCount" v-model:input.number="lobbySettings.maxUserCount">
+      name="max-user-count"
+      group-id="radio-player-count"
+      :input-values="allowedMaxUserCount"
+      v-model.number="lobbySettings.maxUserCount">
       Количество игроков
     </radio-input-group>
     <radio-input-group
-      group-id="radio-card-count" name="card-count"
-      :input-values="properCardCountValues" v-model:input.number="lobbySettings.cardCount">
+      name="card-count"
+      group-id="radio-card-count"
+      :input-values="properCardCountValues"
+      v-model.number="lobbySettings.cardCount">
       Количество карт
     </radio-input-group>
     <select-group
