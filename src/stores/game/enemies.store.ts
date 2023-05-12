@@ -9,31 +9,13 @@ type EnemySidesIndexes = {
 }
 
 const enemiesSides: Record<number, EnemySidesIndexes> = {
-  0: {
-    top: []
-  },
-  1: {
-    top: [0]
-  },
-  2: {
-    top: [0, 1]
-  },
-  3: {
-    left: [0],
-    top: [1],
-    right: [2]
-  },
-  4: {
-    left: [0],
-    top: [1, 2],
-    right: [3]
-  },
-  5: {
-    left: [0, 1],
-    top: [2],
-    right: [3, 4]
-  }
-}
+  0: { top: [] },
+  1: { top: [0] },
+  2: { top: [0, 1] },
+  3: { left: [0], top: [1], right: [2] },
+  4: { left: [0], top: [1, 2], right: [3] },
+  5: { left: [0, 1], top: [2], right: [3, 4] },
+};
 
 export const useGameEnemiesStore = defineStore("gameEnemies", () => {
   const enemies = ref<Enemy[]>([]);
@@ -56,18 +38,18 @@ export const useGameEnemiesStore = defineStore("gameEnemies", () => {
     const allowedIndexes = enemiesSides[enemies.value.length][side];
     return enemies.value.filter((_, index) => {
       return allowedIndexes?.includes(index);
-    })
-  }
+    });
+  };
 
   const leftEnemies = computed(() => {
-    return __findSideEnemies__("left")
-  })
+    return __findSideEnemies__("left");
+  });
   const topEnemies = computed(() => {
-    return __findSideEnemies__("top")
-  })
+    return __findSideEnemies__("top");
+  });
   const rightEnemies = computed(() => {
-    return __findSideEnemies__("right")
-  })
+    return __findSideEnemies__("right");
+  });
 
   return { enemies, findBy, changeEnemyCardCount, has, leftEnemies, topEnemies, rightEnemies };
 });
