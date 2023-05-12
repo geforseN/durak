@@ -2,7 +2,7 @@
   <div
     class="grid grid-cols-[minmax(250px,330px)] min-[400px]:grid-cols-2 sm:grid-cols-1 justify-center items-start">
     <div v-for="lobby of lobbies" :key="lobby.id"
-         class="m-2 sm:m-2 flex flex-col gap-2 p-1 rounded-lg border-primary border-4 bg-secondary">
+         class="m-2 sm:m-2 flex flex-col gap-2 p-1 rounded-lg border-primary border-4 bg-secondary-focus shadow-xl sm:w-[572px] md:w-[704px] lg:w-[836px]">
       <game-lobby-top-element :lobby="lobby" />
       <game-lobby-slots :lobby="lobby" />
     </div>
@@ -28,7 +28,7 @@ gameLobbies.on("updateLobbyAdmin", lobbiesStore.updateLobbyAdmin);
 gameLobbies.on("deleteLobby", lobbiesStore.deleteLobby);
 gameLobbies.on("startGame", (gameId: string) => {
   const path = `/game/${gameId}`;
-  router.replace({ path })
+  router.replace({ path  })
     .then(() => console.log(`Successfully navigate to ${path}`))
     .catch(console.error);
 });
