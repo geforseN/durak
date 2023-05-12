@@ -2,13 +2,16 @@ import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 import type { Enemy } from "@/module/card-game/types";
 
-type EnemiesSideIndexes = {
+type EnemySidesIndexes = {
   top: number[]
   left?: number[]
   right?: number[]
 }
 
-const enemiesSides: Record<number, EnemiesSideIndexes> = {
+const enemiesSides: Record<number, EnemySidesIndexes> = {
+  0: {
+    top: []
+  },
   1: {
     top: [0]
   },
@@ -49,7 +52,7 @@ export const useGameEnemiesStore = defineStore("gameEnemies", () => {
     enemy.cardCount = cardCount;
   };
 
-  const __findSideEnemies__ = (side: keyof EnemiesSideIndexes) => {
+  const __findSideEnemies__ = (side: keyof EnemySidesIndexes) => {
     const allowedIndexes = enemiesSides[enemies.value.length][side];
     return enemies.value.filter((_, index) => {
       return allowedIndexes?.includes(index);
