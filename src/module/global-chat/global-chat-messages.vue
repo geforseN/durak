@@ -24,6 +24,15 @@ const scrollToLastElement = ({ behavior = "auto" }: Omit<ScrollOptions, "top"> =
   });
 };
 
+const getFormattedMessages = (unformattedMessages: UserMessage[]) => {
+  return unformattedMessages.map((message) => {
+    if (typeof message.date === "number") {
+      message.date = formatTime(message.date);
+    }
+    return message;
+  });
+}
+
 globalChat.on("sendMessage", (message: UserMessage) => {
   message.date = formatTime(message.date as number);
   messages.value.push(message);
@@ -31,12 +40,7 @@ globalChat.on("sendMessage", (message: UserMessage) => {
 });
 
 globalChat.on("restoreHistory", (globalChatHistory: UserMessage[]) => {
-  messages.value = globalChatHistory.map((message) => {
-    if (typeof message.date === "number" && Number.isFinite(message.date)) {
-      message.date = formatTime(message.date);
-    }
-    return message;
-  });
+  messages.value = getFormattedMessages(globalChatHistory);
   scrollToLastElement();
 });
 </script>
