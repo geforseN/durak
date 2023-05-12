@@ -43,11 +43,11 @@ export const useGameDeskStore = defineStore("gameDesk", () => {
   });
 
   const defendedSlots = computed<(Required<DeskSlot>)[]>(() => {
-    return deskSlots.value.filter((slot) => slot.attackCard && slot.defendCard);
+    return deskSlots.value.filter((slot) => slot.attackCard && slot.defendCard) as { attackCard: Card, defendCard: Card }[];
   });
 
   const unbeatenSlots = computed<(Required<Pick<DeskSlot, "attackCard">>)[]>(() => {
-    return deskSlots.value.filter((slot) => slot.attackCard && !slot.defendCard);
+    return deskSlots.value.filter((slot) => slot.attackCard && !slot.defendCard) as { attackCard: Card }[];
   });
 
   const unbeatenTrumpSlots = computed(() => {
