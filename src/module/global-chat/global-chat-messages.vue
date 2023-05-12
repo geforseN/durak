@@ -1,8 +1,12 @@
 <template>
   <section
-    class="flex-1 overflow-y-scroll bg-info border-neutral border-2"
-    ref="messagesWrapper">
-    <global-chat-user-message v-for="message of messages" :message="message" />
+    class="flex-1 overflow-y-scroll scrollbar bg-info/70 border-neutral/70 border-2 rounded flex flex-col"
+    ref="messagesContainer">
+    <global-chat-user-message
+      v-for="message of messages"
+      :key="message.date+message.sender.accname"
+      :message="message"
+    />
   </section>
 </template>
 
@@ -14,13 +18,13 @@ import type { UserMessage } from "@/module/global-chat/types";
 import formatTime from "@/utils/intl/format-time";
 
 const messages = ref<UserMessage[]>([]);
-const messagesWrapper = ref<HTMLElement>();
+const messagesContainer = ref<HTMLElement>();
 
 const scrollToLastElement = ({ behavior = "auto" }: Omit<ScrollOptions, "top"> = {}) => {
   return queueMicrotask(() => {
-    if (!messagesWrapper.value) return;
-    const top = messagesWrapper.value.scrollHeight;
-    messagesWrapper.value?.scrollTo({ behavior, top });
+    if (!messagesContainer.value) return;
+    const top = messagesContainer.value.scrollHeight;
+    messagesContainer.value?.scrollTo({ behavior, top });
   });
 };
 
@@ -31,7 +35,7 @@ const getFormattedMessages = (unformattedMessages: UserMessage[]) => {
     }
     return message;
   });
-}
+};
 
 globalChat.on("sendMessage", (message: UserMessage) => {
   message.date = formatTime(message.date as number);
