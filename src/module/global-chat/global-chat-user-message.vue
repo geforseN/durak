@@ -1,14 +1,18 @@
 <template>
-  <div class="chat " :class="sendByUser ? 'chat-end ' : 'chat-start'">
-    <div class="w-12 avatar chat-image indicator" :class="sendByUser ? 'pr-2' : 'pl-2 '">
+  <div class="chat" :class="isMyMessage ? 'chat-end' : 'chat-start'">
+    <div class="w-12 avatar chat-image" :class="isMyMessage ? 'hidden' : 'pl-2 '">
       <div class="rounded">
         <img :src="sender.photoUrl" :alt="`${sender.nickname} profile picture`" />
       </div>
     </div>
-    <div class="chat-bubble break-all flex flex-col" :class="sendByUser ? 'items-end' : 'items-start'">
-      <span class="font-bold badge bg-black rounded-sm p-1">{{ sender.nickname }}</span>
-      <p>{{ text }}</p>
-      <time class="text-xs opacity-50">{{ date }}</time>
+    <div class="chat-bubble break-all flex flex-col p-2 pb-1" :class="isMyMessage ? 'items-end bg-neutral-600' : 'items-start'">
+      <div class="flex flex-wrap gap-1 items-baseline">
+        <span class="font-bold badge border-0 bg-black rounded-sm p-1" :class="isMyMessage && 'hidden'">
+          {{ sender.nickname }}
+        </span>
+        <time class="text-xs opacity-50">{{ date }}</time>
+      </div>
+      <span class="ml-0.5">{{ text }}</span>
     </div>
   </div>
 </template>
@@ -23,5 +27,5 @@ const { date, text, sender } = props.message;
 
 const user = useUserStore();
 
-const sendByUser = computed(() => user.accname === sender.accname)
+const isMyMessage = computed(() => user.accname === sender.accname)
 </script>
