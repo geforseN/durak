@@ -6,6 +6,7 @@ import type {
   UserInfo,
   Card,
 } from "@/module/card-game/types";
+import { useGameStateStore } from "@/stores/game/game.store";
 
 const defaultUserInfo: UserInfo = {
   accname: "",
@@ -16,7 +17,8 @@ const defaultUserInfo: UserInfo = {
 };
 
 export const useGameSelfStore = defineStore("gameSelf", () => {
-  const self = ref<Self>({ cards: [], info: defaultUserInfo, role: "Player", id: '' });
+  const self = ref<Self>({ cards: [], info: defaultUserInfo, role: "Player", id: "" });
+  const gameStateStore = useGameStateStore();
 
   const pushCard = (cards: Card[]) => {
     self.value.cards.push(...cards);
@@ -55,8 +57,24 @@ export const useGameSelfStore = defineStore("gameSelf", () => {
 
   const selfId = computed(() => self.value.info.accname);
 
-  const isDefender = computed(() => self.value.role === 'Defender')
-  const isAttacker = computed(() => self.value.role === 'Attacker')
+  const isDefender = computed(() => self.value.role === "Defender");
+  const isAttacker = computed(() => self.value.role === "Attacker");
+  const canMakeMove = computed(() => gameStateStore.allowedPlayerId === selfId.value);
+  const canMakeDefenseMove = computed(() => canMakeMove.value && isDefender.value);
+  const canMakeAttackMove = computed(() => canMakeMove.value && isAttacker.value);
 
-  return { has, remove, pushCard, removeCard, changeRole, self, selfId, isAttacker, isDefender };
+  return {
+    has,
+    remove,
+    pushCard,
+    removeCard,
+    changeRole,
+    self,
+    selfId,
+    isAttacker,
+    isDefender,
+    canMakeMove,
+    canMakeDefenseMove,
+    canMakeAttackMove,
+  };
 });
