@@ -75,6 +75,7 @@ export const useGameDeskStore = defineStore("gameDesk", () => {
     insertAttackCard,
     insertDefendCard,
     insertCard,
+    isEmpty,
     ranks,
     deskSlots,
     unbeatenSlots,
