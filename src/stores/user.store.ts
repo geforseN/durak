@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import { socket } from "@/socket";
 import { type User, ConnectStatus } from "@/module/global-chat/types";
 import generateNotificationFromError from "@/utils/generate-notification-from-error";
@@ -15,9 +15,7 @@ export const useUserStore = defineStore("user", () => {
   const photoUrl = ref("");
   const connectStatus = ref<ConnectStatus>(ConnectStatus.offline);
   const personalLink = ref("");
-  const currentLobbyId = ref<string | undefined>();
   const currentGameId = ref<string | undefined>();
-  const isCreatingLobby = ref(false);
 
   socket.on("connect_error", (error) => {
     const notification = generateNotificationFromError(error);
@@ -39,8 +37,6 @@ export const useUserStore = defineStore("user", () => {
     connectStatus,
     personalLink,
     currentGameId,
-    currentLobbyId,
-    isCreatingLobby,
   };
 });
 
