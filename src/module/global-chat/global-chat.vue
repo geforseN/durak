@@ -1,16 +1,32 @@
 <template>
-  <div class="flex flex-col justify-between border-primary-focus border-4 p-1.5 bg-secondary-focus rounded">
+  <div
+    class="flex flex-col justify-between rounded border-4 border-primary-focus bg-secondary-focus p-1.5"
+  >
     <global-chat-messages />
     <div class="mt-2 flex items-stretch gap-0.5">
-      <div class="flex-1">
-        <label class="sr-only" for="global-chat-input">Ввод сообщения для глобального чата</label>
+      <div class="flex-1 relative">
+        <label class="sr-only" for="global-chat-input">
+          Ввод сообщения для глобального чата
+        </label>
         <input
-          class="input px-2 w-full h-full input-bordered" id="global-chat-input" v-model="input"
-          placeholder="Нажмите ENTER, что-бы отправить сообщение в чат." @keyup.enter="handleMessage" />
+          @focus="showTextLength = true"
+          @blur="showTextLength = false"
+          class="input-bordered input h-full w-full px-2"
+          id="global-chat-input"
+          v-model="input"
+          placeholder="Нажмите ENTER, что-бы отправить сообщение"
+          @keyup.enter="handleMessage"
+        />
+        <div v-if="showTextLength" :class="input?.length > maxInputLength && 'text-red-600'"
+             class="text-xs rounded p-1 absolute -bottom-10 right-1.5 bg-accent border border-neutral">
+          {{ input?.length ?? 0 }} / {{ maxInputLength }}
+        </div>
       </div>
       <button
-        class="ml-0.5 btn btn-sm rounded border-2 border-neutral-700" title="Отправить сообщение в общий чат"
-        @click="handleMessage">
+        class="btn-sm btn ml-0.5 rounded border-2 border-neutral-700"
+        title="Отправить сообщение в общий чат"
+        @click="handleMessage"
+      >
         Оправить
       </button>
     </div>
@@ -18,24 +34,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { globalChat } from "@/socket";
-import { useNotificationStore } from "@/stores/notification.store";
 import GlobalChatMessages from "@/module/global-chat/global-chat-messages.vue";
-import generateNotificationFromError from "@/utils/generate-notification-from-error";
-import assertInputLength from "@/utils/assert-input-length";
+import { useGlobalChatStore } from "@/composable/useGlobalChatStore";
+import { ref } from "vue";
 
+const maxInputLength = 128;
 const input = ref("");
-const { addNotificationInQueue } = useNotificationStore();
-
-const handleMessage = () => {
-  try {
-    assertInputLength(input.value);
-    globalChat.emit("sendMessage", input.value);
-    input.value = "";
-  } catch (error) {
-    if (!(error instanceof Error)) return console.error(error);
-    addNotificationInQueue(generateNotificationFromError(error));
-  }
-};
+const showTextLength = ref(false);
+const globalChatStore = useGlobalChatStore();
+const handleMessage = () => globalChatStore.sendMessage(input);
 </script>
