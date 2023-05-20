@@ -10,21 +10,22 @@ const defaultSettings: LobbySettings = {
   maxUserCount: 2,
   cardCount: 36,
   gameType: "basic",
+  moveTime: 30_000
 };
 
 export const allowedMaxUserCount: MaxUserCount[] = [2, 3, 4, 5, 6];
 export const allowedCardCount: CardCount[] = [24, 36, 52];
 export const allowedGameTypes: GameType[] = ["basic", "perevodnoy"];
-
 const mostGreatestCardCountIndex = allowedCardCount.length - 1;
 
 export default function useLobbySettings() {
-  const lobbySettings: LobbySettings = reactive({...defaultSettings});
+  const lobbySettings: LobbySettings = reactive({ ...defaultSettings });
 
   const resetSettings = () => {
     lobbySettings.maxUserCount = defaultSettings.maxUserCount;
     lobbySettings.cardCount = defaultSettings.cardCount;
     lobbySettings.gameType = defaultSettings.gameType;
+    lobbySettings.moveTime = defaultSettings.moveTime;
   };
 
   const isProperCardCount = (cardCount = lobbySettings.cardCount) => {
