@@ -1,35 +1,38 @@
 <template>
   <div
-    class="grid grid-cols-[minmax(250px,330px)] min-[400px]:grid-cols-2 sm:grid-cols-1 justify-center items-start">
-    <div v-for="lobby of lobbies" :key="lobby.id"
-         class="m-2 sm:m-2 flex flex-col gap-2 p-1 rounded-lg border-primary border-4 bg-secondary-focus shadow-xl sm:w-[572px] md:w-[704px] lg:w-[836px]">
+    class="grid grid-cols-[minmax(250px,330px)] items-start justify-center min-[400px]:grid-cols-2 sm:grid-cols-1"
+  >
+    <div
+      v-for="lobby of gameLobbiesStore.lobbies"
+      :key="lobby.id"
+      class="m-2 flex flex-col gap-2 rounded-lg border-4 p-1 shadow-xl sm:m-2 sm:w-[572px] md:w-[704px] lg:w-[836px]"
+      :class="
+        gameLobbiesStore.currentLobbyId === lobby.id
+          ? '-order-1 border-secondary-focus bg-primary'
+          : 'border-primary bg-secondary-focus '
+      "
+    >
       <game-lobby-top-element :lobby="lobby" />
       <game-lobby-slots :lobby="lobby" />
     </div>
   </div>
 </template>
 <script setup lang="ts">
+import { watch } from "vue";
 import GameLobbyTopElement from "@/module/game-lobbies/game-lobby-top-element.vue";
 import GameLobbySlots from "@/module/game-lobbies/game-lobby-slots.vue";
-import { storeToRefs } from "pinia";
-import { useRouter } from "vue-router";
-import { gameLobbies } from "@/socket";
-import { useLobbiesStore } from "@/stores/lobbies.store";
+import { useUserStore } from "@/stores/user.store";
+import { useGameLobbiesStore } from "@/composable/useGameLobbiesStore";
 
-const lobbiesStore = useLobbiesStore();
-const { lobbies } = storeToRefs(lobbiesStore);
-const router = useRouter();
+const userStore = useUserStore();
+const gameLobbiesStore = useGameLobbiesStore();
 
-gameLobbies.on("restoreLobbies", lobbiesStore.restoreLobbies);
-gameLobbies.on("lobbyCreated", lobbiesStore.addLobby);
-gameLobbies.on("addedUser", lobbiesStore.addUserInLobby);
-gameLobbies.on("removeUser", lobbiesStore.removeUser);
-gameLobbies.on("updateLobbyAdmin", lobbiesStore.updateLobbyAdmin);
-gameLobbies.on("deleteLobby", lobbiesStore.deleteLobby);
-gameLobbies.on("startGame", (gameId: string) => {
-  const path = `/game/${gameId}`;
-  router.replace({ path  })
-    .then(() => console.log(`Successfully navigate to ${path}`))
-    .catch(console.error);
-});
+watch(
+  () => userStore.accname,
+  (accname) => {
+    gameLobbiesStore.currentLobbyId = gameLobbiesStore.lobbies.find((lobby) => {
+      return lobby.users.some((user) => user.accname === accname);
+    })?.id;
+  },
+);
 </script>
