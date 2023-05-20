@@ -4,4 +4,5 @@ export type LobbySettings = {
   maxUserCount: MaxUserCount;
   gameType: GameType;
   cardCount: CardCount;
+  moveTime: number;
 }
