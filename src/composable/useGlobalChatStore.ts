@@ -3,15 +3,18 @@ import { useNotificationStore } from "@/stores/notification.store";
 import assertInputLength from "@/utils/assert-input-length";
 import generateNotificationFromError from "@/utils/generate-notification-from-error";
 import formatTime from "@/utils/intl/format-time";
+import { useWebSocket } from "@vueuse/core";
 import { defineStore } from "pinia";
-import { io } from "socket.io-client";
 import { ref, type Ref } from "vue";
 
-const useGlobalChatStore = defineStore("global chat", () => {
-  const socket = io(
-    import.meta.env.VITE_SOCKET_SERVER_ADDRESS + "/global-chat",
+export const useGlobalChatStore = defineStore("global-chat", () => {
+  const websocket = useWebSocket(
+    import.meta.env.VITE_FASTIFY_SERVER_URI.replace(/^http/, "ws") +
+      "/global-chat",
     {
-      withCredentials: true,
+      onConnected(websocket) {
+        websocket.addEventListener("message", dispatchMessage);
+      },
     },
   );
   const messages = ref<UserMessage[]>([]);
@@ -21,7 +24,7 @@ const useGlobalChatStore = defineStore("global chat", () => {
   function sendMessage(input: Ref<string>) {
     try {
       assertInputLength(input.value);
-      socket.emit("sendMessage", input.value);
+      websocket.send(new Message(input).toString());
       input.value = "";
     } catch (error) {
       if (!(error instanceof Error)) return console.error(error);
@@ -31,37 +34,32 @@ const useGlobalChatStore = defineStore("global chat", () => {
     }
   }
 
-  socket.on("restoreHistory", (globalChatHistory: UserMessage[]) => {
-    isMessagesLoaded.value = true;
-    messages.value = getFormattedMessages(globalChatHistory);
-  });
-
-  socket.on("sendMessage", (message: UserMessage) => {
-    formatDateToTime(message);
-    messages.value.push(message);
-  });
-
-  socket.on("sendNotification", notificationStore.addNotificationInQueue);
-
-  function openSocket() {
-    socket.open();
+  function dispatchMessage(event: MessageEvent) {
+    const { eventName, payload } = JSON.parse(event.data);
+    console.log("EVENT", eventName, "PAYLOAD", payload);
+    const listener = listeners[eventName];
+    listener(...payload);
   }
 
-  function closeSocket() {
-    socket.close();
-    isMessagesLoaded.value = false;
-  }
+  const listeners: Record<string, Function> = {
+    "chat::restore": (globalChatHistory: UserMessage[]) => {
+      messages.value = getFormattedMessages(globalChatHistory);
+      isMessagesLoaded.value = true;
+    },
+    "message::send": (message: UserMessage) => {
+      formatDateToTime(message);
+      messages.value.push(message);
+    },
+    "notification::push": notificationStore.addNotificationInQueue,
+  };
 
   return {
     sendMessage,
     messages,
     isMessagesLoaded,
-    openSocket,
-    closeSocket,
+    websocket,
   };
 });
-
-export { useGlobalChatStore };
 
 function getFormattedMessages(unformattedMessages: UserMessage[]) {
   return unformattedMessages.map((message) => {
@@ -73,5 +71,25 @@ function getFormattedMessages(unformattedMessages: UserMessage[]) {
 function formatDateToTime(message: UserMessage) {
   if (typeof message.date === "number") {
     message.date = formatTime(message.date);
+  }
+}
+
+class Message {
+  text: string;
+  replyMessageId?: string;
+
+  constructor(input: Ref<string>) {
+    this.text = input.value;
+    this.replyMessageId = undefined;
+  }
+
+  toString() {
+    return JSON.stringify({
+      eventName: "message::send",
+      payload: {
+        text: this.text,
+        replyMessageId: this.replyMessageId,
+      },
+    });
   }
 }
