@@ -30,6 +30,7 @@ export const useNotificationStore = defineStore("alerts", () => {
   const addNotificationInQueue = (
     newNotification: Partial<NotificationAlert> = {},
   ) => {
+    console.trace(newNotification)
     const notification: NotificationAlert = {
       ...defaultNotification,
       ...newNotification,

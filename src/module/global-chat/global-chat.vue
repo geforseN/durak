@@ -2,7 +2,7 @@
   <div
     class="flex flex-col justify-between rounded border-4 border-primary-focus bg-secondary-focus p-1.5"
   >
-    <global-chat-messages />
+    <global-chat-messages :messages="globalChatStore.messages" />
     <div class="mt-2 flex items-stretch gap-0.5">
       <div class="flex-1 relative">
         <label class="sr-only" for="global-chat-input">

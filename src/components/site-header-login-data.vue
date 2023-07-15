@@ -1,5 +1,5 @@
 <template>
-  <template v-if="username">
+  <template v-if="nickname">
     <li>
       <router-link
         :to="`/profile/${personalLink}`"
@@ -8,8 +8,8 @@
       >
         <img
           :src="photoUrl"
-          :alt="`${username} profile picture`"
-          :title="username"
+          :alt="`${nickname} profile picture`"
+          :title="nickname"
           class="rounded"
         />
       </router-link>
@@ -25,9 +25,9 @@
 <script setup lang="ts">
 import ListItemLink from "@/components/list-item-link.vue";
 
-const { username, photoUrl, personalLink } = defineProps<{
-  username: string;
+const { nickname, photoUrl, personalLink } = defineProps<Partial<{
+  nickname: string;
   photoUrl: string;
   personalLink: string;
-}>();
+}>>();
 </script>

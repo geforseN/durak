@@ -1,7 +1,10 @@
-import type { LobbySettings } from "@/module/game-lobbies/types";
+import type { Lobby, LobbySettings } from "@/module/game-lobbies/types";
 import type { User } from "@/module/global-chat/types";
 import { useLobbiesStore } from "@/stores/lobbies.store";
-import { useNotificationStore } from "@/stores/notification.store";
+import {
+  type NotificationAlert,
+  useNotificationStore,
+} from "@/stores/notification.store";
 import { useUserStore } from "@/stores/user.store";
 import { defineStore } from "pinia";
 import { io } from "socket.io-client";
@@ -22,45 +25,73 @@ export const useGameLobbiesStore = defineStore("game-lobbies", () => {
   const router = useRouter();
 
   function leaveLobby() {
-    socket.emit("leaveLobby", currentLobbyId.value);
+    socket.emit("lobby::remove", { lobbyId: currentLobbyId.value });
   }
 
-  function joinLobby(lobbyId: string, cellIndex: number = -1) {
-    socket.emit("joinLobby", lobbyId, cellIndex);
+  function joinLobby(lobbyId: string, slotIndex: number = -1) {
+    socket.emit("lobby::user::join", { lobbyId, slotIndex });
   }
 
   function createGame(lobbyId: string) {
-    socket.emit("createGame", userStore.accname, lobbyId);
+    socket.emit("game::start", { lobbyId });
   }
 
-  function createLobby(lobbySettings: LobbySettings) {
-    socket.emit("createLobby", lobbySettings);
-  }
-
-  function toggleIsCreatingLobby() {
-    isCreatingLobby.value= !isCreatingLobby.value;
+  function createLobby(settings: LobbySettings) {
+    socket.emit("lobby::add", { settings });
   }
 
   const lobbies = computed(() => lobbiesStore.lobbies);
 
-  socket.on("sendNotification", notificationStore.addNotificationInQueue);
-  socket.on("restoreLobbies", lobbiesStore.restoreLobbies);
-  socket.on("lobbyCreated", lobbiesStore.addLobby);
-  socket.on("addedUser", (user: User, lobbyId: string) => {
-    lobbiesStore.addUserInLobby(user, lobbyId);
-    if (user.accname === userStore.accname) {
-      currentLobbyId.value = lobbyId;
-    }
-  });
-  socket.on("removeUser", (accname: string, lobbyId: string) => {
-    lobbiesStore.removeUser(accname, lobbyId);
-    if (accname === userStore.accname) {
-      currentLobbyId.value = null;
-    }
-  });
-  socket.on("updateLobbyAdmin", lobbiesStore.updateLobbyAdmin);
-  socket.on("deleteLobby", lobbiesStore.deleteLobby);
+  socket
+    .on("notification::push", (notification: NotificationAlert) => {
+      notificationStore.addNotificationInQueue(notification);
+    })
+    .on(
+      "lobbies::restore",
+      ({ lobbies, lobbyId }: { lobbies: Lobby[]; lobbyId: Lobby["id"] }) => {
+        lobbiesStore.restoreLobbies({ lobbies, lobbyId });
+      },
+    )
+    .on("lobby::add", ({ lobby }: { lobby: Lobby }) => {
+      lobbiesStore.addLobby({ lobby });
+    })
+    .on(
+      "lobby::user::join",
+      ({
+        user,
+        lobbyId,
+        slotIndex,
+      }: {
+        user: User;
+        lobbyId: Lobby["id"];
+        slotIndex: number;
+      }) => {
+        lobbiesStore.addUserInLobby({ user, lobbyId, slotIndex });
+        if (user.id === userStore.user.id) {
+          currentLobbyId.value = lobbyId;
+        }
+      },
+    )
+    .on(
+      "lobby::user::leave",
+      ({ lobbyId, userId }: { lobbyId: Lobby["id"]; userId: User["id"] }) => {
+        lobbiesStore.removeUser({ userId, lobbyId });
+        if (userId === userStore.user.id) {
+          currentLobbyId.value = null;
+        }
+      },
+    )
+    .on(
+      "lobby::admin::update",
+      ({ lobbyId, adminId }: { lobbyId: Lobby["id"]; adminId: User["id"] }) => {
+        lobbiesStore.updateLobbyAdmin({ lobbyId, adminId });
+      },
+    )
+    .on("lobby::delete", ({ lobbyId }: { lobbyId: Lobby["id"] }) => {
+      lobbiesStore.deleteLobby({ lobbyId });
+    });
   socket.on("startGame", (gameId: string) => {
+    // TODO
     userStore.currentGameId = gameId;
     const path = `/game/${gameId}`;
     router
@@ -74,7 +105,6 @@ export const useGameLobbiesStore = defineStore("game-lobbies", () => {
     leaveLobby,
     createGame,
     createLobby,
-    toggleIsCreatingLobby,
     currentLobbyId,
     isCreatingLobby,
     lobbies,

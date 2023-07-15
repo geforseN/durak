@@ -3,7 +3,7 @@
     class="flex h-10 justify-between items-center gap-2 p-1 border-2 border-primary rounded-lg bg-gray-100
       sm:grid sm:h-auto sm:grid-cols-[min-content_1fr] sm:grid-rows-[min-content_min-content_1fr]">
     <span
-      :class="isAdmin ? 'bg-info' : 'bg-success'"
+      :class="user.isAdmin ? 'bg-info' : 'bg-success'"
       class="h-full aspect-square sm:w-6 sm:h-6 sm:col-start-1 sm:row-start-1 flex justify-center items-center p-1 font-mono text-xl border border-black rounded">
       {{ index }}
     </span>
@@ -24,6 +24,6 @@
 <script setup lang="ts">
 import type { User } from "@/module/global-chat/types";
 
-const { user, isAdmin, index } =
-  defineProps<{ user: User, isAdmin: boolean, index: number }>();
+const { user, index } =
+  defineProps<{ user: User,index: number }>();
 </script>

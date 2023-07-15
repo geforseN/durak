@@ -1,5 +1,5 @@
 <template>
-  <section class="relative grid justify-items-end bg-primary border border-neutral-800 rounded py-2 px-1 md:p-2 w-[60px] min-[400px]:w-[80px] sm:w-[120px] md:w-[210px] 
+  <section class="relative grid justify-items-end bg-primary border border-neutral-800 rounded py-2 px-1 md:p-2 w-[60px] min-[400px]:w-[80px] sm:w-[120px] md:w-[210px]
     grid-areas-[avatar,cards,nickname] grid-cols-[auto] grid-rows-[1fr_auto_auto] 
     md:grid-areas-[avatar_cards,nickname_nickname] md:grid-cols-2 md:grid-rows-none">
     <avatar :info="enemy.info" class="grid-in-[avatar] md:justify-self-start" />

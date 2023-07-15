@@ -1,6 +1,6 @@
 <template>
-  <shield-svg class="z-10 border border-black rounded bg-blue-400" v-if="props.role === 'Defender'" />
-  <swords-svg class="z-10 border border-black rounded bg-red-400" v-else-if="props.role === 'Attacker'" />
+  <shield-svg class="w-6 h-6 z-10 border border-black rounded bg-blue-700" v-if="props.role === 'Defender'" />
+  <swords-svg class="w-6 h-6 z-10 border border-black rounded bg-red-700" v-else-if="props.role === 'Attacker'" />
 </template>
 
 <script setup lang="ts">

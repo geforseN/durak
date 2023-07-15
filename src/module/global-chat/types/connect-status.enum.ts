@@ -1,5 +1,5 @@
-export enum ConnectStatus {
-  "online",
-  "away",
-  "offline",
-}
+export type ConnectStatus =
+  "ONLINE"
+  | "AWAY"
+  | "OFFLINE"
+

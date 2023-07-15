@@ -5,7 +5,7 @@
   >
     <global-chat-user-message
       v-for="message of globalChatStore.messages"
-      :key="message.date + message.sender.accname"
+      :key="message.id"
       :message="message"
     />
   </section>
@@ -20,14 +20,24 @@ import GlobalChatUserMessage from "./global-chat-user-message.vue";
 const messagesContainer = ref<HTMLElement>();
 const globalChatStore = useGlobalChatStore();
 
-onMounted(globalChatStore.openSocket);
-onUnmounted(globalChatStore.closeSocket);
+onMounted(() => {
+  console.log("CHAT OPEN");
+  if (globalChatStore.websocket.status !== "OPEN") {
+    globalChatStore.websocket.open();
+  }
+});
+onUnmounted(() => {
+  console.log("CHAT CLOSE");
+  globalChatStore.websocket.close();
+});
+
 whenever(
   () => globalChatStore.isMessagesLoaded,
   () => {
     scrollToLastElement();
   },
 );
+
 watch(
   () => globalChatStore.messages,
   () => {
@@ -42,6 +52,7 @@ function scrollToLastElement(
   return queueMicrotask(() => {
     if (!messagesContainer.value) return;
     const top = messagesContainer.value.scrollHeight;
+    if (!top) return;
     messagesContainer.value?.scrollTo({ behavior, top });
   });
 }

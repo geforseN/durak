@@ -1,37 +1,21 @@
 <template>
-  <main>
-    <div class="flex">
-      <img :src="profile.photoUrl" :alt="`${profile.nickname} profile picture`" />
-      <div>
-        <h2>{{ profile.nickname }}</h2>
-      </div>
-    </div>
-  </main>
+  <Suspense>
+    <user-profile />
+    <template #fallback>
+      <div class="bg-red-900">Loading...</div>
+    </template>
+  </Suspense>
 </template>
 
 <script setup lang="ts">
-import { useRoute } from "vue-router";
-import { onMounted, ref } from "vue";
-import { ConnectStatus, type User } from "@/module/global-chat/types";
+import UserProfile from '@/components/user-profile.vue';
+import { onUnmounted } from 'vue';
+import { onMounted } from 'vue';
+onMounted(() => {
+  console.log('mounted')
+})
 
-const route = useRoute();
-const host = import.meta.env.VITE_SOCKET_SERVER_ADDRESS;
-const { personalLink } = route.params;
-
-const profile = ref<Omit<User, "id" | "isInvisible" | "accname" | "personalLink">>({
-  nickname: "",
-  connectStatus: ConnectStatus.offline,
-  photoUrl: "",
-});
-
-onMounted(async () => {
-  const req = new Request(`${host}/api/profile/${personalLink}`, { method: "GET", mode: "cors"});
-  const profileData = await fetch(req);
-  const { nickname, connectStatus, photoUrl } = await profileData.json();
-  profile.value = {
-    nickname,
-    photoUrl,
-    connectStatus,
-  };
-});
+onUnmounted(() => {
+  console.log('unmounted')
+})
 </script>

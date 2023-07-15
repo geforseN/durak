@@ -1,9 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Index from "@/views/index-page.vue";
 
-// ДЛЯ РЕГИСТРАЦИИ, ЛОГИНА, СМЕНЫ ДАННЫХ
-//<!-- TODO: ширина форм меняется из-за ширины текста (h1, dt, dd) -->
-//<!-- TODO: изменять url страницы, сделать три отдельных компонента формы -->
+// TODO
+// https://habr.com/ru/company/ru_mts/blog/645439/
+// https://webliberty.ru/oauth/
+// https://habr.com/ru/post/491116/
+// https://github.com/TomDoesTech/Google-OAuth-NodeJS
 
 const router = createRouter({
   history: createWebHistory(),
@@ -30,6 +32,21 @@ const router = createRouter({
       component: () => import("../views/auth/user-forgot-credentials.vue"),
     },
     {
+      path: "/auth/yandex/redirect",
+      name: "yandex-auth-redirect",
+      component: () => import("../views/auth/yandex/redirect.vue")
+    },
+    {
+      path: "/auth/vk/redirect",
+      name: "vk-auth-redirect",
+      component: () => import("../views/auth/vk/redirect.vue")
+    },
+    {
+      path: "/auth/twitch/redirect",
+      name: "twitch-auth-redirect",
+      component: () => import("../views/auth/twitch/redirect.vue")
+    },
+    {
       path: "/profile/:personalLink/",
       name: "user-profile",
       component: () => import("../views/user-profile.vue"),
@@ -38,6 +55,10 @@ const router = createRouter({
       path: "/game/:gameId/",
       name: "durak-game",
       component: () => import("../views/durak-game.vue"),
+      meta: {
+        layout: ""
+      },
+      
     },
   ],
 });

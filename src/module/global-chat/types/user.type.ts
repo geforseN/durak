@@ -1,13 +1,11 @@
-import type { ConnectStatus } from "./connect-status.enum";
+import type { ConnectStatus } from "./index";
 
 export type User = {
-  accname: string;
-
+  id: string;
   nickname: string;
   personalLink: string;
   photoUrl: string;
   connectStatus: ConnectStatus;
-
-  id?: string | number;
-  isInvisible?: boolean;
+  User: { currentGameId: string | null }
+  isAdmin: boolean
 };

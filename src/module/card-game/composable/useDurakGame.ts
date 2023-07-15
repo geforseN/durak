@@ -10,6 +10,7 @@ import {
   useGameSelfStore,
   useGameEnemiesStore,
 } from "@/stores/game";
+import { useUserStore } from "@/stores/user.store";
 
 
 export function useDurakGame({ debug = false }: { debug?: boolean } = {}) {
@@ -29,6 +30,7 @@ export function useDurakGame({ debug = false }: { debug?: boolean } = {}) {
   const selfStore = useGameSelfStore();
   const deskStore = useGameDeskStore();
   const gameStateStore = useGameStateStore();
+  const userStore = useUserStore();
 
   const stopMove = () => gameSocket.emit("superPlayer__stopMove");
 
@@ -41,29 +43,37 @@ export function useDurakGame({ debug = false }: { debug?: boolean } = {}) {
     draggedCard.value = null;
   };
 
-  const handleCardDropOnDesk = (event: any, _slot: DeskSlot, slotIndex: number) => {
+  const handleCardDropOnDesk = (event: any, slotIndex: number) => {
     const card = JSON.parse(event.dataTransfer.getData("card"));
     gameSocket.emit("superPlayer__putCardOnDesk", card, slotIndex);
   };
 
-  const changeAllowedPlayer = (accname: string) => {
+  const insertOnDesk = ({ card, slotIndex }: { card: Card, slotIndex: number }) => {
+    gameSocket.emit("superPlayer__putCardOnDesk", card, slotIndex);
+  }
+
+  const changeAllowedPlayer = (accname: string, timeEnd: number, moveTime: number) => {
     if (selfStore.selfId !== accname && !enemiesStore.has({ accname })) {
       throw new Error("Can't change allowedPlayerId");
     }
     gameStateStore.gameState.allowedPlayerId = accname;
+    gameStateStore.timer.pause()
+    gameStateStore.endTime = timeEnd;
+    gameStateStore.timer.resume()
   }
 
   (<{ eventName: string, listener: (...args: any) => void }[]>[
-    { eventName: "state__restore", listener: gameStateStore.restore },
+    { eventName: "game__restoreState", listener: gameStateStore.restore },
     { eventName: "notification__send", listener: notificationStore.addNotificationInQueue },
-    { eventName: "player__changeRole", listener: gameStateStore.changeRole },
-    { eventName: "self__removeCard", listener: selfStore.removeCard },
+    { eventName: "player__allowedToMove", listener: changeAllowedPlayer },
+    { eventName: "player__changeCardCount", listener: enemiesStore.changeEnemyCardCount },
+    { eventName: "player__changeKind", listener: gameStateStore.changeRole },
+    { eventName: "player__exitGame", listener: () => null },
     { eventName: "player__receiveCards", listener: selfStore.pushCard },
-    { eventName: "enemy__changeCardCount", listener: enemiesStore.changeEnemyCardCount },
+    { eventName: "superPlayer__removeCard", listener: selfStore.removeCard },
     { eventName: "desk__clear", listener: deskStore.clear },
     { eventName: "talon__showTrumpCard", listener: gameStateStore.setTrumpCard },
-    { eventName: "player__insertCard", listener: deskStore.insertCard },
-    { eventName: "player__allowedToMove", listener: changeAllowedPlayer },
+    { eventName: "desk__cardReceive", listener: deskStore.insertCard },
     {
       eventName: "desk__pushToDiscard", listener: () => {
         // TODO cool animation
@@ -101,6 +111,11 @@ export function useDurakGame({ debug = false }: { debug?: boolean } = {}) {
     { eventName: "defender__gaveUp", listener: () => (gameStateStore.gameState.isDefenderGaveUp = true) },
     { eventName: "talon__keepOnlyTrumpCard", listener: () => (gameStateStore.gameState.isTalonHasOneCard = true) },
     { eventName: "discard__setIsNotEmpty", listener: () => (gameStateStore.gameState.isDiscardEmpty = false) },
+    {
+      eventName: "", listener: (gameId: string) => {
+        userStore.currentGameId = gameId;
+      }
+    },
     { eventName: "", listener: () => null },
   ]).forEach(({ eventName, listener }) => gameSocket.on(eventName, listener));
 
@@ -108,6 +123,7 @@ export function useDurakGame({ debug = false }: { debug?: boolean } = {}) {
     handleCardDropOnDesk,
     handleCardDrag,
     handleCardDragEnd,
+    insertOnDesk,
     stopMove
   };
 }

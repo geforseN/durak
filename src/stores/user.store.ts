@@ -1,42 +1,34 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
-import { socket } from "@/socket";
-import { type User, ConnectStatus } from "@/module/global-chat/types";
-import generateNotificationFromError from "@/utils/generate-notification-from-error";
+import { reactive, ref } from "vue";
+import { type User } from "@/module/global-chat/types";
 import { useNotificationStore } from "@/stores/notification.store";
-
-type UserA = Omit<User, "id" | "isInvisible">
 
 export const useUserStore = defineStore("user", () => {
   const { addNotificationInQueue } = useNotificationStore();
 
-  const accname = ref("");
-  const username = ref("");
-  const photoUrl = ref("");
-  const connectStatus = ref<ConnectStatus>(ConnectStatus.offline);
-  const personalLink = ref("");
   const currentGameId = ref<string | undefined>();
+  const user = reactive<Partial<User>>({});
 
-  socket.on("connect_error", (error) => {
-    const notification = generateNotificationFromError(error);
-    addNotificationInQueue(notification);
-  });
+  const ws = new WebSocket("ws://localhost:3000/");
 
-  socket.on("authenticationSuccess", (user: UserA) => {
-    username.value = user.nickname;
-    accname.value = user.accname;
-    photoUrl.value = user.photoUrl;
-    connectStatus.value = user.connectStatus;
-    personalLink.value = user.personalLink;
-  });
-
-  return {
-    accname,
-    username,
-    photoUrl,
-    connectStatus,
-    personalLink,
-    currentGameId,
+  ws.onmessage = function(event) {
+    console.log("new message: ", event.data);
+    setUser(JSON.parse(event.data));
   };
+
+  ws.onerror = function(event) {
+    console.log("error: ", event);
+    addNotificationInQueue({ message: "Не удалось получить Ваши данные.", type: "Error" });
+  };
+
+  function setUser(userPayload: User) {
+    user.id = userPayload.id;
+    user.nickname = userPayload.nickname;
+    user.photoUrl = userPayload.photoUrl;
+    user.connectStatus = userPayload.connectStatus;
+    user.personalLink = userPayload.personalLink;
+  }
+
+  return { currentGameId, user };
 });
 

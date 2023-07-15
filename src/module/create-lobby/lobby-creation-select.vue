@@ -1,19 +1,35 @@
 <template>
-  <div class="my-4 flex flex-wrap gap-0.5 max-[320px]:flex-col justify-between items-baseline">
+  <div
+    class="my-4 flex flex-wrap items-baseline justify-between gap-0.5 max-[320px]:flex-col"
+  >
     <label :for="id">
       <slot></slot>
     </label>
     <select
-      class="max-w-xs select select-sm text-xl min-[420px]:select-md min-[420px]:text-2xl
-      bg-neutral select-bordered text-secondary text-center focus:outline-primary focus:outline-2"
-      v-bind="$attrs" :id="id">
-      <option v-for="option of options" :key="option" :value="option" :name="option">
+      v-bind="attrs"
+      v-model="model"
+      :id="id"
+      class="select-bordered select select-sm max-w-xs bg-neutral text-center text-xl text-secondary min-[420px]:select-md focus:outline-2 focus:outline-primary min-[420px]:text-2xl"
+    >
+      <option
+        v-for="option of options"
+        :key="option"
+        :value="option"
+        :name="option"
+      >
         {{ optionsDictionary[option] || option }}
       </option>
     </select>
   </div>
 </template>
-<script setup lang="ts">
-const { options, optionsDictionary, id } =
-  defineProps<{ options: string[], optionsDictionary: Record<string, string>, id: string }>();
+<script setup lang="ts" generic="T extends string | number">
+import { useAttrs } from "vue";
+
+const attrs = useAttrs();
+const { options, optionsDictionary, id } = defineProps<{
+  options: string[];
+  optionsDictionary: Record<string, string>;
+  id: string;
+}>();
+const model = defineModel<T>();
 </script>

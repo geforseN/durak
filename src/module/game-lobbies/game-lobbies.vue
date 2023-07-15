@@ -28,10 +28,10 @@ const userStore = useUserStore();
 const gameLobbiesStore = useGameLobbiesStore();
 
 watch(
-  () => userStore.accname,
-  (accname) => {
+  () => userStore.user.id,
+  (userId) => {
     gameLobbiesStore.currentLobbyId = gameLobbiesStore.lobbies.find((lobby) => {
-      return lobby.users.some((user) => user.accname === accname);
+      return lobby.users.some((user) => user.id === userId);
     })?.id;
   },
 );

@@ -14,6 +14,9 @@ import { computed } from "vue";
 const { message } = defineProps<{ message: UserMessage }>();
 const userStore = useUserStore();
 const isMyMessage = computed(
-  () => userStore.accname === message.sender.accname,
+  () => {
+    console.log('isMyMessage');
+    return userStore.user.id === message.sender.id
+  },
 );
 </script>

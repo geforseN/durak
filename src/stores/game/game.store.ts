@@ -1,7 +1,8 @@
-import { computed, reactive } from "vue";
+import { computed, reactive, ref } from "vue";
 import { defineStore } from "pinia";
 import { useGameEnemiesStore, useGameDeskStore, useGameSelfStore } from "@/stores/game";
 import type { Card, GameState, PlayerRole } from "@/module/card-game/types";
+import { useTimeoutPoll } from "@vueuse/core";
 
 type OmittedGameState = Omit<GameState, "self" | "enemies" | "deskSlots">
 
@@ -33,11 +34,20 @@ export const useGameStateStore = defineStore("game", () => {
     gameState.isDefenderGaveUp = newState.isDefenderGaveUp;
     gameState.playersCount = newState.playersCount;
     gameState.roundNumber = newState.roundNumber;
+    gameState.settings = newState.settings.userCount;
   };
+
+  const moveTime = ref(gameState.settings?.moveTime ?? 0);
+  const endTime = ref<number>();
+  const timer = useTimeoutPoll(() => {
+    const timeDiffInMS = (endTime.value ?? Date.now()) - Date.now()
+    // console.log(timeDiff)
+    moveTime.value = timeDiffInMS / 1000;
+  }, 100);
 
   const changeRole = (role: PlayerRole, accname: string) => {
     const enemy = enemiesStore.findBy({ accname });
-    if (enemy) enemy.role = role;
+    if (enemy) enemy.kind = role;
     else selfStore.changeRole(role, accname);
   };
 
@@ -45,5 +55,5 @@ export const useGameStateStore = defineStore("game", () => {
 
   const allowedPlayerId = computed(() => gameState.allowedPlayerId);
 
-  return { gameState, restore, setTrumpCard, changeRole, allowedPlayerId };
+  return { gameState, restore, setTrumpCard, changeRole, allowedPlayerId, timer, count: moveTime, endTime };
 });

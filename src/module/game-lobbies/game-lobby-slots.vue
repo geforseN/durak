@@ -1,11 +1,10 @@
 <template>
   <div class="flex flex-col justify-center gap-2 sm:flex-row">
-    <template v-for="(user, index) of lobbyUsers" :key="user?.accname">
+    <template v-for="(user, index) of lobbyUsers" :key="user?.id">
       <game-lobby-user
         v-if="user"
         :user="user"
         :index="index + 1"
-        :is-admin="user.accname === lobby.adminAccname"
         class="sm:h-[137px] sm:w-[86px] md:h-[172px] md:w-[108px] lg:h-[207px] lg:w-[130px]"
       />
       <button

@@ -3,7 +3,6 @@ import type { LobbySettings } from "@/module/game-lobbies/types/lobby-settings.t
 
 export type Lobby = {
   id: string;
-  users: User[];
+  users: (User | undefined)[];
   settings: LobbySettings;
-  adminAccname: string;
 };

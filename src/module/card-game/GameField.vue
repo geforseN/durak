@@ -10,7 +10,7 @@
       <EnemyProfile.Left v-for="enemy of enemiesStore.leftEnemies" :key="enemy.id" :enemy="enemy"
                          :is-allowed-to-move="enemy.id === gameStateStore.allowedPlayerId" />
     </div>
-    <game-board :handle-card-drop-on-desk="props.handleCardDropOnDesk" />
+    <game-board :handle-card-drop-on-desk="props.handleCardDropOnDesk" :cardDeskInsert="cardDeskInsert" />
     <div class="flex flex-col justify-evenly gap-y-4">
       <EnemyProfile.Right v-for="enemy of enemiesStore.rightEnemies" :key="enemy.id" :enemy="enemy"
                           :is-allowed-to-move="enemy.id === gameStateStore.allowedPlayerId" />
@@ -27,6 +27,7 @@ const enemiesStore = useGameEnemiesStore();
 const gameStateStore = useGameStateStore();
 
 const props = defineProps<{
-  handleCardDropOnDesk: Function
+  handleCardDropOnDesk: Function;
+  cardDeskInsert: Function;
 }>();
 </script>

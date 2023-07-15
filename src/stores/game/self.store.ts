@@ -9,15 +9,21 @@ import type {
 import { useGameStateStore } from "@/stores/game/game.store";
 
 const defaultUserInfo: UserInfo = {
-  accname: "",
+  id: "",
   personalLink: "",
   photoUrl: "",
   nickname: "",
   connectStatus: "OFFLINE",
+  isAdmin: false,
 };
 
 export const useGameSelfStore = defineStore("gameSelf", () => {
-  const self = ref<Self>({ cards: [], info: defaultUserInfo, role: "Player", id: "" });
+  const self = ref<Self>({
+    cards: [],
+    info: defaultUserInfo,
+    kind: "Player",
+    id: "",
+  });
   const gameStateStore = useGameStateStore();
 
   const pushCard = (cards: Card[]) => {
@@ -34,11 +40,11 @@ export const useGameSelfStore = defineStore("gameSelf", () => {
     self.value.cards.splice(cardIndex, 1);
   };
 
-  const changeRole = (role: PlayerRole, accname: string) => {
-    if (accname !== self.value.info.accname) {
+  const changeRole = (kind: PlayerRole, playerId: string) => {
+    if (playerId !== self.value.id) {
       throw new Error("Self has not found");
     }
-    self.value.role = role;
+    self.value.kind = kind;
   };
 
   function cardMatcher(this: Card, card: Card) {
@@ -55,13 +61,18 @@ export const useGameSelfStore = defineStore("gameSelf", () => {
     return self.value.cards.splice(index, 1);
   };
 
-  const selfId = computed(() => self.value.info.accname);
-
-  const isDefender = computed(() => self.value.role === "Defender");
-  const isAttacker = computed(() => self.value.role === "Attacker");
-  const canMakeMove = computed(() => gameStateStore.allowedPlayerId === selfId.value);
-  const canMakeDefenseMove = computed(() => canMakeMove.value && isDefender.value);
-  const canMakeAttackMove = computed(() => canMakeMove.value && isAttacker.value);
+  const selfId = computed(() => self.value.id);
+  const isDefender = computed(() => self.value.kind === "Defender");
+  const isAttacker = computed(() => self.value.kind === "Attacker");
+  const canMakeMove = computed(
+    () => gameStateStore.allowedPlayerId === selfId.value,
+  );
+  const canMakeDefenseMove = computed(
+    () => canMakeMove.value && isDefender.value,
+  );
+  const canMakeAttackMove = computed(
+    () => canMakeMove.value && isAttacker.value,
+  );
 
   return {
     has,

@@ -1,11 +1,9 @@
 <template>
   <div
-    class="w-full max-w-xs xs:max-w-md py-5 rounded-xl p-2 flex gap-y-3 flex-col items-center bg-neutral border-neutral-900 border-2">
-    <div class="grid grid-cols-2 w-full">
-      <game-discard class="col-start-1" />
-      <game-talon class="col-start-2 justify-self-end"  />
-    </div>
-    <game-desk :desk-slots="deskStore.deskSlots" @drop-card-on-desk="props.handleCardDropOnDesk" />
+    class="max-w-xs xs:max-w-md lg:max-w-none grid grid-cols-2 lg:grid-cols-[150px_1fr_150px] gap-y-3 place-items-center rounded-xl py-5 p-2 bg-neutral border-neutral-900 border-2">
+    <game-discard class="row-start-1 col-start-2 lg:col-start-3" />
+    <game-talon class="row-start-1 col-start-1"  />
+    <game-desk class="row-start-2 col-span-full lg:row-start-1 lg:col-start-2 lg:col-span-1" :desk-slots="deskStore.deskSlots" @drop-card-on-desk="props.handleCardDropOnDesk" @insertCard="props.cardDeskInsert" />
   </div>
 </template>
 
@@ -15,6 +13,6 @@ import GameDesk from '@/module/card-game/GameDesk.vue';
 import GameTalon from '@/module/card-game/GameTalon.vue';
 import GameDiscard from '@/module/card-game/GameDiscard.vue';
 
-const props = defineProps<{ handleCardDropOnDesk: Function }>();
+const props = defineProps<{ handleCardDropOnDesk: Function, cardDeskInsert: Function }>();
 const deskStore = useGameDeskStore();
 </script>

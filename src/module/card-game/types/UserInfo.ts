@@ -1,7 +1,8 @@
 import type { Card } from "@/module/card-game/types/Card";
 
 export type UserInfo = {
-  accname: string
+  id: string
+  isAdmin: boolean
   nickname: string
   photoUrl: string
   personalLink: string
@@ -14,13 +15,13 @@ export type PlayerRole = "Defender" | "Attacker" | "Player";
 export type Self = {
   cards: Card[];
   info: UserInfo;
-  role: PlayerRole;
+  kind: PlayerRole;
   id: string;
 }
 
 export type Enemy = {
   cardCount: number;
   info: UserInfo;
-  role: PlayerRole;
+  kind: PlayerRole;
   id: string;
 }

@@ -4,7 +4,7 @@
     md:grid-areas-[cards_avatar,nickname_nickname] md:grid-cols-2">
     <avatar :info="enemy.info" class="grid-in-[avatar] md:justify-self-end" />
     <role-badge :role="enemy.role" :class="isAllowedToMove && 'animate-pulse'"
-      class="grid-in-[role] absolute -bottom-4 right-[1px] w-14 md:right-2" />
+      class="grid-in-[role] absolute -bottom-4 left-[1px] w-14 md:left-2" />
     <div class="grid-in-[cards] m-2 sm:mb-6 md:m-0 md:ml-4 grid auto-rows-[10px] grid-cols-6 min-[400px]:grid-cols-9">
       <stacked-cards :count="enemy.cardCount" />
     </div>
