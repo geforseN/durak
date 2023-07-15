@@ -9,17 +9,18 @@
       </span>
     </div>
     <button v-if="lobby.users.some((user) => user?.id === userStore.user.id)"
-      class="btn-sm btn border-2 border-black bg-error text-black hover:bg-error/75" @click="leaveLobby()">
+      class="btn-sm btn border-2 border-black bg-error text-black hover:bg-error/75"
+      @click="gameLobbiesStore.leaveLobby()">
       Покинуть лобби
     </button>
     <button v-if="userStore.user.isAdmin && lobby.settings.maxUserCount === lobby.users.length"
       class="btn-sm btn border-2 border-black bg-info text-black hover:bg-info hover:saturate-[1.3]"
-      @click="createGame(lobby.id)">
+      @click="gameLobbiesStore.createGame(lobby.id)">
       Начать игру
     </button>
     <button v-if="lobby.users.every((user) => user?.id !== userStore.user.id)"
       class="btn-sm btn border-2 border-black bg-success text-black hover:bg-success hover:saturate-[1.3]"
-      @click="joinLobby(lobby.id)">
+      @click="gameLobbiesStore.joinLobby(lobby.id)">
       Присоединиться
     </button>
   </div>
@@ -34,5 +35,5 @@ import { useGameLobbiesStore } from "@/composable/useGameLobbiesStore";
 const userStore = useUserStore();
 
 const { lobby } = defineProps<{ lobby: Lobby }>();
-const { joinLobby, leaveLobby, createGame } = useGameLobbiesStore();
+const gameLobbiesStore = useGameLobbiesStore();
 </script>
