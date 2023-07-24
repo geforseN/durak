@@ -38,6 +38,7 @@ export const useGlobalChatStore = defineStore("global-chat", () => {
     const { eventName, payload } = JSON.parse(event.data);
     console.log("EVENT", eventName, "PAYLOAD", payload);
     const listener = listeners[eventName];
+    if (!listener) throw new Error("Unknown event");
     listener(...payload);
   }
 

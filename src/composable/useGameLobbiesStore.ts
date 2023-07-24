@@ -1,112 +1,139 @@
 import type { Lobby, LobbySettings } from "@/module/game-lobbies/types";
 import type { User } from "@/module/global-chat/types";
 import { useLobbiesStore } from "@/stores/lobbies.store";
-import {
-  type NotificationAlert,
-  useNotificationStore,
-} from "@/stores/notification.store";
+import { useNotificationStore } from "@/stores/notification.store";
 import { useUserStore } from "@/stores/user.store";
+import { useWebSocket } from "@vueuse/core";
 import { defineStore } from "pinia";
-import { io } from "socket.io-client";
-import { ref, computed } from "vue";
+import { computed, watch } from "vue";
 import { useRouter } from "vue-router";
 
 export const useGameLobbiesStore = defineStore("game-lobbies", () => {
-  const socket = io(import.meta.env.VITE_SOCKET_SERVER_ADDRESS + "/lobbies", {
-    withCredentials: true,
-  });
-
-  const isCreatingLobby = ref(false);
-  const currentLobbyId = ref<string | null>();
-
   const notificationStore = useNotificationStore();
   const lobbiesStore = useLobbiesStore();
   const userStore = useUserStore();
-  const router = useRouter();
 
-  function leaveLobby() {
-    socket.emit("lobby::remove", { lobbyId: currentLobbyId.value });
-  }
-
-  function joinLobby(lobbyId: string, slotIndex: number = -1) {
-    socket.emit("lobby::user::join", { lobbyId, slotIndex });
-  }
-
-  function createGame(lobbyId: string) {
-    socket.emit("game::start", { lobbyId });
-  }
-
-  function createLobby(settings: LobbySettings) {
-    socket.emit("lobby::add", { settings });
-  }
-
+  const ws = useWebSocket(
+    import.meta.env.VITE_FASTIFY_SERVER_URI.replace(/^http/, "ws") +
+      "/game-lobbies",
+    {
+      onConnected(websocket) {
+        websocket.addEventListener("message", (event: MessageEvent) => {
+          const { eventName, payload } = new CorrectEventData(event.data);
+          const listener = listeners[eventName];
+          if (!listener) throw new Error("Unknown event");
+          console.log({ eventName, payload, listener });
+          try {
+            listener(payload);
+          } catch (error) {
+            notificationStore.addNotificationInQueue({
+              message: "useGameLobbiesStore",
+            });
+          }
+        });
+      },
+    },
+  );
   const lobbies = computed(() => lobbiesStore.lobbies);
-
-  socket
-    .on("notification::push", (notification: NotificationAlert) => {
-      notificationStore.addNotificationInQueue(notification);
-    })
-    .on(
-      "lobbies::restore",
-      ({ lobbies, lobbyId }: { lobbies: Lobby[]; lobbyId: Lobby["id"] }) => {
-        lobbiesStore.restoreLobbies({ lobbies, lobbyId });
-      },
-    )
-    .on("lobby::add", ({ lobby }: { lobby: Lobby }) => {
-      lobbiesStore.addLobby({ lobby });
-    })
-    .on(
-      "lobby::user::join",
-      ({
-        user,
-        lobbyId,
-        slotIndex,
-      }: {
-        user: User;
-        lobbyId: Lobby["id"];
-        slotIndex: number;
-      }) => {
-        lobbiesStore.addUserInLobby({ user, lobbyId, slotIndex });
-        if (user.id === userStore.user.id) {
-          currentLobbyId.value = lobbyId;
-        }
-      },
-    )
-    .on(
-      "lobby::user::leave",
-      ({ lobbyId, userId }: { lobbyId: Lobby["id"]; userId: User["id"] }) => {
-        lobbiesStore.removeUser({ userId, lobbyId });
-        if (userId === userStore.user.id) {
-          currentLobbyId.value = null;
-        }
-      },
-    )
-    .on(
-      "lobby::admin::update",
-      ({ lobbyId, adminId }: { lobbyId: Lobby["id"]; adminId: User["id"] }) => {
-        lobbiesStore.updateLobbyAdmin({ lobbyId, adminId });
-      },
-    )
-    .on("lobby::delete", ({ lobbyId }: { lobbyId: Lobby["id"] }) => {
-      lobbiesStore.deleteLobby({ lobbyId });
-    });
-  socket.on("startGame", (gameId: string) => {
-    // TODO
-    userStore.currentGameId = gameId;
-    const path = `/game/${gameId}`;
-    router
-      .replace({ path })
-      .then(() => console.log(`Successfully navigate to ${path}`))
-      .catch(console.error);
-  });
+  const listeners: Record<string, Function> = {
+    "notification::push": notificationStore.addNotificationInQueue,
+    "lobbies::restore": lobbiesStore.restoreState,
+    "lobby::add": lobbiesStore.addLobby,
+    "lobby::user::join": lobbiesStore.addUserInLobby,
+    "lobby::user::leave": lobbiesStore.removeUser,
+    "lobby::admin::update": lobbiesStore.updateLobbyAdmin,
+    "lobby::delete": lobbiesStore.deleteLobby,
+    "lobby::upgrate": userStore.goToGame,
+  };
 
   return {
-    joinLobby,
-    leaveLobby,
-    createGame,
-    createLobby,
-    currentLobbyId,
-    isCreatingLobby,
+    createLobby(settings: LobbySettings) {
+      ws.send(new CreateLobbyEvent(settings).toString());
+    },
+    removeLobby(lobbyId: string) {
+      ws.send(new RemoveLobbyEvent(lobbyId).toString());
+    },
+    joinLobby(lobbyId: string, slotIndex: number = -1) {
+      ws.send(new JoinLobbyEvent(lobbyId, slotIndex).toString());
+    },
+    leaveLobby(lobbyId?: string) {
+      ws.send(new LeaveLobbyEvent(lobbyId).toString());
+    },
+    createGame(lobbyId?: string) {
+      ws.send(new CreateGameEvent(lobbyId).toString());
+    },
     lobbies,
   };
 });
+
+class WebsocketEvent {
+  constructor(public eventName: string) {}
+  toString() {
+    return JSON.stringify(this);
+  }
+}
+
+class LeaveLobbyEvent extends WebsocketEvent {
+  eventName = "lobby::user::leave";
+  // lobbyId can be optional, server can find lobbyId of user
+  constructor(public lobbyId?: string) {
+    super("lobby::user::leave");
+  }
+}
+
+class RemoveLobbyEvent extends WebsocketEvent {
+  constructor(public lobbyId: string) {
+    super("lobby::remove");
+  }
+}
+
+class JoinLobbyEvent extends WebsocketEvent {
+  // slotIndex can be optional, server will make it -1 anyway
+  constructor(public lobbyId: string, public slotIndex: number = -1) {
+    super("lobby::user::join");
+  }
+}
+
+class CreateGameEvent extends WebsocketEvent {
+  // lobbyId can be optional, server can find lobbyId of user
+  constructor(public lobbyId?: string) {
+    super("game::start");
+  }
+}
+
+class CreateLobbyEvent extends WebsocketEvent {
+  constructor(public settings: LobbySettings) {
+    super("lobby::add");
+  }
+}
+
+class CorrectEventData {
+  eventName: string;
+  payload: Record<string, unknown>;
+
+  constructor(data: unknown) {
+    const parsedData = JSON.parse(data + "");
+    assertIsObject(parsedData);
+    const { eventName, payload } = parsedData;
+    assertIsString(eventName);
+    assertIsObject(payload);
+    this.eventName = eventName;
+    this.payload = payload;
+  }
+}
+
+function assertIsObject(
+  data: unknown,
+): asserts data is Record<string, unknown> {
+  if (typeof data !== "object" || data === null) {
+    throw new TypeError("Not an object");
+  }
+}
+
+function assertIsString(
+  maybeString: string | unknown,
+): asserts maybeString is string {
+  if (typeof maybeString !== "string") {
+    throw new TypeError("Not an string");
+  }
+}

@@ -1,7 +1,7 @@
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { io } from "socket.io-client";
-import type { Card, DeskSlot } from "@/module/card-game/types";
+import type { Card } from "@/module/card-game/types";
 
 import { useNotificationStore } from "@/stores/notification.store";
 import {
@@ -113,7 +113,7 @@ export function useDurakGame({ debug = false }: { debug?: boolean } = {}) {
     { eventName: "discard__setIsNotEmpty", listener: () => (gameStateStore.gameState.isDiscardEmpty = false) },
     {
       eventName: "", listener: (gameId: string) => {
-        userStore.currentGameId = gameId;
+        userStore.user.currentGameId = gameId;
       }
     },
     { eventName: "", listener: () => null },

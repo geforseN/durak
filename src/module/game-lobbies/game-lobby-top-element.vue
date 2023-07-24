@@ -10,7 +10,7 @@
     </div>
     <button v-if="lobby.users.some((user) => user?.id === userStore.user.id)"
       class="btn-sm btn border-2 border-black bg-error text-black hover:bg-error/75"
-      @click="gameLobbiesStore.leaveLobby()">
+      @click="gameLobbiesStore.removeLobby(lobby.id)">
       Покинуть лобби
     </button>
     <button v-if="userStore.user.isAdmin && lobby.settings.maxUserCount === lobby.users.length"
