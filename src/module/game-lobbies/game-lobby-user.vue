@@ -1,29 +1,31 @@
 <template>
   <article
-    class="flex h-10 justify-between items-center gap-2 p-1 border-2 border-primary rounded-lg bg-gray-100
-      sm:grid sm:h-auto sm:grid-cols-[min-content_1fr] sm:grid-rows-[min-content_min-content_1fr]">
+    class="flex h-10 items-center justify-between gap-2 rounded-lg border-2 border-primary bg-gray-100 p-1 sm:grid sm:h-auto sm:grid-cols-[min-content_1fr] sm:grid-rows-[min-content_min-content_1fr]"
+  >
     <span
       :class="user.isAdmin ? 'bg-info' : 'bg-success'"
-      class="h-full aspect-square sm:w-6 sm:h-6 sm:col-start-1 sm:row-start-1 flex justify-center items-center p-1 font-mono text-xl border border-black rounded">
+      class="flex aspect-square h-full items-center justify-center rounded border border-black p-1 font-mono text-xl sm:col-start-1 sm:row-start-1 sm:h-6 sm:w-6"
+    >
       {{ index }}
     </span>
     <router-link
-      class="font-bold line-clamp-1 sm:line-clamp-2 text-xs md:text-base lg:text-lg break-all hover:underline
-      sm:col-span-full sm:row-start-2"
-      :title="user.nickname"
-      :to="`/profile/${user.personalLink}`"
+      class="line-clamp-1 break-all text-xs font-bold hover:underline sm:col-span-full sm:row-start-2 sm:line-clamp-2 md:text-base lg:text-lg"
+      :title="user.profile.nickname"
+      :to="`/profile/${user.profile.personalLink}`"
       target="_blank"
     >
-      {{ user.nickname }}
+      {{ user.profile.nickname }}
     </router-link>
-    <img :src="user.photoUrl" :alt="`${user.nickname} profile picture`"
-         class="h-full sm:h-auto sm:place-self-end sm:col-start-2 sm:row-start-3 avatar border border-black rounded-xl" />
+    <img
+      :src="user.profile.photoUrl"
+      :alt="`${user.profile.nickname} profile picture`"
+      class="avatar h-full rounded-xl border border-black sm:col-start-2 sm:row-start-3 sm:h-auto sm:place-self-end"
+    />
   </article>
 </template>
 
 <script setup lang="ts">
-import type { User } from "@/module/global-chat/types";
+import type { LobbyUser } from "../global-chat/types";
 
-const { user, index } =
-  defineProps<{ user: User,index: number }>();
+const { user, index } = defineProps<{ user: LobbyUser; index: number }>();
 </script>

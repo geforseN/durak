@@ -8,9 +8,9 @@
         class="badge rounded-sm border-0 bg-black p-1 font-bold"
         :class="isMyMessage && 'hidden'"
       >
-        {{ sender.nickname }}
+        {{ sender.profile.nickname }}
       </span>
-      <time class="text-xs opacity-50">{{ date }}</time>
+      <time class="text-xs opacity-50">{{ formattedDate }}</time>
     </div>
     <span class="ml-0.5">{{ text }}</span>
   </div>
@@ -22,5 +22,5 @@ const { message, isMyMessage } = defineProps<{
   isMyMessage: boolean;
   message: UserMessage;
 }>();
-const { sender, date, text } = message;
+const { sender, formattedDate, text } = message;
 </script>

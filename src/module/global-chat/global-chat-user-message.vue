@@ -7,16 +7,12 @@
 <script setup lang="ts">
 import type { UserMessage } from "@/module/global-chat/types";
 import { useUserStore } from "@/stores/user.store";
-import GlobalChatUserMessageChatBubble from "./global-chat-user-message-chat-bubble.vue";
-import GlobalChatUserMessageAvatar from "./global-chat-user-message-avatar.vue";
 import { computed } from "vue";
+import GlobalChatUserMessageAvatar from "./global-chat-user-message-avatar.vue";
+import GlobalChatUserMessageChatBubble from "./global-chat-user-message-chat-bubble.vue";
 
 const { message } = defineProps<{ message: UserMessage }>();
 const userStore = useUserStore();
-const isMyMessage = computed(
-  () => {
-    console.log('isMyMessage');
-    return userStore.user.id === message.sender.id
-  },
-);
+
+const isMyMessage = computed(() => userStore.user.id === message.sender.id);
 </script>

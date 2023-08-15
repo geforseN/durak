@@ -1,17 +1,27 @@
 <template>
-  <section class="relative grid py-2 px-1 md:p-2 justify-items-start w-[60px] min-[400px]:w-[80px] sm:w-[120px] md:w-[210px] bg-primary border border-neutral-800 rounded 
-    grid-areas-[avatar,cards,nickname] grid-cols-[auto] grid-rows-[1fr_auto_auto] 
-    md:grid-areas-[cards_avatar,nickname_nickname] md:grid-cols-2">
+  <section
+    class="relative grid w-[60px] grid-cols-[auto] grid-rows-[1fr_auto_auto] justify-items-start rounded border border-neutral-800 bg-primary px-1 py-2 grid-areas-[avatar,cards,nickname] min-[400px]:w-[80px] sm:w-[120px] md:w-[210px] md:grid-cols-2 md:p-2 md:grid-areas-[cards_avatar,nickname_nickname]"
+  >
     <avatar :info="enemy.info" class="grid-in-[avatar] md:justify-self-end" />
-    <role-badge :role="enemy.role" :class="isAllowedToMove && 'animate-pulse'"
-      class="grid-in-[role] absolute -bottom-4 left-[1px] w-14 md:left-2" />
-    <div class="grid-in-[cards] m-2 sm:mb-6 md:m-0 md:ml-4 grid auto-rows-[10px] grid-cols-6 min-[400px]:grid-cols-9">
+    <role-badge
+      :role="enemy.role"
+      :class="isAllowedToMove && 'animate-pulse'"
+      class="absolute -bottom-4 left-[1px] w-14 grid-in-[role] md:left-2"
+    />
+    <div
+      class="m-2 grid auto-rows-[10px] grid-cols-6 grid-in-[cards] min-[400px]:grid-cols-9 sm:mb-6 md:m-0 md:ml-4"
+    >
       <stacked-cards :count="enemy.cardCount" />
     </div>
-    <router-link :to="`/profile/${enemy.info.personalLink}`" target="_blank" :title="enemy.info.nickname"
-      class="grid-in-[nickname] md:w-full md:flex md:justify-end">
+    <router-link
+      :to="`/profile?personalLink${enemy.info.personalLink}`"
+      target="_blank"
+      :title="enemy.info.nickname"
+      class="grid-in-[nickname] md:flex md:w-full md:justify-end"
+    >
       <span
-        class="mt-3 link-hover link break-all line-clamp-3 sm:line-clamp-2 md:line-clamp-1 font-bold text-xs xs:text-sm sm:text-base md:text-lg xl:text-xl 2xl:text-2xl">
+        class="link-hover link mt-3 line-clamp-3 break-all text-xs font-bold xs:text-sm sm:line-clamp-2 sm:text-base md:line-clamp-1 md:text-lg xl:text-xl 2xl:text-2xl"
+      >
         {{ enemy.info.nickname }}
       </span>
     </router-link>

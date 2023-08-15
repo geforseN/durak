@@ -1,5 +1,45 @@
-import type { UserMessage } from "./user-message.type";
-import type { User } from "./user.type";
-import type { ConnectStatus } from "./connect-status.enum";
+export type UserMessage = {
+  text: string;
+  date: number;
+  formattedDate: string;
+  sender: Sender;
+  id: `${string}-${string}-${string}-${string}-${string}`;
+  replyMessageId?: `${string}-${string}-${string}-${string}-${string}`;
+};
 
-export type { UserMessage, User, ConnectStatus };
+// TODO remove User
+export type User = {
+  id: string;
+  userId: string;
+  nickname: string;
+  personalLink: string;
+  photoUrl: string;
+  connectStatus: "ONLINE" | "AWAY" | "OFFLINE";
+  currentGameId: string | null;
+};
+
+type Sender = {
+  createdAt: string;
+  currentGameId: string | null;
+  email: string | null;
+  id: string;
+  isAnonymous: boolean;
+  num: number;
+  profile: UserProfile;
+  updatedAt: string;
+};
+
+// TODO remove type to own module
+export type LobbyUser = {
+  id: string;
+  profile: UserProfile;
+  isAdmin: boolean;
+};
+
+type UserProfile = {
+  userId: string;
+  nickname: string;
+  personalLink: string;
+  photoUrl: string;
+  connectStatus: "ONLINE" | "AWAY" | "OFFLINE";
+};

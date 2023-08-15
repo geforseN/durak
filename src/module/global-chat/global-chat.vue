@@ -4,7 +4,7 @@
   >
     <global-chat-messages :messages="globalChatStore.messages" />
     <div class="mt-2 flex items-stretch gap-0.5">
-      <div class="flex-1 relative">
+      <div class="relative flex-1">
         <label class="sr-only" for="global-chat-input">
           Ввод сообщения для глобального чата
         </label>
@@ -17,8 +17,11 @@
           placeholder="Нажмите ENTER, что-бы отправить сообщение"
           @keyup.enter="handleMessage"
         />
-        <div v-if="showTextLength" :class="input?.length > maxInputLength && 'text-red-600'"
-             class="text-xs rounded p-1 absolute -bottom-10 right-1.5 bg-accent border border-neutral">
+        <div
+          v-if="showTextLength"
+          :class="input?.length > maxInputLength && 'text-red-600'"
+          class="absolute -bottom-10 right-1.5 rounded border border-neutral bg-accent p-1 text-xs"
+        >
           {{ input?.length ?? 0 }} / {{ maxInputLength }}
         </div>
       </div>
@@ -34,8 +37,8 @@
 </template>
 
 <script setup lang="ts">
-import GlobalChatMessages from "@/module/global-chat/global-chat-messages.vue";
 import { useGlobalChatStore } from "@/composable/useGlobalChatStore";
+import GlobalChatMessages from "@/module/global-chat/global-chat-messages.vue";
 import { ref } from "vue";
 
 const maxInputLength = 128;

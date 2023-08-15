@@ -8,19 +8,33 @@
         {{ lobby.settings.cardCount }}
       </span>
     </div>
-    <button v-if="lobby.users.some((user) => user?.id === userStore.user.id)"
+    <button
+      v-if="
+        // TODO has Lobby#hasUserWithId OR PERHAPS userStore.lobby === lobby
+        lobby.slots.some((slot) => slot?.id === userStore.user.id)
+      "
       class="btn-sm btn border-2 border-black bg-error text-black hover:bg-error/75"
-      @click="gameLobbiesStore.removeLobby(lobby.id)">
+      @click="gameLobbiesStore.leaveLobby(lobby.id)"
+    >
       Покинуть лобби
     </button>
-    <button v-if="userStore.user.isAdmin && lobby.settings.maxUserCount === lobby.users.length"
+    <button
+      v-if="
+        userStore.user.id === lobby.slots.find((slot) => slot?.isAdmin)?.id &&
+        // line below ensure then slots all filled
+        // TODO add Lobby#isFilled
+        lobby.settings.userCount === lobby.slots.filter((slot) => slot).length
+      "
       class="btn-sm btn border-2 border-black bg-info text-black hover:bg-info hover:saturate-[1.3]"
-      @click="gameLobbiesStore.createGame(lobby.id)">
+      @click="gameLobbiesStore.createGame(lobby.id)"
+    >
       Начать игру
     </button>
-    <button v-if="lobby.users.every((user) => user?.id !== userStore.user.id)"
+    <button
+      v-if="lobby.slots.every((slot) => slot?.id !== userStore.user.id)"
       class="btn-sm btn border-2 border-black bg-success text-black hover:bg-success hover:saturate-[1.3]"
-      @click="gameLobbiesStore.joinLobby(lobby.id)">
+      @click="gameLobbiesStore.joinLobby(lobby.id)"
+    >
       Присоединиться
     </button>
   </div>
@@ -32,8 +46,8 @@ import gameTypesDictionary from "../../utils/dictionary/game-types.dictionary";
 import type { Lobby } from "@/module/game-lobbies/types";
 import { useGameLobbiesStore } from "@/composable/useGameLobbiesStore";
 
-const userStore = useUserStore();
-
 const { lobby } = defineProps<{ lobby: Lobby }>();
+
+const userStore = useUserStore();
 const gameLobbiesStore = useGameLobbiesStore();
 </script>

@@ -1,26 +1,47 @@
 import type { Lobby } from "@/module/game-lobbies/types";
-import type { User } from "@/module/global-chat/types";
+import type { LobbyUser } from "@/module/global-chat/types";
 import { useUserStore } from "@/stores/user.store";
 import { defineStore } from "pinia";
 import { reactive, watch } from "vue";
 
 export const useLobbiesStore = defineStore("lobbies", () => {
   const userStore = useUserStore();
-  // TODO update type of Lobby['users']
   const lobbies = reactive<Lobby[]>([]);
 
-  const restoreState = (lobbiesState: Lobby[]) => {
+  const restoreState = ({ state }: { state: string }) => {
+    const lobbiesState = <Lobby[]>JSON.parse(state)
+      .map((lobby: any) => {
+        const a = {
+          ...JSON.parse(lobby),
+        };
+        console.log(a);
+        return a;
+      })
+      .map((lobby: any) => {
+        const b = {
+          ...lobby,
+          slots: JSON.parse(lobby.slots).map((slot) => JSON.parse(slot)),
+        };
+        console.log(b);
+        return b;
+      });
     lobbies.splice(0, lobbies.length, ...lobbiesState);
+    console.log(
+      `%c${userStore.user.id}`,
+      "color: yellow; font-style: italic; background-color: blue;padding: 2px",
+    );
     const lobbyWithMe = lobbies.find((lobby) =>
-      lobby.users.some((user) => user?.id === userStore.user.id),
+      lobby.slots.some((slot) => slot?.id === userStore.user.id),
     );
     if (!lobbyWithMe) return;
     userStore.user.currentLobbyId = lobbyWithMe.id;
-    //  //  lobby.slots.some((slot) => slot.user?.id === userStore.user.id)
+    console.log({ currentLobbyId: userStore.user.currentLobbyId });
   };
 
-  const addLobby = ({ lobby }: { lobby: Lobby }) => {
-    lobbies.push(lobby);
+  const addLobby = ({ lobby }: { lobby: string }) => {
+    const _lobby = JSON.parse(lobby);
+    const superLobby = { ..._lobby, slots: JSON.parse(_lobby.slots) };
+    lobbies.push(superLobby);
   };
 
   const deleteLobby = ({ lobbyId }: { lobbyId: Lobby["id"] }) => {
@@ -34,16 +55,30 @@ export const useLobbiesStore = defineStore("lobbies", () => {
     lobbyId,
     slotIndex,
   }: {
-    user: User;
+    user: string | LobbyUser;
     lobbyId: Lobby["id"];
     slotIndex: number;
   }) => {
+    console.log({ user });
+    user = <LobbyUser>JSON.parse(user + "");
+    console.log({ user });
     const lobby = lobbies.find((lobby) => lobby.id === lobbyId);
     if (!lobby) throw 2;
-    // ? idc, will line below work, will lobby.users be updated ?
-    lobby.users[slotIndex] = user;
+    lobby.slots[slotIndex] = user;
     if (user.id !== userStore.user.id) return;
     userStore.user.currentLobbyId = lobby.id;
+    const lobbyAdmin = lobby.slots.find((slot) => slot?.isAdmin);
+    if (user.id !== lobbyAdmin?.id) return;
+    userStore.joinLobbyAsAdmin();
+  };
+
+  const moveUser = ({ lobbyId, newSlotIndex, pastSlotIndex }) => {
+    const lobby = lobbies.find((lobby) => lobby.id === lobbyId);
+    if (!lobby) return;
+    [lobby.slots[pastSlotIndex], lobby.slots[newSlotIndex]] = [
+      lobby.slots[newSlotIndex],
+      lobby.slots[pastSlotIndex],
+    ];
   };
 
   const removeUser = ({
@@ -51,41 +86,44 @@ export const useLobbiesStore = defineStore("lobbies", () => {
     userId,
   }: {
     lobbyId: Lobby["id"];
-    userId: User["id"];
+    userId: LobbyUser["id"];
   }) => {
     const lobby = lobbies.find((lobby) => lobby.id === lobbyId);
     if (!lobby) throw 3;
-    const userIndex = lobby.users.findIndex((user) => user?.id === userId);
+    const userIndex = lobby.slots.findIndex((user) => user?.id === userId);
     if (userIndex < 0) throw 4;
-    lobby.users[userIndex] = undefined;
+    lobby.slots[userIndex] = null;
     if (userId !== userStore.user.id) return;
-    userStore.user.currentLobbyId = null;
+    userStore.leaveLobby();
   };
 
   const updateLobbyAdmin = ({
     lobbyId,
-    adminId,
+    newAdminId,
   }: {
     lobbyId: Lobby["id"];
-    adminId: User["id"];
+    newAdminId: LobbyUser["id"];
   }) => {
     const lobby = lobbies.find((lobby) => lobby.id === lobbyId);
-    if (!lobby) throw 5;
-    for (const user of lobby.users) {
-      if (!user) continue;
-      user.isAdmin = adminId === user.id;
-    }
+    if (!lobby) throw new Error("Server send wrong data");
+    const pastAdmin = lobby.slots.find((slot) => slot?.isAdmin);
+    if (pastAdmin) pastAdmin.isAdmin = false;
+    const newAdmin = lobby.slots.find((slot) => slot?.id === newAdminId);
+    if (!newAdmin) throw new Error("Server send wrong data");
+    newAdmin.isAdmin = true;
   };
 
   watch(
     () => userStore.user.id,
     (userId) => {
       userStore.user.currentLobbyId = lobbies.find((lobby) => {
-        return lobby.users.some((user) => user?.id === userId);
+        return lobby.slots.some((user) => user?.id === userId);
       })?.id;
     },
   );
+
   return {
+    moveUser,
     restoreState,
     addLobby,
     addUserInLobby,

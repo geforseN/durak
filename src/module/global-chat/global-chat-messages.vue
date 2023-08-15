@@ -20,16 +20,8 @@ import GlobalChatUserMessage from "./global-chat-user-message.vue";
 const messagesContainer = ref<HTMLElement>();
 const globalChatStore = useGlobalChatStore();
 
-onMounted(() => {
-  console.log("CHAT OPEN");
-  if (globalChatStore.websocket.status !== "OPEN") {
-    globalChatStore.websocket.open();
-  }
-});
-onUnmounted(() => {
-  console.log("CHAT CLOSE");
-  globalChatStore.websocket.close();
-});
+onMounted(() => {});
+onUnmounted(() => {});
 
 whenever(
   () => globalChatStore.isMessagesLoaded,
@@ -46,9 +38,9 @@ watch(
   { deep: true },
 );
 
-function scrollToLastElement(
-  { behavior = "auto" }: Omit<ScrollOptions, "top"> = {},
-) {
+function scrollToLastElement({
+  behavior = "auto",
+}: Omit<ScrollOptions, "top"> = {}) {
   return queueMicrotask(() => {
     if (!messagesContainer.value) return;
     const top = messagesContainer.value.scrollHeight;

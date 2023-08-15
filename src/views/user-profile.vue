@@ -8,14 +8,15 @@
 </template>
 
 <script setup lang="ts">
-import UserProfile from '@/components/user-profile.vue';
-import { onUnmounted } from 'vue';
-import { onMounted } from 'vue';
+import UserProfile from "@/components/user-profile.vue";
+import { onUnmounted } from "vue";
+import { onMounted } from "vue";
+
 onMounted(() => {
-  console.log('mounted')
-})
+  console.log("mounted");
+});
 
 onUnmounted(() => {
-  console.log('unmounted')
-})
+  console.log("unmounted");
+});
 </script>

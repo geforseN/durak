@@ -1,21 +1,34 @@
 <template>
-  <section class="debug-screens relative grid justify-items-end bg-primary border border-neutral-800 rounded p-2 w-[80px] xxs:w-[140px] xs:w-[160px] sm:w-[210px]
-    grid-areas-[avatar,cards,nickname] grid-cols-[auto] grid-rows-[1fr_auto_auto] 
-    xxs:grid-areas-[avatar_cards,nickname_nickname] xxs:grid-cols-2 xxs:grid-rows-none">
-    <avatar :info="enemy.info" class="grid-in-[avatar] xxs:justify-self-start" />
-    <role-badge :role="enemy.role"
-                class="grid-in-[role] absolute -bottom-4 right-[4px] xxs:left-2 xxs:right-0" />
-    <div v-if="isAllowedToMove" class="absolute -bottom-4 left-10 bg-neutral-500 rounded border border-black px-1">
+  <section
+    class="debug-screens relative grid w-[80px] grid-cols-[auto] grid-rows-[1fr_auto_auto] justify-items-end rounded border border-neutral-800 bg-primary p-2 grid-areas-[avatar,cards,nickname] xxs:w-[140px] xxs:grid-cols-2 xxs:grid-rows-none xxs:grid-areas-[avatar_cards,nickname_nickname] xs:w-[160px] sm:w-[210px]"
+  >
+    <avatar
+      :info="enemy.info"
+      class="grid-in-[avatar] xxs:justify-self-start"
+    />
+    <role-badge
+      :role="enemy.role"
+      class="absolute -bottom-4 right-[4px] grid-in-[role] xxs:left-2 xxs:right-0"
+    />
+    <div
+      v-if="isAllowedToMove"
+      class="absolute -bottom-4 left-10 rounded border border-black bg-neutral-500 px-1"
+    >
       {{ Math.max(gameStateStore.count, 0).toPrecision(2) }}
     </div>
     <div
-      class="grid-in-[cards] pr-4 md:pr-6 m-2 min-[400px]:-mr-1.5 xxs:mb-6 md:m-0 md:-mr-4 grid auto-rows-[10px] grid-cols-6 min-[400px]:grid-cols-9">
+      class="m-2 grid auto-rows-[10px] grid-cols-6 pr-4 grid-in-[cards] xxs:mb-6 min-[400px]:-mr-1.5 min-[400px]:grid-cols-9 md:m-0 md:-mr-4 md:pr-6"
+    >
       <stacked-cards :count="enemy.cardCount" />
     </div>
-    <router-link :to="`/profile/${enemy.info.personalLink}`" :title="enemy.info.nickname"
-                 class="grid-in-[nickname] xxs:w-full">
+    <router-link
+      :to="`/profile?personalLink${enemy.info.personalLink}`"
+      :title="enemy.info.nickname"
+      class="grid-in-[nickname] xxs:w-full"
+    >
       <span
-        class="mt-3 link-hover link break-all line-clamp-2 xxs:line-clamp-1 font-bold text-xs xs:text-sm sm:text-base md:text-lg xl:text-xl 2xl:text-2xl">
+        class="link-hover link mt-3 line-clamp-2 break-all text-xs font-bold xxs:line-clamp-1 xs:text-sm sm:text-base md:text-lg xl:text-xl 2xl:text-2xl"
+      >
         {{ enemy.info.nickname }}
       </span>
     </router-link>

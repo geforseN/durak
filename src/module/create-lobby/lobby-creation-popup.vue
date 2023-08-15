@@ -23,8 +23,8 @@
     </div>
     <radio-input-group
       name="player-count"
-      :input-values="allowedMaxUserCount"
-      v-model.number="lobbySettings.maxUserCount"
+      :input-values="allowedUserCount"
+      v-model.number="lobbySettings.userCount"
     >
       Количество игроков
     </radio-input-group>
@@ -71,7 +71,7 @@ import SelectGroup from "./lobby-creation-select.vue";
 import gameTypesDictionary from "@/utils/dictionary/game-types.dictionary";
 import useLobbySettings, {
   allowedGameTypes,
-  allowedMaxUserCount,
+  allowedUserCount,
 } from "./useLobbySettings";
 import { useNotificationStore } from "@/stores/notification.store";
 import XMark from "@/components/svg/XMark.vue";
@@ -104,7 +104,7 @@ const createLobby = () => {
   if (!isProperCardCount()) {
     return addNotificationInQueue({
       durationInMS: 7_000,
-      message: `Нельзя создать лобби \n с количеством карт: ${lobbySettings.cardCount}\n и количеством карт: ${lobbySettings.maxUserCount}`,
+      message: `Нельзя создать лобби \n с количеством карт: ${lobbySettings.cardCount}\n и количеством карт: ${lobbySettings.userCount}`,
     });
   }
   emit("close");

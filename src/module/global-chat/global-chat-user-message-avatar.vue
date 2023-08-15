@@ -2,8 +2,8 @@
   <div class="chat-image avatar w-12" :class="isMyMessage ? 'hidden' : 'pl-2'">
     <div class="rounded">
       <img
-        :src="message.sender.photoUrl"
-        :alt="`${message.sender.nickname} profile picture`"
+        :src="message.sender.profile.photoUrl"
+        :alt="`${message.sender.profile.nickname} profile picture`"
       />
     </div>
   </div>

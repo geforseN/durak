@@ -34,17 +34,17 @@ const router = createRouter({
     {
       path: "/auth/yandex/redirect",
       name: "yandex-auth-redirect",
-      component: () => import("../views/auth/yandex/redirect.vue")
+      component: () => import("../views/auth/yandex/redirect.vue"),
     },
     {
       path: "/auth/vk/redirect",
       name: "vk-auth-redirect",
-      component: () => import("../views/auth/vk/redirect.vue")
+      component: () => import("../views/auth/vk/redirect.vue"),
     },
     {
       path: "/auth/twitch/redirect",
       name: "twitch-auth-redirect",
-      component: () => import("../views/auth/twitch/redirect.vue")
+      component: () => import("../views/auth/twitch/redirect.vue"),
     },
     {
       path: "/profile/:personalLink/",
@@ -56,9 +56,8 @@ const router = createRouter({
       name: "durak-game",
       component: () => import("../views/durak-game.vue"),
       meta: {
-        layout: ""
+        layout: "",
       },
-      
     },
   ],
 });
