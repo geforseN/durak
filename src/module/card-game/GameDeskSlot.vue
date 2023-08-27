@@ -53,39 +53,3 @@ useEventListener('keyup', (event) => {
   emit("insertCard", { card, slotIndex: props.index });
 });
 </script>
-
-
-<!-- 
-
-
-// const slotStatus = computed(() => {
-  //   if (props.defendCard) {
-  //     return 'full';
-  //   } else if (props.attackCard) {
-  //     return 'attacked';
-  //   } else return 'empty';
-  // })
-  
-  // const allowedCards = computed(() => {
-  //   if (slotStatus.value === 'full') return [];
-  //   if (slotStatus.value === 'empty') {
-  //     if (deskStore.isEmpty) return deskStore.deskSlots;
-  //     selfStore.self.cards.filter(card => deskStore.ranks.includes(card.rank))
-  //   };
-  
-  //   if (isTrump.value) {
-  //     return []
-  //   }
-  //   return []
-  // })
-  
-  // const message = computed(() => {
-  //   if (!allowedCards.value.length) {
-  //     const status = slotStatus.value;
-  //     return status === 'empty'
-  //       ? 'Слот полностью занят'
-  //       : status === 'attacked'
-  //         ? 'Слот нельзя атаковать'
-  //         : 'Слот нельзя защищать';
-  //   }
-  // }) -->
