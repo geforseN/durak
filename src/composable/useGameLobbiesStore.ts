@@ -23,7 +23,6 @@ export const useGameLobbiesStore = defineStore("game-lobbies", () => {
     "notification::push": notificationStore.addNotificationInQueue,
     "lobbies::restore": lobbiesStore.restoreState,
     "lobby::add": lobbiesStore.addLobby,
-    "lobby::user::move": lobbiesStore.moveUser,
     "lobby::user::join": lobbiesStore.addUserInLobby,
     "lobby::user::leave": lobbiesStore.removeUser,
     "lobby::admin::update": lobbiesStore.updateLobbyAdmin,

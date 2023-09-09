@@ -51,15 +51,6 @@ export const useLobbiesStore = defineStore("lobbies", () => {
     userStore.joinLobbyAsAdmin();
   };
 
-  const moveUser = ({ lobbyId, newSlotIndex, pastSlotIndex }) => {
-    const lobby = lobbies.find((lobby) => lobby.id === lobbyId);
-    if (!lobby) return;
-    [lobby.slots[pastSlotIndex], lobby.slots[newSlotIndex]] = [
-      lobby.slots[newSlotIndex],
-      lobby.slots[pastSlotIndex],
-    ];
-  };
-
   const removeUser = ({
     lobbyId,
     userId,
@@ -102,7 +93,6 @@ export const useLobbiesStore = defineStore("lobbies", () => {
   );
 
   return {
-    moveUser,
     restoreState,
     addLobby,
     addUserInLobby,
