@@ -3,10 +3,10 @@ import { defineStore } from "pinia";
 import type { Enemy } from "@/module/card-game/types";
 
 type EnemySidesIndexes = {
-  top: number[]
-  left?: number[]
-  right?: number[]
-}
+  top: number[];
+  left?: number[];
+  right?: number[];
+};
 
 const enemiesSides: Record<number, EnemySidesIndexes> = {
   0: { top: [] },
@@ -17,39 +17,55 @@ const enemiesSides: Record<number, EnemySidesIndexes> = {
   5: { left: [0, 1], top: [2], right: [3, 4] },
 };
 
-export const useGameEnemiesStore = defineStore("gameEnemies", () => {
-  const enemies = ref<Enemy[]>([]);
+export const useGameEnemiesStore = defineStore(
+  "game-enemies-store",
+  (defaultValue: Enemy[] = []) => {
+    const enemies = ref(defaultValue);
 
-  const findBy = ({ accname }: { accname: string }) => {
-    return enemies.value.find((enemy) => enemy.id === accname);
-  };
+    const findBy = ({ accname }: { accname: string }) => {
+      return enemies.value.find((enemy) => enemy.id === accname);
+    };
 
-  const has = ({ accname }: { accname: string }) => {
-    return enemies.value.some((enemy) => enemy.id === accname);
-  };
+    const findById = (id: string) => {
+      return enemies.value.find((enemy) => enemy.id === id);
+    };
 
-  const changeEnemyCardCount = (accname: string, cardCount: number) => {
-    const enemy = findBy({ accname });
-    if (!enemy) throw new Error("No such enemy");
-    enemy.cardCount = cardCount;
-  };
+    const has = ({ accname }: { accname: string }) => {
+      return enemies.value.some((enemy) => enemy.id === accname);
+    };
 
-  const __findSideEnemies__ = (side: keyof EnemySidesIndexes) => {
-    const allowedIndexes = enemiesSides[enemies.value.length][side];
-    return enemies.value.filter((_, index) => {
-      return allowedIndexes?.includes(index);
+    const changeEnemyCardCount = (accname: string, cardCount: number) => {
+      const enemy = findBy({ accname });
+      if (!enemy) throw new Error("No such enemy");
+      enemy.cardCount = cardCount;
+    };
+
+    const __findSideEnemies__ = (side: keyof EnemySidesIndexes) => {
+      const allowedIndexes = enemiesSides[enemies.value.length][side];
+      return enemies.value.filter((_, index) => {
+        return allowedIndexes?.includes(index);
+      });
+    };
+
+    const leftEnemies = computed(() => {
+      return __findSideEnemies__("left");
     });
-  };
+    const topEnemies = computed(() => {
+      return __findSideEnemies__("top");
+    });
+    const rightEnemies = computed(() => {
+      return __findSideEnemies__("right");
+    });
 
-  const leftEnemies = computed(() => {
-    return __findSideEnemies__("left");
-  });
-  const topEnemies = computed(() => {
-    return __findSideEnemies__("top");
-  });
-  const rightEnemies = computed(() => {
-    return __findSideEnemies__("right");
-  });
-
-  return { enemies, findBy, changeEnemyCardCount, has, leftEnemies, topEnemies, rightEnemies };
-});
+    return {
+      enemies,
+      findBy,
+      findById,
+      changeEnemyCardCount,
+      has,
+      leftEnemies,
+      topEnemies,
+      rightEnemies,
+    };
+  },
+);

@@ -4,8 +4,8 @@
       class="relative h-10 w-10 rounded-xl border border-neutral-800 min-[400px]:h-16 min-[400px]:w-16 sm:h-20 sm:w-20"
     >
       <img
-        :src="props.info.photoUrl"
-        :alt="`${props.info.nickname} profile picture`"
+        :src="props.info.profile.photoUrl"
+        :alt="`${props.info.profile.nickname} profile picture`"
       />
     </div>
   </div>

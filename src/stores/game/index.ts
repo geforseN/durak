@@ -1,11 +1,4 @@
-import { useGameStateStore } from "@/stores/game/game.store";
-import { useGameDeskStore } from "@/stores/game/desk.store";
-import { useGameEnemiesStore } from "@/stores/game/enemies.store";
-import { useGameSelfStore } from "@/stores/game/self.store";
-
-export {
-  useGameStateStore,
-  useGameDeskStore,
-  useGameEnemiesStore,
-  useGameSelfStore,
-};
+export { useGameStateStore } from "@/stores/game/game.state.store";
+export { useGameDeskStore } from "@/stores/game/desk.store";
+export { useGameEnemiesStore } from "@/stores/game/enemies.store";
+export { useGameSelfStore } from "@/stores/game/self.store";

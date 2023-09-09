@@ -7,11 +7,11 @@
       class="grid-in-[avatar] xxs:justify-self-start"
     />
     <role-badge
-      :role="enemy.role"
+      :kind="enemy.kind"
       class="absolute -bottom-4 right-[4px] grid-in-[role] xxs:left-2 xxs:right-0"
     />
     <div
-      v-if="isAllowedToMove"
+      v-if="enemy.isAllowedToMove"
       class="absolute -bottom-4 left-10 rounded border border-black bg-neutral-500 px-1"
     >
       {{ Math.max(gameStateStore.count, 0).toPrecision(2) }}
@@ -22,20 +22,19 @@
       <stacked-cards :count="enemy.cardCount" />
     </div>
     <router-link
-      :to="`/profile?personalLink${enemy.info.personalLink}`"
-      :title="enemy.info.nickname"
+      :to="`/profile?personalLink${enemy.info.profile.personalLink}`"
+      :title="enemy.info.profile.nickname"
       class="grid-in-[nickname] xxs:w-full"
     >
       <span
         class="link-hover link mt-3 line-clamp-2 break-all text-xs font-bold xxs:line-clamp-1 xs:text-sm sm:text-base md:text-lg xl:text-xl 2xl:text-2xl"
       >
-        {{ enemy.info.nickname }}
+        {{ enemy.info.profile.nickname }}
       </span>
     </router-link>
   </section>
 </template>
 <script setup lang="ts">
-import { toRefs } from "vue";
 import type { Enemy } from "@/module/card-game/types";
 import Avatar from "@/module/card-game/EnemyProfileAvatar.vue";
 import StackedCards from "@/module/card-game/EnemyProfileStackedCards.vue";
@@ -44,9 +43,7 @@ import { useGameStateStore } from "@/stores/game";
 
 const gameStateStore = useGameStateStore();
 
-const props = defineProps<{
+const { enemy } = defineProps<{
   enemy: Enemy;
-  isAllowedToMove: boolean;
 }>();
-const { enemy, isAllowedToMove } = toRefs(props);
 </script>

@@ -43,6 +43,7 @@ export const useGlobalChatStore = defineStore("global-chat", () => {
     sendMessage(input: Ref<string>) {
       try {
         websocket.send(new ChatMessage(input).asString());
+        input.value = "";
       } catch (error) {
         if (!(error instanceof Error)) {
           return console.error(error);

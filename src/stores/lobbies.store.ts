@@ -8,24 +8,8 @@ export const useLobbiesStore = defineStore("lobbies", () => {
   const userStore = useUserStore();
   const lobbies = reactive<Lobby[]>([]);
 
-  const restoreState = ({ state }: { state: string }) => {
-    const lobbiesState = <Lobby[]>JSON.parse(state)
-      .map((lobby: any) => {
-        const a = {
-          ...JSON.parse(lobby),
-        };
-        console.log(a);
-        return a;
-      })
-      .map((lobby: any) => {
-        const b = {
-          ...lobby,
-          slots: JSON.parse(lobby.slots).map((slot) => JSON.parse(slot)),
-        };
-        console.log(b);
-        return b;
-      });
-    lobbies.splice(0, lobbies.length, ...lobbiesState);
+  const restoreState = ({ state }: { state: Lobby[] }) => {
+    lobbies.splice(0, lobbies.length, ...state);
     console.log(
       `%c${userStore.user.id}`,
       "color: yellow; font-style: italic; background-color: blue;padding: 2px",
@@ -38,10 +22,8 @@ export const useLobbiesStore = defineStore("lobbies", () => {
     console.log({ currentLobbyId: userStore.user.currentLobbyId });
   };
 
-  const addLobby = ({ lobby }: { lobby: string }) => {
-    const _lobby = JSON.parse(lobby);
-    const superLobby = { ..._lobby, slots: JSON.parse(_lobby.slots) };
-    lobbies.push(superLobby);
+  const addLobby = ({ lobby }: { lobby: Lobby }) => {
+    lobbies.push(lobby);
   };
 
   const deleteLobby = ({ lobbyId }: { lobbyId: Lobby["id"] }) => {
@@ -55,13 +37,10 @@ export const useLobbiesStore = defineStore("lobbies", () => {
     lobbyId,
     slotIndex,
   }: {
-    user: string | LobbyUser;
+    user: LobbyUser;
     lobbyId: Lobby["id"];
     slotIndex: number;
   }) => {
-    console.log({ user });
-    user = <LobbyUser>JSON.parse(user + "");
-    console.log({ user });
     const lobby = lobbies.find((lobby) => lobby.id === lobbyId);
     if (!lobby) throw 2;
     lobby.slots[slotIndex] = user;

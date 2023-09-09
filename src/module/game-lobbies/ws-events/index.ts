@@ -34,20 +34,3 @@ export class CreateLobbyEvent extends CustomWebsocketEvent {
     super("lobby::add");
   }
 }
-
-
-// TODO something (remove or uncomment and use it)
-// type ConcreteWebSocketEventConstructor =
-//   | typeof CreateLobbyEvent
-//   | typeof RemoveLobbyEvent
-//   | typeof JoinLobbyEvent
-//   | typeof LeaveLobbyEvent
-//   | typeof CreateGameEvent;
-
-// function Event<WSEvent extends ConcreteWebSocketEventConstructor>(
-//   this: UseWebSocketReturn<any>,
-//   WebSocketEvent: WSEvent,
-//   eventArgs: ConstructorParameters<WSEvent>,
-// ) {
-//   this.send(new WebSocketEvent(...eventArgs).asString());
-// }

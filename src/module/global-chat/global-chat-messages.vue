@@ -12,16 +12,13 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { whenever } from "@vueuse/core";
 import { useGlobalChatStore } from "@/composable/useGlobalChatStore";
 import GlobalChatUserMessage from "./global-chat-user-message.vue";
 
 const messagesContainer = ref<HTMLElement>();
 const globalChatStore = useGlobalChatStore();
-
-onMounted(() => {});
-onUnmounted(() => {});
 
 whenever(
   () => globalChatStore.isMessagesLoaded,
@@ -41,6 +38,7 @@ watch(
 function scrollToLastElement({
   behavior = "auto",
 }: Omit<ScrollOptions, "top"> = {}) {
+  // NOTE ? maybe can use nextTick from vue instead of queueMicrotask ?
   return queueMicrotask(() => {
     if (!messagesContainer.value) return;
     const top = messagesContainer.value.scrollHeight;

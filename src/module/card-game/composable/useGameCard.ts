@@ -2,22 +2,24 @@ import { computed } from "vue";
 import type { Card, DeskSlot, Suit } from "@/module/card-game/types";
 import cardPowerDictionary from "@/utils/dictionary/card-power.dictionary";
 import suitsDictionary from "@/utils/dictionary/suits.dictionary";
-import { useGameDeskStore, useGameSelfStore, useGameStateStore } from "@/stores/game";
+import {
+  useGameDeskStore,
+  useGameSelfStore,
+  useGameStateStore,
+} from "@/stores/game";
 
 export function useGameCard({ rank, suit }: Card) {
   const selfStore = useGameSelfStore();
   const gameDeskStore = useGameDeskStore();
   const gameStateStore = useGameStateStore();
 
-  const power = computed(() => cardPowerDictionary[rank]);
-  const id = computed(() => {
-    const rankChar = rank === "10" ? "0" : rank;
-    return `${rankChar}${suitsDictionary[suit]}`;
-  });
-  const isTrump = computed(() => gameStateStore.gameState.trumpCard?.suit === suit);
+  const power = cardPowerDictionary[rank];
+  const id = `${rank === "10" ? "0" : rank}${suitsDictionary[suit]}`;
+  const isTrump = computed(() => gameStateStore.trumpSuit === suit);
 
   const canBeUsedForTransferMove = computed(() => {
-    if (!selfStore.isDefender || !gameDeskStore.allowsTransferMove) return false;
+    if (!selfStore.isDefender || !gameDeskStore.allowsTransferMove)
+      return false;
     return gameDeskStore.firstUnbeatenSlotRank === rank;
   });
 
@@ -27,16 +29,18 @@ export function useGameCard({ rank, suit }: Card) {
   });
 
   const canBeUsedForDefense = computed(() => {
-    if (!selfStore.isDefender || !gameStateStore.gameState.trumpCard) return false;
+    if (!selfStore.isDefender) return false;
     if (isTrump.value) {
       return (
-        !!gameDeskStore.unbeatenBasicSlots.length
-        || gameDeskStore.unbeatenTrumpSlots.some(slotHasLower, { power: power.value })
+        !!gameDeskStore.unbeatenBasicSlots.length ||
+        gameDeskStore.unbeatenTrumpSlots.some(slotHasLowerPower, {
+          power,
+        })
       );
     }
     return gameDeskStore.unbeatenSlots
-      .filter(slotHasSame, { suit })
-      .some(slotHasLower, { power: power.value });
+      .filter(slotHasSameSuit, { suit })
+      .some(slotHasLowerPower, { power });
   });
 
   return {
@@ -48,12 +52,11 @@ export function useGameCard({ rank, suit }: Card) {
   };
 }
 
-
-function slotHasSame(this: { suit: Suit }, slot: DeskSlot) {
+function slotHasSameSuit(this: { suit: Suit }, slot: DeskSlot) {
   return slot.attackCard?.suit === this.suit;
 }
 
-function slotHasLower(this: { power: number }, slot: DeskSlot) {
+function slotHasLowerPower(this: { power: number }, slot: DeskSlot) {
   if (!slot.attackCard?.rank) return false;
   return cardPowerDictionary[slot.attackCard.rank] < this.power;
 }

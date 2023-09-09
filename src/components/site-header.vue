@@ -65,6 +65,10 @@ import SiteHeaderLoginData from "./site-header-login-data.vue";
 import PlusSvg from "./svg/Plus.svg.vue";
 import XMark from "./svg/XMark.vue";
 
+// TODO rework
+// add button if user has startedGame
+// fix button
+
 const gameLobbiesStore = useGameLobbiesStore();
 const userStore = useUserStore();
 const lobbyCreationModal = ref<HTMLFormElement>();

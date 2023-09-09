@@ -11,6 +11,5 @@ export class ChatMessage extends CustomWebsocketEvent {
     super("message::send");
     this.text = input.value;
     this.replyMessageId = undefined;
-    input.value = "";
   }
 }

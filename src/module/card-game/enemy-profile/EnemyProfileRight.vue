@@ -4,7 +4,7 @@
   >
     <avatar :info="enemy.info" class="grid-in-[avatar] md:justify-self-end" />
     <role-badge
-      :role="enemy.role"
+      :kind="enemy.kind"
       :class="isAllowedToMove && 'animate-pulse'"
       class="absolute -bottom-4 left-[1px] w-14 grid-in-[role] md:left-2"
     />

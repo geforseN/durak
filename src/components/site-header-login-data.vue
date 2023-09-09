@@ -8,5 +8,6 @@
 </template>
 
 <script setup lang="ts">
+// TODO rename
 import aaaPls from "./aaa-pls.vue";
 </script>

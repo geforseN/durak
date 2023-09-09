@@ -1,17 +1,11 @@
-import type { Card, Rank, Suit } from "./Card";
-import type { DeskSlot } from "./DeskSlot";
-import type { GameState } from "./GameState";
-import type { Self, Enemy, UIStatus, UserInfo, PlayerRole } from "./UserInfo";
-
-export {
-  Card,
-  Rank,
-  Suit,
-  DeskSlot,
+export type {
   GameState,
   Self,
   Enemy,
-  UIStatus,
-  UserInfo,
-  PlayerRole,
-};
+  PlayerInfo as UserInfo,
+  PlayerKind,
+  DeskSlot,
+  Card,
+  Rank,
+  Suit,
+} from "@durak-game/durak-dts";

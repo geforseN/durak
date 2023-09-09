@@ -2,30 +2,30 @@ import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 import type { DeskSlot, Card } from "@/module/card-game/types";
 import { useGameSelfStore } from "@/stores/game/self.store";
-import { useGameStateStore } from "./game.store";
+import { useGameStateStore } from "./game.state.store";
 
 export const useGameDeskStore = defineStore("gameDesk", () => {
   const selfStore = useGameSelfStore();
   const gameStateStore = useGameStateStore();
-  const deskSlots = ref<DeskSlot[]>([]);
+  const slots = ref<DeskSlot[]>([]);
 
   const clear = () => {
-    deskSlots.value = deskSlots.value.map(() => ({}));
+    slots.value = slots.value.map(() => ({}));
   };
 
   const insertDefendCard = (card: Card, index: number) => {
-    deskSlots.value[index].defendCard = card;
+    slots.value[index].defendCard = card;
   };
 
   const insertAttackCard = (card: Card, index: number) => {
-    deskSlots.value[index].attackCard = card;
+    slots.value[index].attackCard = card;
   };
 
-  const insertCard = (card: Card, index: number, __inserterId__: string) => {
+  const insertCard = ({ card, slot: { index }, source: { id } }) => {
     if (selfStore.has({ card })) {
-      selfStore.remove({ card });
+      selfStore.removeCard(card);
     }
-    if (!deskSlots.value[index].attackCard) {
+    if (!slots.value[index].attackCard) {
       insertAttackCard(card, index);
     } else {
       insertDefendCard(card, index);
@@ -33,41 +33,57 @@ export const useGameDeskStore = defineStore("gameDesk", () => {
   };
 
   const ranks = computed(() => {
-    const cards = deskSlots.value.flatMap<Card>(Object.values);
-    const cardRanks = cards.map((card) => card.rank).filter((value) => value !== undefined);
+    const cards = slots.value.flatMap<Card>(Object.values);
+    const cardRanks = cards
+      .map((card) => card.rank)
+      .filter((value) => value !== undefined);
     return [...new Set(cardRanks)];
   });
 
   const emptySlots = computed(() => {
-    return deskSlots.value.filter((slot) => !slot.attackCard && !slot.defendCard);
+    return slots.value.filter((slot) => !slot.attackCard && !slot.defendCard);
   });
 
-  const defendedSlots = computed<(Required<DeskSlot>)[]>(() => {
-    return deskSlots.value.filter((slot) => slot.attackCard && slot.defendCard) as { attackCard: Card, defendCard: Card }[];
+  const defendedSlots = computed<Required<DeskSlot>[]>(() => {
+    return slots.value.filter((slot) => slot.attackCard && slot.defendCard) as {
+      attackCard: Card;
+      defendCard: Card;
+    }[];
   });
 
-  const unbeatenSlots = computed<(Required<Pick<DeskSlot, "attackCard">>)[]>(() => {
-    return deskSlots.value.filter((slot) => slot.attackCard && !slot.defendCard) as { attackCard: Card }[];
-  });
+  const unbeatenSlots = computed<Required<Pick<DeskSlot, "attackCard">>[]>(
+    () => {
+      return slots.value.filter(
+        (slot) => slot.attackCard && !slot.defendCard,
+      ) as { attackCard: Card }[];
+    },
+  );
 
   const unbeatenTrumpSlots = computed(() => {
     return unbeatenSlots.value.filter((unbeatenSlot) => {
-      return unbeatenSlot.attackCard.suit === gameStateStore.gameState.trumpCard?.suit;
+      return unbeatenSlot.attackCard.suit === gameStateStore.trumpSuit;
     });
   });
 
   const unbeatenBasicSlots = computed(() => {
     return unbeatenSlots.value.filter((unbeatenSlot) => {
-      return unbeatenSlot.attackCard?.suit !== gameStateStore.gameState.trumpCard?.suit;
+      return unbeatenSlot.attackCard.suit !== gameStateStore.trumpSuit;
     });
   });
 
-  const isEmpty = computed(() => deskSlots.value.length === emptySlots.value.length);
+  const isEmpty = computed(
+    () => slots.value.length === emptySlots.value.length,
+  );
   const hasDefendedSlot = computed(() => !!defendedSlots.value.length);
-  const firstUnbeatenSlotRank = computed(() => unbeatenSlots.value[0].attackCard.rank);
+  const firstUnbeatenSlotRank = computed(
+    () => unbeatenSlots.value[0].attackCard.rank,
+  );
   const allowsTransferMove = computed(() => {
-    if (hasDefendedSlot.value || isEmpty.value || !firstUnbeatenSlotRank.value) return false;
-    return unbeatenSlots.value.every((slot) => slot.attackCard.rank === firstUnbeatenSlotRank.value);
+    if (hasDefendedSlot.value || isEmpty.value || !firstUnbeatenSlotRank.value)
+      return false;
+    return unbeatenSlots.value.every(
+      (slot) => slot.attackCard.rank === firstUnbeatenSlotRank.value,
+    );
   });
 
   return {
@@ -77,7 +93,7 @@ export const useGameDeskStore = defineStore("gameDesk", () => {
     insertCard,
     isEmpty,
     ranks,
-    deskSlots,
+    slots,
     unbeatenSlots,
     unbeatenTrumpSlots,
     unbeatenBasicSlots,
