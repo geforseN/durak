@@ -9,7 +9,9 @@
       <self-card
         v-for="(card, index) of selfStore.self.cards"
         :key="card.suit + card.rank"
-        v-bind="{ ...card, index }"
+        :rank="card.rank"
+        :suit="card.suit"
+        :index="index"
       />
     </div>
   </div>
