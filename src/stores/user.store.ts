@@ -6,6 +6,8 @@ import { defineStore } from "pinia";
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 
+const WAIT_TIME_FOR_WS_USER_DATA_TO_LOAD = 3_000;
+
 export const useUserStore = defineStore("user", () => {
   const notificationStore = useNotificationStore();
   const router = useRouter();
@@ -47,12 +49,13 @@ export const useUserStore = defineStore("user", () => {
   );
 
   const handlers = {
-    "user::restore": ({ user }: { user }) => {
-      console.log(user, "pls");
-      user.id = user.id;
-      user.profile = user.profile;
+    "user::restore": (payload: { user: object }) => {
+      console.log({ name: "user::restore", user, payload });
+      user.id = payload.user.id;
+      user.profile = payload.user.profile;
+      user.isAnonymous = payload.user.isAnonymous;
       isUserDataLoaded.value = true;
-      console.log(user, "pls2");
+      console.log({ name: "user::restore", user, payload });
     },
     "durakGames::restore": ({
       durakGames,
@@ -71,18 +74,46 @@ export const useUserStore = defineStore("user", () => {
   const { VITE_FASTIFY_SERVER_URI: host } = import.meta.env;
 
   async function getMe() {
-    if (user.profile?.nickname) return user;
+    if (isUserDataLoaded.value) {
+      return user;
+    }
     return await fetch(
       new Request(`${host}/me`, {
         method: "GET",
         mode: "cors",
       }),
     )
-      .then((data) => data.json())
-      .then(({ user: { id, profile, isAnonymous } }) => {
-        user.id = id;
-        user.profile = profile;
-        user.isAnonymous = isAnonymous;
+      .then((response) => {
+        console.log({ name: "getMe", response });
+        return response.json();
+      })
+      .then((payload) => {
+        if (isUserDataLoaded.value) {
+          console.log({
+            name: "getMe",
+            message: "user data is loaded by ws",
+          });
+          return user;
+        }
+        if (!payload.user) {
+          return void setTimeout(() => {
+            if (isUserDataLoaded.value) {
+              console.log({
+                name: "getMe",
+                message:
+                  "user data is loaded by ws, no payload from http was received",
+              });
+              return user;
+            }
+            throw new Error("getMe handler did not send user data");
+          }, WAIT_TIME_FOR_WS_USER_DATA_TO_LOAD);
+        }
+        console.log({ name: "getMe", user, payload });
+        user.id = payload.user.id;
+        user.profile = payload.user.profile;
+        user.isAnonymous = payload.user.isAnonymous;
+        isUserDataLoaded.value = true;
+        console.log({ name: "getMe", user, payload });
         return user;
       });
   }

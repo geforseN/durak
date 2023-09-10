@@ -8,8 +8,9 @@ export const useLobbiesStore = defineStore("lobbies", () => {
   const userStore = useUserStore();
   const lobbies = reactive<Lobby[]>([]);
 
-  const restoreState = ({ state }: { state: Lobby[] }) => {
+  const restoreState = async ({ state }: { state: Lobby[] }) => {
     lobbies.splice(0, lobbies.length, ...state);
+    await userStore.getMe();
     console.log(
       `%c${userStore.user.id}`,
       "color: yellow; font-style: italic; background-color: blue;padding: 2px",
