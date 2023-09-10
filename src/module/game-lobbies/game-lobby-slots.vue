@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import type { Lobby } from "@/module/game-lobbies/types";
 import GameLobbyUser from "@/module/game-lobbies/game-lobby-user.vue";
-import { useGameLobbiesStore } from "@/composable/useGameLobbiesStore";
+import { useGameLobbiesStore } from "@/stores/useGameLobbiesStore";
 
 const { lobby } = defineProps<{ lobby: Lobby }>();
 

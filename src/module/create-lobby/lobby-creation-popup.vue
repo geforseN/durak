@@ -76,7 +76,7 @@ import useLobbySettings, {
 import { useNotificationStore } from "@/stores/notification.store";
 import XMark from "@/components/svg/XMark.vue";
 import { ref, onMounted } from "vue";
-import { useGameLobbiesStore } from "@/composable/useGameLobbiesStore";
+import { useGameLobbiesStore } from "@/stores/useGameLobbiesStore";
 
 defineOptions({ name: "LobbyCreationPopup" });
 

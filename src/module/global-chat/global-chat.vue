@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import { useGlobalChatStore } from "@/composable/useGlobalChatStore";
+import { useGlobalChatStore } from "@/stores/useGlobalChatStore";
 import GlobalChatMessages from "@/module/global-chat/global-chat-messages.vue";
 import { ref } from "vue";
 

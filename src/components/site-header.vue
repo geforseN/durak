@@ -56,7 +56,7 @@
 <script setup lang="ts">
 import ListItemLink from "@/components/list-item-link.vue";
 import Home from "@/components/svg/Home.vue";
-import { useGameLobbiesStore } from "@/composable/useGameLobbiesStore";
+import { useGameLobbiesStore } from "@/stores/useGameLobbiesStore";
 import LobbyCreationPopup from "@/module/create-lobby/lobby-creation-popup.vue";
 import { useUserStore } from "@/stores/user.store";
 import { onClickOutside } from "@vueuse/core";

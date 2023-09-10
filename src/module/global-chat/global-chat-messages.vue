@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { whenever } from "@vueuse/core";
-import { useGlobalChatStore } from "@/composable/useGlobalChatStore";
+import { useGlobalChatStore } from "@/stores/useGlobalChatStore";
 import GlobalChatUserMessage from "./global-chat-user-message.vue";
 
 const messagesContainer = ref<HTMLElement>();

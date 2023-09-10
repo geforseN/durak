@@ -21,7 +21,7 @@
 import GameLobbyTopElement from "@/module/game-lobbies/game-lobby-top-element.vue";
 import GameLobbySlots from "@/module/game-lobbies/game-lobby-slots.vue";
 import { useUserStore } from "@/stores/user.store";
-import { useGameLobbiesStore } from "@/composable/useGameLobbiesStore";
+import { useGameLobbiesStore } from "@/stores/useGameLobbiesStore";
 
 const userStore = useUserStore();
 const gameLobbiesStore = useGameLobbiesStore();

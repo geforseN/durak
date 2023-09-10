@@ -44,7 +44,7 @@
 import { useUserStore } from "@/stores/user.store";
 import gameTypesDictionary from "../../utils/dictionary/game-types.dictionary";
 import type { Lobby } from "@/module/game-lobbies/types";
-import { useGameLobbiesStore } from "@/composable/useGameLobbiesStore";
+import { useGameLobbiesStore } from "@/stores/useGameLobbiesStore";
 
 const { lobby } = defineProps<{ lobby: Lobby }>();
 
