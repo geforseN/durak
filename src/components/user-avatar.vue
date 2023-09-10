@@ -1,5 +1,13 @@
 <template>
   <li v-if="userStore.user.profile.nickname">
+    <div v-if="userStore.user.isAnonymous">
+      <div
+        class="tooltip"
+        data-tip="All game progress is not saved when playing in an anonymous account"
+      >
+        <div>Anonymous account</div>
+      </div>
+    </div>
     <router-link
       :to="`/profile/${userStore.user.profile.personalLink}`"
       class="h-12 w-12 rounded border border-primary"
@@ -12,13 +20,7 @@
         class="rounded"
       />
     </router-link>
-    <div v-if="userStore.user.isAnonymous">JOKERGE</div>
   </li>
-  <template v-else>
-    <list-item-link to="/auth/registration">Зарегистрироваться</list-item-link>
-    <li class="ml-2" />
-    <list-item-link to="/auth/login">Войти</list-item-link>
-  </template>
 </template>
 <script lang="ts" setup>
 import { useUserStore } from "@/stores/user.store";

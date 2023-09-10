@@ -1,6 +1,6 @@
 <template>
   <suspense>
-    <aaa-pls />
+    <user-avatar />
     <template #fallback>
       <div class="h-12 w-12 rounded border border-primary bg-black"></div>
     </template>
@@ -8,6 +8,5 @@
 </template>
 
 <script setup lang="ts">
-// TODO rename
-import aaaPls from "./aaa-pls.vue";
+import UserAvatar from "./user-avatar.vue";
 </script>
