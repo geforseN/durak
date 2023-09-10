@@ -10,7 +10,7 @@ import { useRoute } from "vue-router";
 // FIXME IMPORTANT /auth/twitch/redirect?code=eldsr4jy40ejxc1gszpdt5a92kcxuu&scope=user%3Aread%3Aemail
 const route = useRoute();
 // WHEN COOL
-console.log(route.fullPath)
+console.log(route.fullPath);
 console.log(route.query);
 // WHEN BAD
 // http://localhost:3000/
