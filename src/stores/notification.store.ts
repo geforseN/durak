@@ -30,17 +30,13 @@ export const useNotificationStore = defineStore("alerts", () => {
   const addNotificationInQueue = (
     newNotification: Partial<NotificationAlert> = {},
   ) => {
-    console.trace(newNotification)
+    console.trace(newNotification);
     const notification: NotificationAlert = {
       ...defaultNotification,
       ...newNotification,
     };
     notificationQueue.push(notification);
-    setTimeout(
-      removeNotification,
-      notification.durationInMS,
-      notification.id,
-    );
+    setTimeout(removeNotification, notification.durationInMS, notification.id);
   };
 
   return {

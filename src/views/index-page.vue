@@ -1,5 +1,7 @@
 <template>
-  <div class="p-1 sm:p-2 w-full flex-1 flex flex-col items-center gap-6 bg-secondary">
+  <div
+    class="p-1 sm:p-2 w-full flex-1 flex flex-col items-center gap-6 bg-secondary"
+  >
     <global-chat class="w-full max-w-md sm:max-w-xl h-[20rem]" />
     <game-lobbies class="w-full sm:w-auto" />
   </div>

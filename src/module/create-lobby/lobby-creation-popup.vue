@@ -2,8 +2,6 @@
   <form
     class="flex flex-col rounded-lg border-4 border-primary-focus bg-secondary-focus px-3 py-4 pb-2 text-xl min-[350px]:px-4 min-[350px]:text-2xl sm:px-6"
   >
-    <h5 class="text-sm">ТУТ МОЖНО СКРОЛИТЬ</h5>
-    <h5 class="text-sm">ВИДНО, ЧТО ПОДОЛОЖКА ИМЕЕТ ДЛИННУ 100vh</h5>
     <div class="flex justify-between">
       <h2
         class="text-2xl font-semibold min-[350px]:text-3xl min-[420px]:text-4xl"
