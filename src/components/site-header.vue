@@ -48,7 +48,7 @@
           </dialog>
         </teleport>
         <li class="mr-2"></li>
-        <site-header-login-data />
+        <suspense-user-avatar />
       </ul>
     </nav>
   </header>
@@ -61,7 +61,7 @@ import LobbyCreationPopup from "@/module/create-lobby/lobby-creation-popup.vue";
 import { useUserStore } from "@/stores/user.store";
 import { onClickOutside } from "@vueuse/core";
 import { ref } from "vue";
-import SiteHeaderLoginData from "./site-header-login-data.vue";
+import SuspenseUserAvatar from "./suspense-user-avatar.vue";
 import PlusSvg from "./svg/Plus.svg.vue";
 import XMark from "./svg/XMark.vue";
 
