@@ -2,15 +2,15 @@
   <div class="relative right-5 xs:right-3 lg:right-2">
     <card-background
       v-if="
-        !gameStateStore.gameState.talon.hasOneCard &&
-        !gameStateStore.gameState.talon.isEmpty
+        !gameStateStore.talon.hasOneCard &&
+        !gameStateStore.talon.isEmpty
       "
       class="relative left-5 z-10"
     />
     <basic-card
-      v-bind="gameStateStore.gameState.talon.trumpCard"
+      v-bind="gameStateStore.talon.trumpCard"
       class="absolute top-0 rotate-90"
-      :class="gameStateStore.gameState.talon.isEmpty && 'opacity-30'"
+      :class="gameStateStore.talon.isEmpty && 'opacity-30'"
     />
   </div>
 </template>

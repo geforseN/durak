@@ -1,58 +1,19 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import type { Self, UserInfo, Card } from "@/module/card-game/types";
-import { useGameStateStore } from "@/stores/game/game.state.store";
-
-const defaultUserInfo: UserInfo = {
-  id: "",
-  isAdmin: false,
-  profile: {
-    personalLink: "",
-    photoUrl: "",
-    nickname: "",
-    connectStatus: "OFFLINE",
-    userId: "",
-  },
-};
+import Self from "@/module/card-game/entity/Self";
+import type { BasePlayer, Card as CardDTO } from "@durak-game/durak-dts";
 
 export const useGameSelfStore = defineStore("gameSelf", () => {
-  const self = ref<Self>({
-    cards: [],
-    isAllowedToMove: false,
-    info: defaultUserInfo,
-    kind: "Player",
-    id: "",
-  });
-  const gameStateStore = useGameStateStore();
+  const self = ref(new Self());
 
-  const pushCards = (cards: Card[]) => {
-    self.value.cards.push(...cards);
-  };
-
-  const removeCard = ({ suit, rank }: Card) => {
-    const cardIndex = self.value.cards.findIndex(
-      (card) => card.suit === suit && card.rank === rank,
-    );
-    if (cardIndex === -1) {
-      throw new Error("Can not remove card from Self");
-    }
-    self.value.cards.splice(cardIndex, 1);
-  };
-
-  function isSameCard(this: Card, card: Card) {
-    return card.suit === this.suit && card.rank === this.rank;
-  }
-
-  const has = ({ card }: { card: Card }) => {
-    return self.value.cards.some(isSameCard, card);
+  const restore = (selfDTO: BasePlayer & { cards: CardDTO[] }) => {
+    self.value = new Self(selfDTO);
   };
 
   const selfId = computed(() => self.value.id);
   const isDefender = computed(() => self.value.kind === "Defender");
   const isAttacker = computed(() => self.value.kind === "Attacker");
-  const canMakeMove = computed(
-    () => gameStateStore.allowedPlayerId === selfId.value,
-  );
+  const canMakeMove = computed(() => self.value.canMakeMove);
   const canMakeDefenseMove = computed(
     () => canMakeMove.value && isDefender.value,
   );
@@ -61,9 +22,6 @@ export const useGameSelfStore = defineStore("gameSelf", () => {
   );
 
   return {
-    has,
-    pushCards,
-    removeCard,
     self,
     selfId,
     isAttacker,
@@ -71,5 +29,6 @@ export const useGameSelfStore = defineStore("gameSelf", () => {
     canMakeMove,
     canMakeDefenseMove,
     canMakeAttackMove,
+    restore
   };
 });
