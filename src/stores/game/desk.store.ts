@@ -1,11 +1,9 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 import type { DeskSlot, Card } from "@/module/card-game/types";
-import { useGameSelfStore } from "@/stores/game/self.store";
 import { useGameStateStore } from "./game.state.store";
 
 export const useGameDeskStore = defineStore("gameDesk", () => {
-  const selfStore = useGameSelfStore();
   const gameStateStore = useGameStateStore();
   const slots = ref<DeskSlot[]>([]);
 
@@ -22,9 +20,6 @@ export const useGameDeskStore = defineStore("gameDesk", () => {
   };
 
   const insertCard = ({ card, slot: { index }, source: { id } }) => {
-    if (selfStore.has({ card })) {
-      selfStore.removeCard(card);
-    }
     if (!slots.value[index].attackCard) {
       insertAttackCard(card, index);
     } else {
