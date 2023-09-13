@@ -1,47 +1,45 @@
-import type { PlayerKind } from "@durak-game/durak-dts";
-import BackendPayloadError from "../error/BackendPayloadError";
+import { Hand } from "./Hand";
 import Player from "./Player";
 import type { Card as CardDTO } from "@durak-game/durak-dts";
 import type { BasePlayer } from "@durak-game/durak-dts";
 
-export default class Self {
-  #hand: CardDTO[];
-  #player: Player;
+export default class Self extends Player {
+  private _hand: Hand;
 
   constructor(selfDTO: Partial<BasePlayer & { cards: CardDTO[] }> = {}) {
-    this.#hand = selfDTO.cards || [];
-    this.#player = new Player(selfDTO);
+    super(selfDTO);
+    this._hand = new Hand(selfDTO.cards);
   }
 
-  get id() {
-    return this.#player.id;
+  get hand() {
+    return this._hand;
   }
 
-  get canMakeMove() {
-    return this.#player.isAllowedToMove;
+  get cards() {
+    return this._hand.cards;
+  }
+
+  get hasCards() {
+    return this._hand.hasCards;
+  }
+
+  get canMakeDefenseMove() {
+    return this.canMakeMove && this.isDefender;
+  }
+
+  get canMakeAttackMove() {
+    return this.canMakeMove && this.isAttacker;
   }
 
   has({ suit, rank }: CardDTO) {
-    return this.#hand.some((card) => card.suit === suit && card.rank === rank);
+    return this._hand.has({ suit, rank });
   }
 
   receive(...cards: CardDTO[]) {
-    this.#hand.push(...cards);
+    this._hand.receive(...cards);
   }
 
   remove({ suit, rank }: CardDTO) {
-    const index = this.#hand.findIndex(
-      (card) => card.suit === suit && card.rank === rank,
-    );
-    if (index === -1) {
-      throw new BackendPayloadError(
-        "Self#remove: Backend send wrong card to remove",
-      );
-    }
-    this.#hand.splice(index, 1);
-  }
-
-  setKind(kind: PlayerKind) {
-    this.#player.kind = kind;
+    return this._hand.remove({ suit, rank });
   }
 }

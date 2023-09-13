@@ -41,7 +41,7 @@ const groupedEnemiesBySide: Record<EnemiesCount, GroupedEnemies> = {
 
 export default class Enemies {
   storage: Enemy[];
-  
+
   constructor(enemies: Enemy[] = []) {
     this.storage = enemies;
   }
@@ -54,17 +54,43 @@ export default class Enemies {
     return enemy;
   }
 
-  get #groupedEnemiesBySide() {
+  get groupedEnemiesBySide() {
     return groupedEnemiesBySide[this.storage.length];
   }
 
-  getBySide(side: keyof Required<GroupedEnemies>) {
-    const indexes = this.#groupedEnemiesBySide[side];
+  getGroupedBySide(side: keyof Required<GroupedEnemies>) {
+    const indexes = this.groupedEnemiesBySide[side];
     if (typeof indexes?.start === "undefined") {
       return [];
     }
     return this.storage.slice(indexes.start, indexes.end + 1);
   }
-}
 
-type t = Required<GroupedEnemies>;
+  get hasAllowedPlayer() {
+    return this.storage.some((enemy) => enemy.canMakeMove);
+  }
+
+  get hasTimerHolder() {
+    return this.storage.some((enemy) => enemy.hasActiveTimer());
+  }
+
+  get allowedPlayer() {
+    const allowed = this.storage.find((enemy) => enemy.canMakeMove);
+    if (!allowed) {
+      throw new Error();
+    }
+    return allowed;
+  }
+
+  get timerHolder() {
+    const holder = this.storage.find((enemy) => enemy.hasActiveTimer());
+    if (!holder) {
+      throw new Error();
+    }
+    return holder;
+  }
+
+  hasSurrenderedDefender() {
+    return this.storage.some((enemy) => enemy.isSurrendered);
+  }
+}

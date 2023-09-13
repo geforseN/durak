@@ -1,14 +1,14 @@
 import type { BasePlayer } from "@durak-game/durak-dts";
 import type { PlayerInfo, PlayerKind } from "@durak-game/durak-dts";
+import PlayerTimer from "./Timer";
 
-export default class Player {
-  isAllowedToMove: boolean;
+export default abstract class Player {
   info: PlayerInfo;
   kind: PlayerKind;
   id: string;
+  timer: PlayerTimer;
 
   constructor(basePlayer: Partial<BasePlayer> = {}) {
-    basePlayer.isAllowedToMove ??= false;
     basePlayer.info ??= {
       id: "",
       isAdmin: false,
@@ -25,6 +25,35 @@ export default class Player {
     this.info = basePlayer.info;
     this.kind = basePlayer.kind;
     this.id = basePlayer.id;
-    this.isAllowedToMove = basePlayer.isAllowedToMove;
+    this.timer = new PlayerTimer(this);
+  }
+
+  hasActiveTimer(): this is {
+    timer: {
+      remainedTime: {
+        milliseconds: number;
+        seconds: number;
+        positiveTimeAsString: string;
+        timeAsString: string;
+      };
+    };
+  } {
+    return this.timer.isActive;
+  }
+
+  get canMakeMove() {
+    return this.kind.includes("Allowed");
+  }
+
+  get isAttacker() {
+    return this.kind.includes("Attacker");
+  }
+
+  get isDefender() {
+    return this.kind.includes("Defender");
+  }
+
+  get isSurrendered() {
+    return this.kind === "SurrenderedDefender";
   }
 }

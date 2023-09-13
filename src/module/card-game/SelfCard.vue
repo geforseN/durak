@@ -2,8 +2,15 @@
   <div
     class="relative"
     draggable="true"
-    @dragstart="handleCardDrag($event, { rank, suit })"
-    @dragend.prevent="handleCardDragEnd($event, { rank, suit })"
+    @dragstart="
+      durakGame.handleCardDrag($event, { rank: props.rank, suit: props.suit })
+    "
+    @dragend.prevent="
+      durakGame.handleCardDragEnd($event, {
+        rank: props.rank,
+        suit: props.suit,
+      })
+    "
     @focus="handleFocus"
     @blur="handleBlur"
     @pointerover="handlePointOver"
@@ -22,38 +29,54 @@
         canBeUsedForTransferMove && 'outline outline-red-500 rotate-2',
         canBeUsedForAttack && 'outline outline-yellow-500',
       ]"
-      class="cursor-pointer h-[116px] w-[83px] border-2 border-black rounded bg-cover bg-blacktransition-all ease-out"
+      class="cursor-pointer h-[116px] w-[83px] border-2 border-black rounded bg-cover bg-black transition-all ease-out"
     ></div>
+    <!-- TODO -->
+    <!-- TODO -->
+    <!-- TODO -->
+    <!-- TODO remove commented code -->
     <!-- <div v-if="isFocused"
       class="pointer-events-none select-none absolute top-8 right-1/2 translate-x-1/2 flex justify-center border-red-500 border bg-slate-300 w-max h-max">
       Card <br /> index: <br /> {{ index }}</div> -->
+    <!-- TODO -->
+    <!-- TODO -->
+    <!-- TODO -->
+    <!-- TODO -->
     <input
       type="radio"
       name="self-card"
-      @focus="isFocused = true"
-      @blur="isFocused = false"
+      @focus="handleCardFocus"
+      @blur="handleCardBlur"
       class="z-10 rounded-md w-full h-full appearance-none absolute inset-0 outline-none"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Card } from "@/module/card-game/types";
+import type { Card as CardDTO } from "@durak-game/durak-dts";
 import { useGameCard } from "@/module/card-game/composable/useGameCard";
 import { ref } from "vue";
 import { useEventListener } from "@vueuse/core";
 import { useSharedDurakGame } from "@/module/card-game/composable/useDurakGame";
 
-const props = defineProps<Card & { index: number }>();
+const props = defineProps<CardDTO & { index: number }>();
 
-const { handleCardDrag, handleCardDragEnd, handleCardDropOnDesk } =
-  useSharedDurakGame();
+const durakGame = useSharedDurakGame();
 
 const isFocused = ref(false);
 
+// TODO add logic for card event listeners (if it even needed)
 const handleFocus = () => {};
 const handleBlur = () => {};
 const handlePointOver = () => {};
+
+const handleCardFocus = () => {
+  isFocused.value = true;
+};
+
+const handleCardBlur = () => {
+  isFocused.value = false;
+};
 
 const {
   id,
@@ -63,11 +86,17 @@ const {
   canBeUsedForTransferMove,
 } = useGameCard(props);
 
+const deskSlotsKeys = [1, 2, 3, 4, 5, 6];
+
 useEventListener("keyup", (event: KeyboardEvent) => {
-  if (!isFocused.value) return;
-  const deskIndexes = [1, 2, 3, 4, 5, 6];
-  const eventKey = Number(event.key);
-  if (!deskIndexes.includes(eventKey)) return;
-  handleCardDropOnDesk({ rank: props.rank, suit: props.suit }, eventKey - 1);
+  if (!isFocused.value) {
+    return;
+  }
+  const pressedKey = Number(event.key);
+  if (!deskSlotsKeys.includes(pressedKey)) {
+    return;
+  }
+  const slotIndex = pressedKey - 1;
+  durakGame.handleCardDropOnDesk(props, slotIndex);
 });
 </script>

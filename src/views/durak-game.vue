@@ -9,12 +9,12 @@
     class="grid absolute top-1.5 right-14 bg-primary border-black divide-black divide-y-2 border-2"
   >
     <span class="bg-gray-500 w-full"
-      >{{ gameStateStore.gameState.round.number }} раунд</span
+      >{{ gameStateStore.round.number }} раунд</span
     >
     <span
       :class="[
-        selfStore.isDefender && 'bg-blue-600',
-        selfStore.isAttacker && 'bg-red-600',
+        selfStore.self.isDefender && 'bg-blue-600',
+        selfStore.self.isAttacker && 'bg-red-600',
       ]"
     >
       {{ selfStore.self.kind }}

@@ -2,24 +2,31 @@
   <section
     class="debug-screens relative grid w-[80px] grid-cols-[auto] grid-rows-[1fr_auto_auto] justify-items-end rounded border border-neutral-800 bg-primary p-2 grid-areas-[avatar,cards,nickname] xxs:w-[140px] xxs:grid-cols-2 xxs:grid-rows-none xxs:grid-areas-[avatar_cards,nickname_nickname] xs:w-[160px] sm:w-[210px]"
   >
-    <avatar
-      :info="enemy.info"
+    <enemy-avatar
+      :src="enemy.info.profile.photoUrl"
+      :alt="`${enemy.info.profile.nickname} profile picture`"
       class="grid-in-[avatar] xxs:justify-self-start"
     />
-    <role-badge
+    <enemy-kind-badge
       :kind="enemy.kind"
       class="absolute -bottom-4 right-[4px] grid-in-[role] xxs:left-2 xxs:right-0"
     />
     <div
-      v-if="enemy.isAllowedToMove"
+      v-if="enemy.canMakeMove"
       class="absolute -bottom-4 left-10 rounded border border-black bg-neutral-500 px-1"
     >
-      {{ Math.max(gameStateStore.count, 0).toPrecision(2) }}
+      <!-- TODO add clock svg -->
+      <div v-if="enemy.hasActiveTimer()" class="flex flex-col">
+        <span>{{ enemy.timer.remainedTime.milliseconds }}</span>
+        <span>{{ enemy.timer.remainedTime.seconds }}</span>
+        <span>{{ enemy.timer.remainedTime.positiveTimeAsString }}</span>
+        <span>{{ enemy.timer.remainedTime.timeAsString }}</span>
+      </div>
     </div>
     <div
       class="m-2 grid auto-rows-[10px] grid-cols-6 pr-4 grid-in-[cards] xxs:mb-6 min-[400px]:-mr-1.5 min-[400px]:grid-cols-9 md:m-0 md:-mr-4 md:pr-6"
     >
-      <stacked-cards :count="enemy.cardCount" />
+      <enemy-stacked-cards :count="enemy.cardCount" />
     </div>
     <router-link
       :to="`/profile?personalLink${enemy.info.profile.personalLink}`"
@@ -35,13 +42,10 @@
   </section>
 </template>
 <script setup lang="ts">
-import type { Enemy } from "@/module/card-game/types";
-import Avatar from "@/module/card-game/EnemyProfileAvatar.vue";
-import StackedCards from "@/module/card-game/EnemyProfileStackedCards.vue";
-import RoleBadge from "@/module/card-game/EnemyProfileRoleBadge.vue";
-import { useGameStateStore } from "@/stores/game";
-
-const gameStateStore = useGameStateStore();
+import EnemyAvatar from "@/module/card-game/EnemyProfileAvatar.vue";
+import EnemyStackedCards from "@/module/card-game/EnemyProfileStackedCards.vue";
+import EnemyKindBadge from "@/module/card-game/EnemyProfileKindBadge.vue";
+import type Enemy from "@/module/card-game/entity/Enemy";
 
 const { enemy } = defineProps<{
   enemy: Enemy;

@@ -1,36 +1,23 @@
-import type { BasePlayer, PlayerKind } from "@durak-game/durak-dts";
+import type { BasePlayer } from "@durak-game/durak-dts";
 import Player from "./Player";
 
-export default class Enemy {
-  #cardCount: number = 0;
-  #player: Player = new Player();
+export default class Enemy extends Player {
+  private _cardCount: number = 0;
 
   constructor(enemyDTO: BasePlayer & { cardCount: number }) {
-    this.#player = new Player(enemyDTO);
-    this.#cardCount = enemyDTO.cardCount;
-  }
-
-  get id() {
-    return this.#player.id;
-  }
-  
-  get canMakeMove() {
-    return this.#player.isAllowedToMove;
+    super(enemyDTO)
+    this._cardCount = enemyDTO.cardCount;
   }
 
   get cardCount() {
-    return this.#cardCount;
+    return this._cardCount;
   }
-
-  setKind(kind: PlayerKind) {
-    this.#player.kind = kind;
-  }
-
+  
   increaseCardCount(cardCountToAdd: number) {
-    this.#cardCount += cardCountToAdd;
+    this._cardCount += cardCountToAdd;
   }
 
   decrementCardCount() {
-    this.#cardCount--;
+    this._cardCount--;
   }
 }

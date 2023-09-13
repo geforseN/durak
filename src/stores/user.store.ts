@@ -58,17 +58,20 @@ export const useUserStore = defineStore("user", () => {
       console.log({ name: "user::restore", user, payload });
     },
     "durakGames::restore": ({
-      durakGames,
+      startedGames,
     }: {
-      durakGames: {
+      startedGames: {
         players: { id: string }[];
         id: string;
       }[];
     }) => {
       if (!user.id) return;
-      user.currentGameId = durakGames.find((game) =>
-        game.players.some((player) => player.id === user.id),
-      )?.id;
+      const currentGameId =
+        startedGames.find((game) =>
+          game.players.some((player) => player.id === user.id),
+        )?.id || null;
+      console.log({ currentGameId });
+      user.currentGameId = currentGameId;
     },
   };
   const { VITE_FASTIFY_SERVER_URI: host } = import.meta.env;

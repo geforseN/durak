@@ -1,29 +1,38 @@
 <template>
   <div
-    v-if="selfStore.self.id === gameStateStore.allowedPlayerId"
+    v-if="selfStore.self.canMakeMove"
     class="flex justify-center items-baseline mb-4 text-xl gap-2"
   >
     <span class="flex gap-2 justify-center items-center dark:text-white">
       Время твоего хода
     </span>
     <emoji-happy class="dark:fill-white" />
-    <span class="dark:text-white">
+    <div
+      v-if="selfStore.self.canMakeMove"
+      class="dark:text-white flex flex-col"
+    >
       У тебя есть
-      {{ Math.max(gameStateStore.count, 0).toPrecision(2) }}
+      <span> {{ selfStore.self.timer.remainedTime.milliseconds }}</span>
+      <span>{{ selfStore.self.timer.remainedTime.seconds }}</span>
+      <span>
+        {{ selfStore.self.timer.remainedTime.positiveTimeAsString }}
+      </span>
+      {{ selfStore.self.timer.remainedTime.timeAsString }}
+      <span></span>
       секунд на ход
-    </span>
+    </div>
     <button
-      v-show="selfStore.canMakeMove"
-      @click="stopMove"
+      v-show="selfStore.self.canMakeMove"
+      @click="durakGame.stopMove"
       class="btn flex flex-col h-max text-white bg-black focus:outline-2 focus:outline-blue-300"
       :class="[
-        canEndPursuit && 'bg-rose-900',
-        canEndAttack && 'bg-rose-700',
-        canGaveUp && 'bg-rose-500',
-        isGaveUp && 'bg-rose-400',
+        canSelfEndPursuit && 'bg-rose-900',
+        canSelfEndAttack && 'bg-rose-700',
+        canSelfGaveUp && 'bg-rose-500',
+        selfStore.self.isSurrendered && 'bg-rose-400',
       ]"
     >
-      <span class="text-lg">{{ message ?? "Закончить ход" }}</span>
+      <span class="text-lg">{{ allowedActionMessage }}</span>
       <span class="text-xs/3"
         >Нажмите <kbd class="kbd kbd-xs bg-slate-700 rounded">S</kbd></span
       >
@@ -33,41 +42,49 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { useGameSelfStore, useGameStateStore } from "@/stores/game";
+import { useGamePlayersStore, useGameSelfStore } from "@/stores/game";
 import { useEventListener } from "@vueuse/core";
 import EmojiHappy from "@/components/svg/EmojiHappy.vue";
 import { useSharedDurakGame } from "@/module/card-game/composable/useDurakGame";
 
-const { stopMove } = useSharedDurakGame();
-const gameStateStore = useGameStateStore();
+const durakGame = useSharedDurakGame();
 const selfStore = useGameSelfStore();
+const playersStore = useGamePlayersStore();
 
-const canEndPursuit = computed(
-  () =>
-    gameStateStore.gameState.isDefenderGaveUp && selfStore.canMakeAttackMove,
+// TODO
+// TODO
+// TODO
+// TODO
+// REFACTOR all computed below
+
+const canSelfEndPursuit = computed(
+  () => playersStore.hasSurrenderedDefender && selfStore.self.canMakeAttackMove,
 );
-const canEndAttack = computed(
+const canSelfEndAttack = computed(
   () =>
-    !gameStateStore.gameState.isDefenderGaveUp && selfStore.canMakeAttackMove,
+    !playersStore.hasSurrenderedDefender && selfStore.self.canMakeAttackMove,
 );
-const canGaveUp = computed(
+const canSelfGaveUp = computed(
   () =>
-    !gameStateStore.gameState.isDefenderGaveUp && selfStore.canMakeDefenseMove,
-);
-const isGaveUp = computed(
-  () =>
-    gameStateStore.gameState.isDefenderGaveUp && selfStore.canMakeDefenseMove,
+    !playersStore.hasSurrenderedDefender && selfStore.self.canMakeAttackMove,
 );
 
-const message = computed(() => {
-  if (canEndPursuit.value) return "Закончить добивание";
-  if (canEndAttack.value) return "Закончить атаку";
-  if (canGaveUp.value) return "Сдаться";
-  if (isGaveUp.value) return "__Забрать карты__";
-  throw new Error("Could not set message in self interface");
+const allowedActionMessage = computed(() => {
+  if (canSelfEndPursuit.value) return "Закончить добивание";
+  if (canSelfEndAttack.value) return "Закончить атаку";
+  if (canSelfGaveUp.value) return "Сдаться";
+  if (selfStore.self.isSurrendered) {
+    // REVIEW - should thing about it
+    // probably, allowed player should never see this message
+    return "__Забрать карты__";
+  }
+  return "Закончить ход";
 });
 
 useEventListener("keyup", (event) => {
-  if (event.code === "KeyS") stopMove();
+  if (event.code !== "KeyS") {
+    return;
+  }
+  durakGame.stopMove();
 });
 </script>

@@ -2,78 +2,23 @@ import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { type Socket, io } from "socket.io-client";
 import { useNotificationStore } from "@/stores/notification.store";
-import {
-  useGameStateStore,
-  useGameDeskStore,
-  useGameSelfStore,
-  useGameEnemiesStore,
-} from "@/stores/game";
-import { useUserStore } from "@/stores/user.store";
+import { useGameStateStore, useGameDeskStore } from "@/stores/game";
 import { createSharedComposable } from "@vueuse/core";
 import type { DurakGameSocket } from "@durak-game/durak-dts";
-import {
-  array,
-  enumType,
-  is,
-  number,
-  object,
-  optional,
-  parse,
-  string,
-} from "valibot";
-import type { Card } from "@durak-game/durak-dts";
-import { playerKinds } from "@durak-game/durak-dts";
+import type { Card as CardDTO } from "@durak-game/durak-dts";
+import { useGamePlayersStore } from "@/stores/game/players.store";
 
-const schemas = {
-  "player::receiveCards": [
-    object({
-      id: string(),
-      addedCardsCount: number(),
-      handCount: optional(number()),
-    }),
-    object({
-      addedCards: array(object({ rank: string(), suit: string() })),
-      handCount: optional(number()),
-    }),
-  ],
-  "player::removeCard": [
-    object({
-      player: object({ id: string() }),
-      newCardsCount: optional(number()),
-    }),
-    object({
-      player: optional(object({ newCardsCount: number() })),
-      card: object({ rank: string(), suit: string() }),
-    }),
-  ],
-  "allowedPlayer::defaultBehavior": object({
-    allowedPlayer: optional(object({ id: string() })),
-    defaultBehavior: object({
-      callTime: object({ UTC: number() }),
-    }),
-  }),
-  "player::changedKind": [
-    object({
-      player: object({
-        id: string(),
-        newKind: enumType(playerKinds),
-      }),
-    }),
-    object({
-      player: object({
-        newKind: enumType(playerKinds),
-      }),
-    }),
-  ],
-} as const;
-
-export function useDurakGame({ debug = false }: { debug?: boolean } = {}) {
+export const useSharedDurakGame = createSharedComposable(function useDurakGame({
+  isDebugMode = false,
+}: { isDebugMode?: boolean } = {}) {
   console.log("init useDurakGame");
-  const draggedCard = ref<HTMLElement | null>(null);
+  const draggedCard = ref<CardDTO | null>(null);
   const route = useRoute();
   const router = useRouter();
   const { VITE_FASTIFY_SERVER_URI: host } = import.meta.env;
-  if (typeof host !== "string") throw new Error();
+  if (typeof host !== "string") {
+    throw new Error();
+  }
   const gameSocket: Socket<
     DurakGameSocket.ServerToClientEvents,
     DurakGameSocket.ClientToServerEvents
@@ -81,35 +26,29 @@ export function useDurakGame({ debug = false }: { debug?: boolean } = {}) {
     withCredentials: true,
     reconnectionAttempts: 3,
   });
-  if (debug) {
+  if (isDebugMode) {
     gameSocket.onAny((event: any, ...args: any) => {
       console.log(`%c${event}`, "color: red", ...args);
     });
   }
-  console.log("WELCOME TO THE GAME");
-
   const notificationStore = useNotificationStore();
-  const enemiesStore = useGameEnemiesStore();
-  const selfStore = useGameSelfStore();
+  const playersStore = useGamePlayersStore();
   const deskStore = useGameDeskStore();
   const gameStateStore = useGameStateStore();
-  const userStore = useUserStore();
 
   const stopMove = () => {
     gameSocket.emit("superPlayer__stopMove");
   };
 
-  const handleCardDrag = (event: Event, card: Card) => {
-    if (!event.target) throw new Error("");
-    draggedCard.value = event.target;
-    event.dataTransfer.setData("card", JSON.stringify(card));
+  const handleCardDrag = (_event: DragEvent, card: CardDTO) => {
+    draggedCard.value = card;
   };
 
-  const handleCardDragEnd = (_event: any, _card: Card) => {
+  const handleCardDragEnd = (_event: DragEvent, _card: CardDTO) => {
     draggedCard.value = null;
   };
 
-  const handleCardDropOnDesk = (card: Card, slotIndex: number) => {
+  const handleCardDropOnDesk = (card: CardDTO, slotIndex: number) => {
     gameSocket.emit("superPlayer__putCardOnDesk", card, slotIndex);
   };
 
@@ -146,48 +85,18 @@ export function useDurakGame({ debug = false }: { debug?: boolean } = {}) {
         gameStateStore.discard.isEmpty = false;
       }
     })
-    .on(
-      "talon::madeDistribution",
-      ({
-        distributionCards: { count, isMainTrumpCardIncluded },
-        receiver: { id },
-        talon: { isOnlyTrumpCardRemained, cardCount },
-      }) => {},
-    )
-    .on("player::receiveCards", ({ player }) => {
-      const [enemy, self] = schemas["player::receiveCards"];
-      if (is(enemy, player)) {
-        return enemiesStore.enemies
-          .getById(player.id)
-          .increaseCardCount(player.addedCardsCount);
+    .on("talon::madeDistribution", ({ distributionCards, receiver, talon }) => {
+      if (distributionCards.isMainTrumpCardIncluded) {
+        gameStateStore.talon.isEmpty = true;
       }
-      if (is(self, player)) {
-        return selfStore.self.receive(...player.addedCards);
-      }
-      throw new Error(`player::receiveCards incorrect payload:${player}`);
-    })
-    .on("player::changedKind", (payload) => {
-      const [enemy, self] = schemas["player::changedKind"];
-      if (is(enemy, payload)) {
-        return enemiesStore.enemies
-          .getById(payload.player.id)
-          .setKind(payload.player.newKind);
-      }
-      if (is(self, payload)) {
-        return selfStore.self.setKind(payload.player.newKind);
+      if (talon.isOnlyTrumpCardRemained) {
+        gameStateStore.talon.hasOneCard = true;
       }
     })
-    .on("player::removeCard", (payload) => {
-      const [enemy, self] = schemas["player::removeCard"];
-      if (is(self, payload)) {
-        return selfStore.self.remove(payload.card);
-      }
-      if (is(enemy, payload)) {
-        return enemiesStore.enemies
-          .getById(payload.player.id)
-          .decrementCardCount();
-      }
-    })
+    .on("player::receiveCards", playersStore.putCardsToPlayer)
+    .on("player::changedKind", playersStore.changePlayerKind)
+    .on("player::removeCard", playersStore.removeCardFromPlayer)
+    .on("allowedPlayer::defaultBehavior", playersStore.updateTimerForNewAllowedPlayer)
     .on(
       "round::becameEnded",
       ({
@@ -197,7 +106,9 @@ export function useDurakGame({ debug = false }: { debug?: boolean } = {}) {
         },
       }) => {},
     )
-    .on("round::new", ({ roundNumber }) => {})
+    .on("round::new", ({ roundNumber }) => {
+      gameStateStore.round.number = roundNumber;
+    })
     .on(
       "move::new",
       ({
@@ -210,15 +121,6 @@ export function useDurakGame({ debug = false }: { debug?: boolean } = {}) {
       }) => {},
     )
     .on("game::over", ({ durak: { id } }) => {})
-    .on("allowedPlayer::defaultBehavior", (payload) => {
-      const schema = schemas["allowedPlayer::defaultBehavior"];
-      const output = parse(schema, payload);
-      if (typeof output.allowedPlayer !== "undefined") {
-        output.allowedPlayer;
-        const self = selfStore.self;
-      } else {
-      }
-    })
     .connect();
 
   return {
@@ -227,6 +129,4 @@ export function useDurakGame({ debug = false }: { debug?: boolean } = {}) {
     handleCardDragEnd,
     stopMove,
   };
-}
-
-export const useSharedDurakGame = createSharedComposable(useDurakGame);
+});

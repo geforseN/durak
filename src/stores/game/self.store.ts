@@ -3,7 +3,7 @@ import { computed, ref } from "vue";
 import Self from "@/module/card-game/entity/Self";
 import type { BasePlayer, Card as CardDTO } from "@durak-game/durak-dts";
 
-export const useGameSelfStore = defineStore("gameSelf", () => {
+export const useGameSelfStore = defineStore("game-self", () => {
   const self = ref(new Self());
 
   const restore = (selfDTO: BasePlayer & { cards: CardDTO[] }) => {
@@ -11,8 +11,8 @@ export const useGameSelfStore = defineStore("gameSelf", () => {
   };
 
   const selfId = computed(() => self.value.id);
-  const isDefender = computed(() => self.value.kind === "Defender");
-  const isAttacker = computed(() => self.value.kind === "Attacker");
+  const isDefender = computed(() => self.value.isDefender);
+  const isAttacker = computed(() => self.value.isAttacker);
   const canMakeMove = computed(() => self.value.canMakeMove);
   const canMakeDefenseMove = computed(
     () => canMakeMove.value && isDefender.value,

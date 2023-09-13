@@ -2,8 +2,10 @@ import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 import type { DeskSlot, Card } from "@/module/card-game/types";
 import { useGameStateStore } from "./game.state.store";
+import type { DurakGameSocket } from "@durak-game/durak-dts";
+import BackendPayloadError from "@/module/card-game/error/BackendPayloadError";
 
-export const useGameDeskStore = defineStore("gameDesk", () => {
+export const useGameDeskStore = defineStore("game-desk", () => {
   const gameStateStore = useGameStateStore();
   const slots = ref<DeskSlot[]>([]);
 
@@ -19,7 +21,15 @@ export const useGameDeskStore = defineStore("gameDesk", () => {
     slots.value[index].attackCard = card;
   };
 
-  const insertCard = ({ card, slot: { index }, source: { id } }) => {
+  const insertCard = ({
+    card,
+    slot: { index },
+  }: Parameters<
+    DurakGameSocket.ServerToClientEvents["desk::receivedCard"]
+  >["0"]) => {
+    if (slots.value[index].defendCard) {
+      throw new BackendPayloadError()
+    }
     if (!slots.value[index].attackCard) {
       insertAttackCard(card, index);
     } else {

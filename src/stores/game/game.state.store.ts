@@ -1,13 +1,8 @@
 import { computed, reactive, type ComputedRef } from "vue";
 import { defineStore } from "pinia";
-import {
-  useGameEnemiesStore,
-  useGameDeskStore,
-  useGameSelfStore,
-} from "@/stores/game";
+import { useGameDeskStore } from "@/stores/game";
 import type { GameState } from "@/module/card-game/types";
-import { useTimeoutPoll } from "@vueuse/core";
-import { usePlayersStore } from "./players.store";
+import { useGamePlayersStore } from "./players.store";
 
 const defaultGameState: Omit<GameState, "desk" | "enemies" | "self"> = {
   discard: { isEmpty: true },
@@ -66,12 +61,12 @@ const defaultGameState: Omit<GameState, "desk" | "enemies" | "self"> = {
   },
 };
 
-export const useGameStateStore = defineStore("game", () => {
+export const useGameStateStore = defineStore("game-state", () => {
   const gameState: Omit<GameState, "desk" | "enemies" | "self"> = reactive({
     ...defaultGameState,
   });
   const deskStore = useGameDeskStore();
-  const playersStore = usePlayersStore();
+  const playersStore = useGamePlayersStore();
   const desk = computed(() => ({ slots: deskStore.slots }));
 
   const restore = ({ state }: { state: GameState }) => {
@@ -86,28 +81,12 @@ export const useGameStateStore = defineStore("game", () => {
     gameState.discard = state.discard;
   };
 
-  const remainedTime: {
-    seconds: ComputedRef<number>;
-    milliseconds: ComputedRef<number>;
-    updateInterval: ComputedRef<number>;
-  } = {
-    milliseconds: computed(
-      () => gameState.round.currentMove.endTime.UTC - Date.now(),
-    ),
-    seconds: computed(() => remainedTime.milliseconds.value / 1000),
-    updateInterval: computed(() =>
-      remainedTime.seconds.value > 11 ? 1000 : 100,
-    ),
-  };
-  useTimeoutPoll(() => {
-    remainedTime.seconds.effect.run();
-  }, remainedTime.updateInterval);
-
   return {
     trumpSuit: computed(() => gameState.talon.trumpCard.suit),
-    remainedTime,
     gameState,
     talon: computed(() => gameState.talon),
+    discard: computed(() => gameState.discard),
+    round: computed(() => gameState.round),
     restore,
   };
 });

@@ -2,7 +2,6 @@ import { dispatchMessage, WS_BASE } from "@/api/websocket";
 import type { UserMessage } from "@/module/global-chat/types";
 import { ChatMessage } from "@/module/global-chat/ws-events";
 import { useNotificationStore } from "@/stores/notification.store";
-import generateNotificationFromError from "@/utils/generate-notification-from-error";
 import formatTime from "@/utils/intl/format-time";
 import { useWebSocket } from "@vueuse/core";
 import { defineStore } from "pinia";
@@ -48,9 +47,7 @@ export const useGlobalChatStore = defineStore("global-chat", () => {
         if (!(error instanceof Error)) {
           return console.error(error);
         }
-        notificationStore.addNotificationInQueue(
-          generateNotificationFromError(error),
-        );
+        notificationStore.addNotificationInQueue(error);
       }
     },
     messages,

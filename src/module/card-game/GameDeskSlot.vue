@@ -47,6 +47,7 @@ import { ref } from "vue";
 import { useGameSelfStore } from "@/stores/game";
 import { useEventListener } from "@vueuse/core";
 import { useSharedDurakGame } from "@/module/card-game/composable/useDurakGame";
+import { useNotificationStore } from "@/stores/notification.store";
 
 const props = defineProps<{
   attackCard?: Card;
@@ -54,24 +55,51 @@ const props = defineProps<{
   index: number;
 }>();
 
-const { handleCardDropOnDesk } = useSharedDurakGame();
-
 const isFocused = ref(false);
+
+const durakGame = useSharedDurakGame();
+
+const notificationStore = useNotificationStore();
 const selfStore = useGameSelfStore();
 
-useEventListener(
-  "keyup",
-  // TODO rework, code ist hard to understand
-  (event) => {
-    if (!isFocused.value || !event.code.startsWith("Digit")) return;
-    const digit = Number(event.code.split("Digit")[1]);
-    if (digit > selfStore.self.cards.length) return;
-    const rightIndex = (digit + 9) % 10;
-    const leftIndex = event.shiftKey ? 1 : event.altKey ? 2 : 0;
-    const index = leftIndex * 10 + rightIndex;
-    if (index > selfStore.self.cards.length - 1) return;
-    const card = selfStore.self.cards[index];
-    handleCardDropOnDesk(card, props.index);
-  },
-);
+
+useEventListener("keyup", async (event) => {
+  if (!isFocused.value) {
+    return;
+  }
+  try {
+    const cardIndex = getCardIndex(event);
+    const card = selfStore.self.hand.getCardByIndex(cardIndex);
+    durakGame.handleCardDropOnDesk(card, props.index);
+  } catch (error) {
+    if (!(error instanceof Error)) {
+      return;
+    }
+    if (!error.shouldNotifyUser) {
+      return console.error({ error });
+    }
+    notificationStore.addNotificationInQueue(error);
+  }
+});
+
+function getCardIndex(event: KeyboardEvent) {
+  const digit = getDigitFromKeyboardEvent(event);
+  const indexRightSide = digit === 0 ? 10 : digit - 1;
+  const indexLeftSide = event.shiftKey ? 1 : 0;
+  return Number(`${indexLeftSide}${indexRightSide}`);
+}
+
+function getDigitFromKeyboardEvent(event: KeyboardEvent) {
+  const digit = Number(event.code.replace("Digit", "").replace("Numpad", ""));
+  if (!isDigit(digit)) {
+    const error = new Error("Pressed key must be digit");
+    error.shouldNotifyUser = true;
+    throw error;
+  }
+  return digit;
+}
+
+function isDigit(number: number) {
+  return Number.isInteger(number) && number <= 9 && number >= 0;
+}
 </script>

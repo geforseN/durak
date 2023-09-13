@@ -3,7 +3,7 @@
     class="w-full h-full flex justify-around items-center self-center bg-neutral rounded max-lg:rounded-t-none max-w-5xl p-2 border-2 border-neutral-900"
   >
     <EnemyProfile
-      v-for="enemy of enemiesStore.topEnemies"
+      v-for="enemy of enemiesStore.enemies.getGroupedBySide('top')"
       :key="enemy.id"
       :enemy="enemy"
     />
@@ -13,7 +13,7 @@
   >
     <div class="flex flex-col justify-evenly gap-y-4">
       <EnemyProfile
-        v-for="enemy of enemiesStore.leftEnemies"
+        v-for="enemy of enemiesStore.enemies.getGroupedBySide('left')"
         :key="enemy.id"
         :enemy="enemy"
       />
@@ -21,7 +21,7 @@
     <game-board />
     <div class="flex flex-col justify-evenly gap-y-4">
       <EnemyProfile
-        v-for="enemy of enemiesStore.rightEnemies"
+        v-for="enemy of enemiesStore.enemies.getGroupedBySide('right')"
         :key="enemy.id"
         :enemy="enemy"
       />
@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import { useGameEnemiesStore } from "@/stores/game";
-import { TopLeft as EnemyProfile } from "@/module/card-game/enemy-profile";
+import EnemyProfile from "@/module/card-game/EnemyProfile.vue";
 import GameBoard from "@/module/card-game/GameBoard.vue";
 
 const enemiesStore = useGameEnemiesStore();
