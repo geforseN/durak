@@ -1,8 +1,8 @@
 import type { LobbyUser } from "@/module/global-chat/types";
-import type { LobbySettings } from "@/module/game-lobbies/types/lobby-settings.type";
+import type {GameSettings} from '@durak-game/durak-dts'
 
 export type Lobby = {
   id: string;
   slots: (LobbyUser | null)[];
-  settings: LobbySettings;
+  settings: GameSettings;
 };

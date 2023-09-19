@@ -58,7 +58,7 @@ export const useSharedDurakGame = createSharedComposable(function useDurakGame({
   // also rename of all events
   gameSocket
     .on("game::state::restore", ({ state }) => {
-      console.log({ state });
+      console.log({ state, state2: state });
       gameStateStore.restore({ state });
     })
     .on("nonStartedGame::playerJoined", () => {})
@@ -97,17 +97,8 @@ export const useSharedDurakGame = createSharedComposable(function useDurakGame({
     .on("player::changedKind", playersStore.changePlayerKind)
     .on("player::removeCard", playersStore.removeCardFromPlayer)
     .on("allowedPlayer::defaultBehavior", playersStore.updateTimerForNewAllowedPlayer)
-    .on(
-      "round::becameEnded",
-      ({
-        round: {
-          defender: { id, isSuccessfullyDefended },
-          number,
-        },
-      }) => {},
-    )
-    .on("round::new", ({ roundNumber }) => {
-      gameStateStore.round.number = roundNumber;
+    .on("round::new", ({ round }) => {
+      gameStateStore.round.number = round.number;
     })
     .on(
       "move::new",

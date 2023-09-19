@@ -1,5 +1,4 @@
 import { WS_BASE, dispatchMessage } from "@/api/websocket";
-import type { LobbySettings } from "@/module/game-lobbies/types";
 import {
   CreateLobbyEvent,
   JoinLobbyEvent,
@@ -10,6 +9,8 @@ import {
 import { useLobbiesStore } from "@/stores/lobbies.store";
 import { useNotificationStore } from "@/stores/notification.store";
 import { useUserStore } from "@/stores/user.store";
+import type { PlayerCount, TalonCardCount } from "@durak-game/durak-dts";
+import type { GameType } from "@durak-game/durak-dts/generated/client";
 import { useWebSocket } from "@vueuse/core";
 import { defineStore } from "pinia";
 import { computed } from "vue";
@@ -47,7 +48,12 @@ export const useGameLobbiesStore = defineStore("game-lobbies", () => {
   const ws = useWebSocket(`${WS_BASE}/game-lobbies`, { onConnected });
 
   return {
-    createLobby(settings: LobbySettings) {
+    createLobby(settings: {
+      userCount: PlayerCount;
+      gameType: GameType;
+      cardCount: TalonCardCount;
+      moveTime: number;
+    }) {
       ws.send(new CreateLobbyEvent(settings).asString());
     },
     removeLobby(lobbyId: string) {

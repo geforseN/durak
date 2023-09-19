@@ -2,10 +2,10 @@
   <div class="flex flex-col justify-between gap-1 sm:flex-row">
     <div class="flex items-center gap-2 sm:flex-1">
       <span class="badge badge-lg border-black bg-neutral-700">
-        {{ gameTypesDictionary[lobby.settings.gameType] }}
+        {{ gameTypesDictionary[lobby.settings.type] }}
       </span>
       <span class="badge badge-lg border-black bg-neutral-700">
-        {{ lobby.settings.cardCount }}
+        {{ lobby.settings.players.count }}
       </span>
     </div>
     <button
@@ -23,7 +23,7 @@
         userStore.user.id === lobby.slots.find((slot) => slot?.isAdmin)?.id &&
         // line below ensure then slots all filled
         // TODO add Lobby#isFilled
-        lobby.settings.userCount === lobby.slots.filter((slot) => slot).length
+        lobby.settings.players.count === lobby.slots.filter((slot) => slot).length
       "
       class="btn-sm btn border-2 border-black bg-info text-black hover:bg-info hover:saturate-[1.3]"
       @click="gameLobbiesStore.createGame(lobby.id)"
@@ -45,7 +45,6 @@ import { useUserStore } from "@/stores/user.store";
 import gameTypesDictionary from "../../utils/dictionary/game-types.dictionary";
 import type { Lobby } from "@/module/game-lobbies/types";
 import { useGameLobbiesStore } from "@/stores/useGameLobbiesStore";
-
 const { lobby } = defineProps<{ lobby: Lobby }>();
 
 const userStore = useUserStore();

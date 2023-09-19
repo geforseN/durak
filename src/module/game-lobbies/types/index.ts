@@ -6,4 +6,3 @@ export type {
   AllowedMissingCardCount
 } from "@/module/game-lobbies/types/__config__.type";
 export type { Lobby } from "@/module/game-lobbies/types/lobby.type";
-export type { LobbySettings } from "@/module/game-lobbies/types/lobby-settings.type";

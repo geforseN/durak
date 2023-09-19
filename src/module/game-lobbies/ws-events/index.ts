@@ -1,5 +1,7 @@
+import type { PlayerCount } from "@durak-game/durak-dts";
 import { CustomWebsocketEvent } from "@/api/websocket";
-import type { LobbySettings } from "../types";
+import type { GameType } from "@durak-game/durak-dts/generated/client";
+import type { TalonCardCount } from "@durak-game/durak-dts";
 
 export class RemoveLobbyEvent extends CustomWebsocketEvent {
   constructor(public lobbyId: string) {
@@ -17,7 +19,10 @@ export class LeaveLobbyEvent extends CustomWebsocketEvent {
 
 export class JoinLobbyEvent extends CustomWebsocketEvent {
   // slotIndex can be optional, server will make it -1 anyway
-  constructor(public lobbyId: string, public slotIndex: number = -1) {
+  constructor(
+    public lobbyId: string,
+    public slotIndex: number = -1,
+  ) {
     super("lobby::user::join");
   }
 }
@@ -30,7 +35,14 @@ export class LobbyUpgradeEvent extends CustomWebsocketEvent {
 }
 
 export class CreateLobbyEvent extends CustomWebsocketEvent {
-  constructor(public settings: LobbySettings) {
+  constructor(
+    public settings: {
+      userCount: PlayerCount;
+      gameType: GameType;
+      cardCount: TalonCardCount;
+      moveTime: number;
+    },
+  ) {
     super("lobby::add");
   }
 }
