@@ -52,13 +52,19 @@ export const useSharedDurakGame = createSharedComposable(function useDurakGame({
     gameSocket.emit("superPlayer__putCardOnDesk", card, slotIndex);
   };
 
+  const handleDraggedCardDropOnDesk = (slotIndex: number) => {
+    if (!draggedCard.value) {
+      return;
+    }
+    handleCardDropOnDesk(draggedCard.value, slotIndex);
+  };
+
   // NOTE: DELETED events
   // 1) defender__gaveUp
   // 2) game__currentId
   // also rename of all events
   gameSocket
     .on("game::state::restore", ({ state }) => {
-      console.log({ state, state2: state });
       gameStateStore.restore({ state });
     })
     .on("nonStartedGame::playerJoined", () => {})
@@ -96,7 +102,10 @@ export const useSharedDurakGame = createSharedComposable(function useDurakGame({
     .on("player::receiveCards", playersStore.putCardsToPlayer)
     .on("player::changedKind", playersStore.changePlayerKind)
     .on("player::removeCard", playersStore.removeCardFromPlayer)
-    .on("allowedPlayer::defaultBehavior", playersStore.updateTimerForNewAllowedPlayer)
+    .on(
+      "allowedPlayer::defaultBehavior",
+      playersStore.updateTimerForNewAllowedPlayer,
+    )
     .on("round::new", ({ round }) => {
       gameStateStore.round.number = round.number;
     })
@@ -116,6 +125,7 @@ export const useSharedDurakGame = createSharedComposable(function useDurakGame({
 
   return {
     handleCardDropOnDesk,
+    handleDraggedCardDropOnDesk,
     handleCardDrag,
     handleCardDragEnd,
     stopMove,

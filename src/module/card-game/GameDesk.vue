@@ -9,6 +9,7 @@
         :index="index"
         @dragenter.prevent
         @dragover.prevent
+        @drop="durakGame.handleDraggedCardDropOnDesk(index)"
       />
     </template>
   </div>
@@ -17,6 +18,8 @@
 <script setup lang="ts">
 import GameDeskSlot from "@/module/card-game/GameDeskSlot.vue";
 import { useGameDeskStore } from "@/stores/game";
+import { useSharedDurakGame } from "./composable/useDurakGame";
 
 const deskStore = useGameDeskStore();
+const durakGame = useSharedDurakGame()
 </script>
