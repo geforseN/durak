@@ -62,7 +62,6 @@ const durakGame = useSharedDurakGame();
 const notificationStore = useNotificationStore();
 const selfStore = useGameSelfStore();
 
-
 useEventListener("keyup", async (event) => {
   if (!isFocused.value) {
     return;
@@ -72,11 +71,8 @@ useEventListener("keyup", async (event) => {
     const card = selfStore.self.hand.getCardByIndex(cardIndex);
     durakGame.handleCardDropOnDesk(card, props.index);
   } catch (error) {
-    if (!(error instanceof Error)) {
+    if (!(error instanceof Error) || error instanceof SilentError) {
       return;
-    }
-    if (!error.shouldNotifyUser) {
-      return console.error({ error });
     }
     notificationStore.addNotificationInQueue(error);
   }
@@ -92,14 +88,34 @@ function getCardIndex(event: KeyboardEvent) {
 function getDigitFromKeyboardEvent(event: KeyboardEvent) {
   const digit = Number(event.code.replace("Digit", "").replace("Numpad", ""));
   if (!isDigit(digit)) {
-    const error = new Error("Pressed key must be digit");
-    error.shouldNotifyUser = true;
-    throw error;
+    if (isValidEvent(event)) {
+      throw new SilentError(
+        "Pressed key is valid, but should not lead to card put",
+      );
+    }
+    console.log(event.code);
+    throw new Error("Pressed key must be digit");
   }
   return digit;
 }
 
 function isDigit(number: number) {
   return Number.isInteger(number) && number <= 9 && number >= 0;
+}
+
+function isValidEvent(event: KeyboardEvent) {
+  return (
+    event.code === "Tab" ||
+    event.code === "ShiftLeft" ||
+    event.code.startsWith("Arrow")
+  );
+}
+
+class SilentError extends Error {
+  isSilent = true;
+
+  constructor(...args: ConstructorParameters<typeof Error>) {
+    super(...args);
+  }
 }
 </script>
