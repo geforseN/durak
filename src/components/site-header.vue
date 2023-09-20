@@ -8,8 +8,8 @@
         </list-item-link>
         <li class="ml-auto"></li>
         <list-item-link
-          v-if="userStore.user.isCreatingLobby"
-          :to="`/game/${userStore.user.isCreatingLobby}`"
+          v-if="userStore.user.currentGameId"
+          :to="`/game/${userStore.user.currentGameId}`"
           >Ваша игра</list-item-link
         >
         <button
@@ -21,7 +21,7 @@
           Выйти из лобби
         </button>
         <button
-          v-if="!userStore.user.isCreatingLobby"
+          v-if="!userStore.user.isCreatingLobby && !userStore.user.currentGameId"
           class="btn-ghost btn gap-2 bg-success/40 text-xl text-secondary transition-colors hover:bg-success/60"
           @click="userStore.user.isCreatingLobby = true"
           ref="focused"

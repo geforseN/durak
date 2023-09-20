@@ -57,19 +57,20 @@ export const useUserStore = defineStore("user", () => {
       isUserDataLoaded.value = true;
       console.log({ name: "user::restore", user, payload });
     },
-    "durakGames::restore": ({
+    "durakGames::restore": async ({
       startedGames,
     }: {
       startedGames: {
         players: { id: string }[];
-        id: string;
+        info: { id: string };
       }[];
     }) => {
+      await getMe();
       if (!user.id) return;
       const currentGameId =
         startedGames.find((game) =>
           game.players.some((player) => player.id === user.id),
-        )?.id || null;
+        )?.info.id || null;
       console.log({ currentGameId });
       user.currentGameId = currentGameId;
     },
