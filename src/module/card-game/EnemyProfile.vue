@@ -9,27 +9,16 @@
     />
     <enemy-kind-badge
       :kind="enemy.kind"
+      :has-timer="true"
       class="absolute -bottom-4 right-[4px] grid-in-[role] xxs:left-2 xxs:right-0"
     />
-    <div
-      v-if="enemy.canMakeMove"
-      class="absolute -bottom-4 left-10 rounded border border-black bg-neutral-500 px-1"
-    >
-      <!-- TODO add clock svg -->
-      <div v-if="enemy.hasActiveTimer()" class="flex flex-col">
-        <span>{{ enemy.timer.remainedTime.milliseconds }}</span>
-        <span>{{ enemy.timer.remainedTime.seconds }}</span>
-        <span>{{ enemy.timer.remainedTime.positiveTimeAsString }}</span>
-        <span>{{ enemy.timer.remainedTime.timeAsString }}</span>
-      </div>
-    </div>
     <div
       class="m-2 grid auto-rows-[10px] grid-cols-6 pr-4 grid-in-[cards] xxs:mb-6 min-[400px]:-mr-1.5 min-[400px]:grid-cols-9 md:m-0 md:-mr-4 md:pr-6"
     >
       <enemy-stacked-cards :count="enemy.cardCount" />
     </div>
     <router-link
-      :to="`/profile?personalLink${enemy.info.profile.personalLink}`"
+      :to="`/profile/${enemy.info.profile.personalLink}`"
       :title="enemy.info.profile.nickname"
       class="grid-in-[nickname] xxs:w-full"
     >
@@ -46,7 +35,6 @@ import EnemyAvatar from "@/module/card-game/EnemyProfileAvatar.vue";
 import EnemyStackedCards from "@/module/card-game/EnemyProfileStackedCards.vue";
 import EnemyKindBadge from "@/module/card-game/EnemyProfileKindBadge.vue";
 import type Enemy from "@/module/card-game/entity/Enemy";
-
 const { enemy } = defineProps<{
   enemy: Enemy;
 }>();
