@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import type { DeskSlot, Card } from "@/module/card-game/types";
 import { useGameStateStore } from "./game.state.store";
 import type { DurakGameSocket } from "@durak-game/durak-dts";
-import BackendPayloadError from "@/module/card-game/error/BackendPayloadError";
+import BackendPayloadError from "@/error/BackendPayloadError";
 
 export const useGameDeskStore = defineStore("game-desk", () => {
   const gameStateStore = useGameStateStore();
@@ -28,7 +28,7 @@ export const useGameDeskStore = defineStore("game-desk", () => {
     DurakGameSocket.ServerToClientEvents["desk::receivedCard"]
   >["0"]) => {
     if (slots.value[index].defendCard) {
-      throw new BackendPayloadError()
+      throw new BackendPayloadError();
     }
     if (!slots.value[index].attackCard) {
       insertAttackCard(card, index);
@@ -91,6 +91,14 @@ export const useGameDeskStore = defineStore("game-desk", () => {
     );
   });
 
+  const hasUnbeatenBasicSlots = computed(
+    () => unbeatenBasicSlots.value.length !== 0,
+  );
+
+  const unbeatenSlotsWithSuit = (suit: Card["suit"]) => {
+    return unbeatenSlots.value.filter((slot) => slot.attackCard.suit === suit);
+  };
+
   return {
     clear,
     insertAttackCard,
@@ -104,5 +112,7 @@ export const useGameDeskStore = defineStore("game-desk", () => {
     unbeatenBasicSlots,
     allowsTransferMove,
     firstUnbeatenSlotRank,
+    hasUnbeatenBasicSlots,
+    unbeatenSlotsWithSuit,
   };
 });
