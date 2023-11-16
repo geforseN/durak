@@ -1,4 +1,4 @@
-import BackendPayloadError from "../error/BackendPayloadError";
+import BackendPayloadError from "@/error/BackendPayloadError";
 import type Enemy from "./Enemy";
 
 type EnemiesCount = number;
@@ -70,24 +70,12 @@ export default class Enemies {
     return this.storage.some((enemy) => enemy.canMakeMove);
   }
 
-  get hasTimerHolder() {
-    return this.storage.some((enemy) => enemy.hasActiveTimer());
-  }
-
   get allowedPlayer() {
     const allowed = this.storage.find((enemy) => enemy.canMakeMove);
     if (!allowed) {
       throw new Error();
     }
     return allowed;
-  }
-
-  get timerHolder() {
-    const holder = this.storage.find((enemy) => enemy.hasActiveTimer());
-    if (!holder) {
-      throw new Error();
-    }
-    return holder;
   }
 
   hasSurrenderedDefender() {

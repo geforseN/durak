@@ -1,4 +1,4 @@
-import BackendPayloadError from "../error/BackendPayloadError";
+import BackendPayloadError from "@/error/BackendPayloadError";
 import type { Card as CardDTO } from "@durak-game/durak-dts";
 
 export class Hand {
