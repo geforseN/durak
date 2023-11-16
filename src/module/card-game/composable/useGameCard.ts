@@ -1,5 +1,5 @@
 import { computed } from "vue";
-import type { Card, DeskSlot, Suit } from "@/module/card-game/types";
+import type { Card } from "@/module/card-game/types";
 import cardPowerDictionary from "@/utils/dictionary/card-power.dictionary";
 import suitsDictionary from "@/utils/dictionary/suits.dictionary";
 import {
@@ -7,40 +7,49 @@ import {
   useGameSelfStore,
   useGameStateStore,
 } from "@/stores/game";
+import type { CardDTO } from "@durak-game/durak-dts";
 
-export function useGameCard({ rank, suit }: Card) {
+function powerOfCard(card: CardDTO) {
+  return cardPowerDictionary[card.rank];
+}
+
+export function useGameCard(card: Card) {
+  const { rank, suit } = card;
   const selfStore = useGameSelfStore();
   const gameDeskStore = useGameDeskStore();
   const gameStateStore = useGameStateStore();
 
-  const power = cardPowerDictionary[rank];
+  const power = powerOfCard(card);
   const id = `${rank === "10" ? "0" : rank}${suitsDictionary[suit]}`;
   const isTrump = computed(() => gameStateStore.trumpSuit === suit);
 
   const canBeUsedForTransferMove = computed(() => {
-    if (!selfStore.isDefender || !gameDeskStore.allowsTransferMove)
-      return false;
-    return gameDeskStore.firstUnbeatenSlotRank === rank;
+    return (
+      gameDeskStore.allowsTransferMove &&
+      selfStore.self.isDefender &&
+      gameDeskStore.ranks[0] === rank
+    );
   });
 
   const canBeUsedForAttack = computed(() => {
-    if (!selfStore.isAttacker) return false;
-    return gameDeskStore.ranks.includes(rank);
+    return selfStore.self.isAttacker && gameDeskStore.ranks.includes(rank);
   });
 
   const canBeUsedForDefense = computed(() => {
-    if (!selfStore.isDefender) return false;
+    if (!selfStore.self.isDefender) {
+      return false;
+    }
     if (isTrump.value) {
       return (
-        !!gameDeskStore.unbeatenBasicSlots.length ||
-        gameDeskStore.unbeatenTrumpSlots.some(slotHasLowerPower, {
-          power,
-        })
+        gameDeskStore.hasUnbeatenBasicSlots ||
+        gameDeskStore.unbeatenTrumpSlots.some(
+          (slot) => powerOfCard(slot.attackCard) < power,
+        )
       );
     }
-    return gameDeskStore.unbeatenSlots
-      .filter(slotHasSameSuit, { suit })
-      .some(slotHasLowerPower, { power });
+    return gameDeskStore
+      .unbeatenSlotsWithSuit(suit)
+      .some((slot) => powerOfCard(slot.attackCard) < power);
   });
 
   return {
@@ -50,13 +59,4 @@ export function useGameCard({ rank, suit }: Card) {
     canBeUsedForDefense,
     canBeUsedForTransferMove,
   };
-}
-
-function slotHasSameSuit(this: { suit: Suit }, slot: DeskSlot) {
-  return slot.attackCard?.suit === this.suit;
-}
-
-function slotHasLowerPower(this: { power: number }, slot: DeskSlot) {
-  if (!slot.attackCard?.rank) return false;
-  return cardPowerDictionary[slot.attackCard.rank] < this.power;
 }
