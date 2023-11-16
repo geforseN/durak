@@ -62,6 +62,13 @@ import { useSharedDurakGame } from "@/module/card-game/composable/useDurakGame";
 const props = defineProps<CardDTO & { index: number }>();
 
 const durakGame = useSharedDurakGame();
+const {
+  id,
+  isTrump,
+  canBeUsedForAttack,
+  canBeUsedForDefense,
+  canBeUsedForTransferMove,
+} = useGameCard(props);
 
 const isFocused = ref(false);
 
@@ -78,13 +85,6 @@ const handleCardBlur = () => {
   isFocused.value = false;
 };
 
-const {
-  id,
-  isTrump,
-  canBeUsedForAttack,
-  canBeUsedForDefense,
-  canBeUsedForTransferMove,
-} = useGameCard(props);
 
 const deskSlotsKeys = [1, 2, 3, 4, 5, 6];
 
