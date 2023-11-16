@@ -64,7 +64,7 @@ const selfStore = useGameSelfStore();
 
 useEventListener("keyup", async (event) => {
   if (!isFocused.value) {
-    return;
+    return console.log("DEBUG: not focused");
   }
   try {
     const cardIndex = getCardIndex(event);
@@ -93,7 +93,6 @@ function getDigitFromKeyboardEvent(event: KeyboardEvent) {
         "Pressed key is valid, but should not lead to card put",
       );
     }
-    console.log(event.code);
     throw new Error("Pressed key must be digit");
   }
   return digit;
@@ -113,9 +112,5 @@ function isValidEvent(event: KeyboardEvent) {
 
 class SilentError extends Error {
   isSilent = true;
-
-  constructor(...args: ConstructorParameters<typeof Error>) {
-    super(...args);
-  }
 }
 </script>
