@@ -1,6 +1,6 @@
 import BackendPayloadError from "@/error/BackendPayloadError";
-import type { BasePlayer } from "@durak-game/durak-dts";
-import { computed, ref } from "vue";
+import { computed, type Ref } from "vue";
+import type useEnemy from "./useEnemy";
 
 type GroupedEnemies = Partial<{
   top: { start: number; end: number };
@@ -34,10 +34,8 @@ const _groupedEnemiesBySide: Record<0 | 1 | 2 | 3 | 4 | 5, GroupedEnemies> = {
 } as const;
 
 export default function useEnemies(
-  enemyDTOs: (BasePlayer & { cardCount: number })[],
+  enemies: Ref<ReturnType<typeof useEnemy>[]>,
 ) {
-  const enemies = ref<[]>([]);
-
   function getById(id: string) {
     const enemy = enemies.value.find((enemy) => enemy.id === id);
     if (!enemy) {
@@ -73,5 +71,13 @@ export default function useEnemies(
   function hasSurrenderedDefender() {
     return enemies.value.some((enemy) => enemy.isSurrendered);
   }
-  return {};
+
+  return {
+    groupedEnemiesBySide,
+    getGroupedBySide,
+    getById,
+    hasAllowedPlayer,
+    allowedPlayer,
+    hasSurrenderedDefender,
+  };
 }

@@ -34,8 +34,9 @@
 import EnemyAvatar from "@/module/card-game/EnemyProfileAvatar.vue";
 import EnemyStackedCards from "@/module/card-game/EnemyProfileStackedCards.vue";
 import EnemyKindBadge from "@/module/card-game/EnemyProfileKindBadge.vue";
-import type Enemy from "@/module/card-game/entity/Enemy";
+import type useEnemy from "./composable/useEnemy";
+
 const { enemy } = defineProps<{
-  enemy: Enemy;
+  enemy: ReturnType<typeof useEnemy>;
 }>();
 </script>

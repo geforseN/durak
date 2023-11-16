@@ -1,13 +1,13 @@
-import { computed, type Ref } from "vue";
+import { type Ref } from "vue";
 
-export default function useEnemyCardCount(_cardCount: Ref<number>) {
+export default function useEnemyCardCount(cardCount: Ref<number>) {
   return {
-    cardCount: computed(() => _cardCount),
+    cardCount,
     decrementCardCount() {
-      _cardCount.value--;
+      cardCount.value--;
     },
     increaseCardCount(cardCountToAdd: number) {
-      _cardCount.value += cardCountToAdd;
+      cardCount.value += cardCountToAdd;
     },
   };
 }

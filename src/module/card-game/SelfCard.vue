@@ -85,7 +85,6 @@ const handleCardBlur = () => {
   isFocused.value = false;
 };
 
-
 const deskSlotsKeys = [1, 2, 3, 4, 5, 6];
 
 useEventListener("keyup", (event: KeyboardEvent) => {

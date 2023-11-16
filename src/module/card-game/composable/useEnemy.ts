@@ -4,11 +4,15 @@ import type { PlayerData } from "@/stores/game/self.store";
 import usePlayer from "./usePlayer";
 
 export default function useEnemy(
-  playerData: Ref<PlayerData>,
+  playerData: Ref<NonNullable<PlayerData>>,
   cardCount: Ref<number>,
 ) {
-  const enemyCardCount = useEnemyCardCount(cardCount);
   const player = usePlayer(playerData);
-  
-  return { ...player, ...enemyCardCount };
+  const enemyCardCount = useEnemyCardCount(cardCount);
+
+  return {
+    ...playerData.value,
+    ...player,
+    ...enemyCardCount,
+  };
 }

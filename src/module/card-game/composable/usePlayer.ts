@@ -45,6 +45,6 @@ export default function usePlayer(player: Ref<PlayerData>) {
     canMakeMove,
     canMakeDefenseMove,
     canMakeAttackMove,
-    updateKind
+    updateKind,
   };
 }

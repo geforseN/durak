@@ -1,12 +1,9 @@
-import { computed, reactive, ref } from "vue";
+import { reactive, ref } from "vue";
 import { defineStore } from "pinia";
-import Enemies from "@/module/card-game/entity/Enemies";
-import type { BasePlayer } from "@durak-game/durak-dts";
-import Enemy from "@/module/card-game/entity/Enemy";
+import type { BasePlayer, Enemy } from "@durak-game/durak-dts";
 import useEnemies from "@/module/card-game/composable/useEnemies";
-import useEnemy from "@/module/card-game/composable/useEnemy";
 import type { PlayerData } from "./self.store";
-import type { PlayerCount } from "@durak-game/durak-dts";
+import useEnemy from "@/module/card-game/composable/useEnemy";
 
 export const useGameEnemiesStore = defineStore("game-enemies", () => {
   const options = { timeout: { timeBeforeError: 5_000 } };
@@ -21,23 +18,16 @@ export const useGameEnemiesStore = defineStore("game-enemies", () => {
       }, options.timeout.timeBeforeError),
     },
   });
-  // todo ref array of objects where
-  // ref player
-  // ref cardCount
-  const enemiesData = ref<{ asPlayer: PlayerData; cardCount: number }[]>([]);
+
+  const enemiesData = ref<ReturnType<typeof useEnemy>[]>([]);
+  // @ts-expect-error cardCount has wrong type, do not know how to fix it
   const enemies = useEnemies(enemiesData);
 
-  const restore = (enemyDTOs: (BasePlayer & { cardCount: number })[]) => {
+  const restore = (enemyDTOs: Enemy[]) => {
+    // @ts-expect-error cardCount has wrong type, do not know how to fix it
     enemiesData.value = enemyDTOs.map((dto) => {
-      // TODO use here useEnemies
-      return {
-        asPlayer: {
-          id: dto.id,
-          kind: dto.kind,
-          info: dto.info,
-        },
-        cardCount: dto.cardCount,
-      };
+      const { isAllowedToMove: _, cardCount, ...player } = dto;
+      return useEnemy(ref(player), ref(cardCount));
     });
   };
 
