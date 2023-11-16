@@ -3,6 +3,8 @@ import { defineStore } from "pinia";
 import { useGameDeskStore } from "@/stores/game";
 import type { GameState } from "@/module/card-game/types";
 import { useGamePlayersStore } from "./players.store";
+import type { DurakGameSocket } from "@durak-game/durak-dts";
+import type { Socket } from "socket.io-client";
 
 const defaultGameState: Omit<GameState, "desk" | "enemies" | "self"> = {
   discard: { isEmpty: true },
@@ -15,49 +17,15 @@ const defaultGameState: Omit<GameState, "desk" | "enemies" | "self"> = {
     isEmpty: true,
     trumpCard: { rank: "A", suit: "♠" },
   },
-  // desk: { slots: [] },
-  // enemies: [
-  //   {
-  //     cardCount: 0,
-  //     id: "qwe",
-  //     info: {
-  //       id: "qwe",
-  //       isAdmin: false,
-  //       profile: {
-  //         connectStatus: "ONLINE",
-  //         nickname: "QWEn",
-  //         personalLink: "123",
-  //         photoUrl:
-  //           "https://cdn.7tv.app/emote/60b14a737a157a7f3360fb32/4x.webp",
-  //         userId: "qwe",
-  //       },
-  //     },
-  //     kind: "Player",
-  //   },
-  // ],
-  // self: {
-  //   cards: [],
-  //   id: "asd",
-  //   info: {
-  //     id: "asd",
-  //     isAdmin: false,
-  //     profile: {
-  //       connectStatus: "ONLINE",
-  //       nickname: "ASDn",
-  //       personalLink: "456",
-  //       photoUrl: "https://cdn.7tv.app/emote/6306876cbe8c19d70f9d6b22/4x.webp",
-  //       userId: "asd",
-  //     },
-  //   },
-  //   kind: "Player",
-  // },
   settings: {
-    cardCount: 36,
+    players: {
+      count: 2,
+      moveTime: Infinity,
+    },
     desk: { allowedFilledSlotCount: 6, slotCount: 6 },
-    gameType: "basic",
+    type: "basic",
     initialDistribution: { cardCountPerIteration: 2, finalCardCount: 6 },
-    moveTime: 15_000,
-    userCount: 2,
+    talon: { count: 36 },
   },
 };
 
@@ -67,11 +35,19 @@ export const useGameStateStore = defineStore("game-state", () => {
   });
   const deskStore = useGameDeskStore();
   const playersStore = useGamePlayersStore();
-  const desk = computed(() => ({ slots: deskStore.slots }));
 
-  const restore = ({ state }: { state: GameState }) => {
+  const restore = ({
+    state,
+    gameSocket
+  }: {
+    state: GameState;
+    gameSocket: Socket<
+      DurakGameSocket.ServerToClientEvents,
+      DurakGameSocket.ClientToServerEvents
+    >;
+  }) => {
     // TODO add isDefenderGaveUp related property (maybe add in state.enemies)
-    playersStore.restore(state.self, state.enemies);
+    playersStore.restore(state.self, state.enemies, gameSocket);
     deskStore.slots = state.desk.slots;
     // TODO add state.talon.trumpCardOwnerId;
     gameState.status = state.status;

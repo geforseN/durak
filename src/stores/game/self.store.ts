@@ -1,34 +1,60 @@
 import { defineStore } from "pinia";
-import { computed, ref } from "vue";
-import Self from "@/module/card-game/entity/Self";
-import type { BasePlayer, Card as CardDTO } from "@durak-game/durak-dts";
+import { reactive, ref } from "vue";
+import type {
+  BasePlayer,
+  CardDTO,
+  DurakGameSocket,
+  PlayerInfo,
+  PlayerKind,
+} from "@durak-game/durak-dts";
+import type { Socket } from "socket.io-client";
+import useSelf from "@/module/card-game/composable/useSelf";
+
+export type PlayerData = {
+  info: PlayerInfo;
+  kind: PlayerKind;
+  id: string;
+} | null;
 
 export const useGameSelfStore = defineStore("game-self", () => {
-  const self = ref(new Self());
+  const options = { timeout: { timeBeforeError: 5_000 } };
+  const state = reactive({
+    isLoading: true,
+    isErrorHappened: false,
+    timeout: {
+      id: setTimeout(() => {
+        if (state.isLoading) {
+          state.isErrorHappened = true;
+        }
+      }, options.timeout.timeBeforeError),
+    },
+  });
+  const playerData = ref<PlayerData>(null);
+  const cards = ref<CardDTO[]>([]);
+  const self = useSelf(playerData, cards);
 
-  const restore = (selfDTO: BasePlayer & { cards: CardDTO[] }) => {
-    self.value = new Self(selfDTO);
-  };
-
-  const selfId = computed(() => self.value.id);
-  const isDefender = computed(() => self.value.isDefender);
-  const isAttacker = computed(() => self.value.isAttacker);
-  const canMakeMove = computed(() => self.value.canMakeMove);
-  const canMakeDefenseMove = computed(
-    () => canMakeMove.value && isDefender.value,
-  );
-  const canMakeAttackMove = computed(
-    () => canMakeMove.value && isAttacker.value,
-  );
+  function restore(
+    selfDTO: BasePlayer & { cards: CardDTO[] },
+    gameSocket: Socket<
+      DurakGameSocket.ServerToClientEvents,
+      DurakGameSocket.ClientToServerEvents
+    >,
+  ) {
+    playerData.value = {
+      id: selfDTO.id,
+      info: selfDTO.info,
+      kind: selfDTO.kind,
+    };
+    cards.value = selfDTO.cards;
+    state.isLoading = false;
+    clearTimeout(state.timeout.id);
+  }
 
   return {
+    playerData,
+    cards,
     self,
-    selfId,
-    isAttacker,
-    isDefender,
-    canMakeMove,
-    canMakeDefenseMove,
-    canMakeAttackMove,
-    restore
+    restore,
+    state,
   };
 });
