@@ -1,26 +1,9 @@
 <template>
-  <div
-    v-if="selfStore.self.canMakeMove"
-    class="flex justify-center items-baseline mb-4 text-xl gap-2"
-  >
+  <div class="flex justify-center items-baseline mb-4 text-xl gap-2">
     <span class="flex gap-2 justify-center items-center dark:text-white">
       Время твоего хода
     </span>
     <emoji-happy class="dark:fill-white" />
-    <div
-      v-if="selfStore.self.canMakeMove"
-      class="dark:text-white flex flex-col"
-    >
-      У тебя есть
-      <span> {{ selfStore.self.timer.remainedTime.milliseconds }}</span>
-      <span>{{ selfStore.self.timer.remainedTime.seconds }}</span>
-      <span>
-        {{ selfStore.self.timer.remainedTime.positiveTimeAsString }}
-      </span>
-      {{ selfStore.self.timer.remainedTime.timeAsString }}
-      <span></span>
-      секунд на ход
-    </div>
     <button
       v-show="selfStore.self.canMakeMove"
       @click="durakGame.stopMove"
