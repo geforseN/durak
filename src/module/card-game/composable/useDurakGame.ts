@@ -1,7 +1,7 @@
 import { ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
 import { type Socket, io } from "socket.io-client";
 import { useNotificationStore } from "@/stores/notification.store";
+import { useRoute, useRouter } from "vue-router";
 import { useGameStateStore, useGameDeskStore } from "@/stores/game";
 import { createSharedComposable } from "@vueuse/core";
 import type { DurakGameSocket } from "@durak-game/durak-dts";
@@ -9,7 +9,7 @@ import type { Card as CardDTO } from "@durak-game/durak-dts";
 import { useGamePlayersStore } from "@/stores/game/players.store";
 
 export const useSharedDurakGame = createSharedComposable(function useDurakGame({
-  isDebugMode = false,
+  isDebugMode = true,
 }: { isDebugMode?: boolean } = {}) {
   console.log("init useDurakGame");
   const draggedCard = ref<CardDTO | null>(null);
@@ -65,7 +65,7 @@ export const useSharedDurakGame = createSharedComposable(function useDurakGame({
   // also rename of all events
   gameSocket
     .on("game::state::restore", ({ state }) => {
-      gameStateStore.restore({ state });
+      gameStateStore.restore({ state, gameSocket });
     })
     .on("nonStartedGame::playerJoined", () => {})
     .on("nonStartedGame::details", () => {})
@@ -109,17 +109,7 @@ export const useSharedDurakGame = createSharedComposable(function useDurakGame({
     .on("round::new", ({ round }) => {
       gameStateStore.round.number = round.number;
     })
-    .on(
-      "move::new",
-      ({
-        move: {
-          allowedPlayer: { id },
-          endTime: { UTC },
-          name,
-          timeToMove,
-        },
-      }) => {},
-    )
+    .on("move::new", ({ move: { name, performer, insert } }) => {})
     .on("game::over", ({ durak: { id } }) => {})
     .connect();
 
