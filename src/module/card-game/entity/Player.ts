@@ -1,12 +1,12 @@
+import { computed } from "vue";
 import type { BasePlayer } from "@durak-game/durak-dts";
 import type { PlayerInfo, PlayerKind } from "@durak-game/durak-dts";
-import PlayerTimer from "./Timer";
 
 export default abstract class Player {
   info: PlayerInfo;
   kind: PlayerKind;
   id: string;
-  timer: PlayerTimer;
+  timer: { endTime: { UTC: number } };
 
   constructor(basePlayer: Partial<BasePlayer> = {}) {
     basePlayer.info ??= {
@@ -22,26 +22,33 @@ export default abstract class Player {
     };
     basePlayer.kind ??= "Player";
     basePlayer.id ??= "";
+    // basePlayer.timer ??= { endTime: { UTC: 0 } };
+    console.log({ basePlayer });
+
     this.info = basePlayer.info;
     this.kind = basePlayer.kind;
     this.id = basePlayer.id;
-    this.timer = new PlayerTimer(this);
+    this.timer = { endTime: { UTC: 0 } };
   }
 
-  hasActiveTimer(): this is {
-    timer: {
-      remainedTime: {
-        milliseconds: number;
-        seconds: number;
-        positiveTimeAsString: string;
-        timeAsString: string;
-      };
-    };
-  } {
-    return this.timer.isActive;
+  hasTimer = computed(() => {
+    console.log("HAS TIMER", this.timer.endTime.UTC);
+    return this.timer.endTime.UTC > 0;
+  });
+
+  updateKindWithTimer(newKind: PlayerKind) {
+    const isWereAllowed = this.isAllowed;
+    this.kind = newKind;
+    if (isWereAllowed && !this.isAllowed) {
+      this.timer = { endTime: { UTC: 0 } };
+    }
   }
 
   get canMakeMove() {
+    return this.kind.includes("Allowed");
+  }
+
+  get isAllowed() {
     return this.kind.includes("Allowed");
   }
 
