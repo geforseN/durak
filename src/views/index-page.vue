@@ -1,8 +1,8 @@
 <template>
   <div
-    class="p-1 sm:p-2 w-full flex-1 flex flex-col items-center gap-6 bg-secondary"
+    class="flex w-full flex-1 flex-col items-center gap-6 p-1 sm:p-2"
   >
-    <global-chat class="w-full max-w-md sm:max-w-xl h-[20rem]" />
+    <global-chat class="h-[20rem] w-full max-w-md sm:max-w-xl" />
     <game-lobbies class="w-full sm:w-auto" />
   </div>
 </template>
@@ -11,3 +11,9 @@
 import GameLobbies from "@/module/game-lobbies/game-lobbies.vue";
 import GlobalChat from "@/module/global-chat/global-chat.vue";
 </script>
+<style>
+html,
+body {
+  scrollbar-gutter: stable;
+}
+</style>
