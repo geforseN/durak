@@ -16,10 +16,9 @@ export const useUserStore = defineStore("user", () => {
       User & {
         currentLobbyId: string | null;
         currentGameId: string | null;
-        isCreatingLobby: boolean;
       }
     >
-  >({ isCreatingLobby: false });
+  >({});
 
   useWebSocket(
     `${import.meta.env.VITE_FASTIFY_SERVER_URI.replace(/^http/, "ws")}`,
