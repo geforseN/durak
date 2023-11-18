@@ -64,7 +64,7 @@
   </dialog>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 import XMark from "@/components/svg/XMark.vue";
 import RadioInputGroup from "./lobby-creation-radio-input-group.vue";
