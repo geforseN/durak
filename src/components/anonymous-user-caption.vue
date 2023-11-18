@@ -1,12 +1,10 @@
 <template>
-  <li
-    class="bg-neutral-600 flex gap-x-2 account rounded border border-black px-2"
-  >
-    <div class="font-bold flex flex-wrap gap-x-1 justify-center max-w-[6rem]">
-      <span>Anonymous </span><span>account</span>
+  <li class="account flex gap-x-2 rounded border border-black px-2">
+    <div class="flex max-w-[6rem] flex-wrap justify-center gap-x-1 font-bold">
+      <span>Anonymous&nbsp;</span><span>account</span>
     </div>
     <div
-      class="border border-black rounded flex justify-center items-center bg-gray-400 w-5 h-5 tooltip tooltip-left tooltip-info"
+      class="tooltip tooltip-left tooltip-info flex h-5 w-5 items-center justify-center rounded border border-black bg-black text-white"
       data-tip="All game progress is not saved when playing in an anonymous account"
     >
       ?
