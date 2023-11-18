@@ -1,51 +1,35 @@
 <template>
-  <header>
-    <nav>
-      <ul class="navbar bg-neutral-700">
+  <header class="sticky top-0 z-10">
+    <nav class="">
+      <ul class="navbar flex border-b border-b-neutral bg-primary/50">
         <list-item-link to="/">
           <home />
-          Главная
         </list-item-link>
-        <li class="ml-auto"></li>
+        <li class="ml-auto" />
         <list-item-link
           v-if="userStore.user.currentGameId"
           :to="`/game/${userStore.user.currentGameId}`"
-          >Ваша игра</list-item-link
         >
+          Ваша игра
+        </list-item-link>
         <button
-          v-if="userStore.user.isCreatingLobby && userStore.user.currentLobbyId"
-          class="btn-ghost btn gap-2 text-xl text-secondary"
+          v-if="userStore.user.currentLobbyId"
+          class="btn btn-ghost gap-2 text-xl text-secondary"
           @click="gameLobbiesStore.removeLobby"
         >
           <x-mark class="h-6 w-6" />
           Выйти из лобби
         </button>
         <button
-          v-if="!userStore.user.isCreatingLobby && !userStore.user.currentGameId"
-          class="btn-ghost btn gap-2 bg-success/40 text-xl text-secondary transition-colors hover:bg-success/60"
-          @click="userStore.user.isCreatingLobby = true"
-          ref="focused"
-          autofocus
+          v-if="!userStore.user.currentGameId"
+          class="btn btn-primary text-xl transition-colors"
+          @click="lobbyCreationModal?.modalRef?.show()"
         >
           <plus-svg />
           Создать игру
         </button>
-
-        <teleport to="#app" v-if="userStore.user.isCreatingLobby">
-          <dialog
-            class="absolute left-0 top-1/2 flex h-full w-full -translate-y-1/2 items-center justify-center bg-black/40"
-          >
-            <lobby-creation-popup
-              method="dialog"
-              ref="lobbyCreationModal"
-              @close="
-                () => {
-                  userStore.user.isCreatingLobby = false;
-                  focused?.focus();
-                }
-              "
-            />
-          </dialog>
+        <teleport to="#app">
+          <lobby-creation-modal ref="lobbyCreationModal" />
         </teleport>
         <li class="mr-2"></li>
         <suspense-user-avatar />
@@ -54,28 +38,19 @@
   </header>
 </template>
 <script setup lang="ts">
+import { ref } from "vue";
+
 import ListItemLink from "@/components/list-item-link.vue";
 import Home from "@/components/svg/Home.vue";
-import { useGameLobbiesStore } from "@/stores/useGameLobbiesStore";
-import LobbyCreationPopup from "@/module/create-lobby/lobby-creation-popup.vue";
-import { useUserStore } from "@/stores/user.store";
-import { onClickOutside } from "@vueuse/core";
-import { ref } from "vue";
-import SuspenseUserAvatar from "./suspense-user-avatar.vue";
-import PlusSvg from "./svg/Plus.svg.vue";
 import XMark from "./svg/XMark.vue";
+import PlusSvg from "./svg/Plus.svg.vue";
 
-// TODO rework
-// add button if user has startedGame
-// fix button
+import { useGameLobbiesStore } from "@/stores/useGameLobbiesStore";
+import { useUserStore } from "@/stores/user.store";
+import LobbyCreationModal from "@/module/create-lobby/lobby-creation-modal.vue";
+import SuspenseUserAvatar from "./suspense-user-avatar.vue";
 
 const gameLobbiesStore = useGameLobbiesStore();
 const userStore = useUserStore();
-const lobbyCreationModal = ref<HTMLFormElement>();
-const focused = ref<HTMLButtonElement>();
-
-onClickOutside(
-  lobbyCreationModal,
-  () => (userStore.user.isCreatingLobby = false),
-);
+const lobbyCreationModal = ref<InstanceType<typeof LobbyCreationModal>>();
 </script>
