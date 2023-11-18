@@ -3,8 +3,8 @@
     <router-link
       :to="to"
       v-bind="attrs"
-      class="btn-ghost btn gap-2 text-xl text-secondary"
-      active-class="underline underline-offset-8 text-accent decoration-black"
+      class="btn btn-outline gap-2 border"
+      active-class="underline underline-offset-8 decoration-black"
     >
       <slot></slot>
     </router-link>
@@ -13,9 +13,10 @@
 
 <script setup lang="ts">
 import { useAttrs } from "vue";
+import type { RouteLocationRaw } from "vue-router";
 
 const attrs = useAttrs();
 const { to } = defineProps<{
-  to: string
+  to: RouteLocationRaw;
 }>();
 </script>
