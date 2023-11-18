@@ -1,6 +1,6 @@
 <template>
   <div
-    class="my-4 flex flex-wrap items-baseline justify-between gap-0.5 max-[320px]:flex-col"
+    class="flex flex-wrap items-baseline justify-between gap-0.5 max-[320px]:flex-col"
   >
     <label :for="id">
       <slot></slot>
@@ -9,7 +9,7 @@
       v-bind="attrs"
       v-model="model"
       :id="id"
-      class="select-bordered select select-sm max-w-xs bg-neutral text-center text-xl text-secondary min-[420px]:select-md focus:outline-2 focus:outline-primary min-[420px]:text-2xl"
+      class="select-bordered select select-sm max-w-xs text-center text-xl min-[420px]:select-md focus:outline-2 focus:outline-primary min-[420px]:text-2xl"
     >
       <option
         v-for="option of options"
