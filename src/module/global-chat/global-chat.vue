@@ -19,8 +19,8 @@
         />
         <div
           v-if="showTextLength"
-          :class="input?.length > maxInputLength && 'text-red-600'"
-          class="absolute -bottom-10 right-1.5 rounded border border-neutral bg-accent p-1 text-xs"
+          :class="input?.length > maxInputLength ? 'bg-red-600' : 'bg-accent'"
+          class="absolute -bottom-10 right-1.5 rounded border border-neutral p-1 text-xs"
         >
           {{ input?.length ?? 0 }} / {{ maxInputLength }}
         </div>
@@ -30,7 +30,7 @@
         title="Отправить сообщение в общий чат"
         @click="handleMessage"
       >
-        Оправить
+        Отправить
       </button>
     </div>
   </div>

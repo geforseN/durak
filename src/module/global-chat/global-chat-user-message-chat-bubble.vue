@@ -1,16 +1,16 @@
 <template>
   <div
     class="chat-bubble flex flex-col break-all p-2 pb-1"
-    :class="isMyMessage ? 'items-end bg-neutral-600' : 'items-start'"
+    :class="isMyMessage ? 'items-end' : 'items-start'"
   >
     <div class="flex flex-wrap items-baseline gap-1">
       <span
-        class="badge rounded-sm border-0 bg-black p-1 font-bold"
-        :class="isMyMessage && 'hidden'"
+        v-if="!isMyMessage"
+        class="badge rounded-sm border-0 bg-black p-1 font-bold text-white"
       >
         {{ sender.profile.nickname }}
       </span>
-      <time class="text-xs opacity-50">{{ formattedDate }}</time>
+      <time class="text-xs opacity-90">{{ formattedDate }}</time>
     </div>
     <span class="ml-0.5">{{ text }}</span>
   </div>

@@ -1,6 +1,6 @@
 <template>
   <section
-    class="scrollbar flex flex-1 flex-col overflow-y-scroll rounded border-2 border-neutral/70 bg-info/70"
+    class="scrollbar flex flex-1 flex-col overflow-y-scroll rounded border-2 border-neutral/70 bg-accent/50"
     ref="messagesContainer"
   >
     <global-chat-user-message
