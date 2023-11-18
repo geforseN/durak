@@ -1,0 +1,3 @@
+[submodule "durak-server"]
+	path = durak-server
+	url = https://github.com/geforseN/durak-server
