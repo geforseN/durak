@@ -44,7 +44,4 @@ export function dispatchMessage(
   }
 }
 
-export const WS_BASE = `${import.meta.env.VITE_FASTIFY_SERVER_URI.replace(
-  /^http/,
-  "ws",
-)}`;
+export const WS_BASE = import.meta.env.VITE_SERVER_WS_BASE;
