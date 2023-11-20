@@ -1,24 +1,48 @@
-import { boolean, object, optional, parse, string, uuid } from "valibot";
+import {
+  boolean,
+  email,
+  nullish,
+  number,
+  object,
+  string,
+  uuid,
+  enumType,
+  parse,
+  nullable,
+  type Input,
+} from "valibot";
 
 export const REST_BASE = import.meta.env.VITE_SERVER_REST_BASE;
 
 export const CREATE_ANON_USER_URL = import.meta.env.VITE_SERVER_ANON_AUTH_ROUTE;
 
-const _UserSchema = object({
+const UserSchema = object({
   id: string([uuid()]),
-  profile: object({}),
+  profile: object({
+    connectStatus: enumType(["OFFLINE", "ONLINE", "AWAY"]),
+    nickname: string(),
+    personalLink: string(/* cuid */),
+    photoUrl: string(),
+    updatedAt: string(),
+    userId: string([uuid()]),
+  }),
+  createdAt: string(),
+  currentGameId: nullish(string([uuid()])),
+  currentLobbyId: nullish(string([uuid()])),
+  email: nullable(string([email()])),
+  num: number(),
+  updatedAt: string(),
   isAnonymous: boolean(),
-
-  currentGameId: optional(string([uuid()])),
-  currentLobbyId: optional(string([uuid()])),
 });
+export type User = Input<typeof UserSchema>;
 
 export async function getMe() {
   const response = await fetch(`api/me`, { credentials: "include" });
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
-  return await response.json();
+  const json = await response.json();
+  return parse(UserSchema, json);
 }
 
 export async function getProfileByLink(
