@@ -21,5 +21,21 @@ export async function getMe() {
   return await response.json();
 }
 
+export async function getProfileByLink(
+  personalLink: string,
+  { controller }: { controller: AbortController },
+) {
+  // TODO: remove REST_BASE usage, add api/ prefix
+  const response = await fetch(
+    `${REST_BASE}/profile?personalLink=${personalLink}`,
+    {
+      method: "GET",
+      mode: "cors",
+      signal: controller.signal,
+    },
+  );
+  return response.json();
+}
+
 // TODO
 export async function getDurakGames() {}

@@ -7,7 +7,7 @@
         Профиль игрока {{ profile.nickname }}
       </h1>
       <div class="flex flex-wrap gap-8">
-        <div class="indicator avatar w-min">
+        <div class="avatar indicator w-min">
           <span
             class="badge indicator-item right-6 top-6 h-7 w-7"
             :class="indicatorColor"
@@ -52,26 +52,18 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { computed, onUnmounted, reactive } from "vue";
+import { getProfileByLink } from "@/api/rest";
 
 const route = useRoute();
-const { VITE_FASTIFY_SERVER_URI: host } = import.meta.env;
 const { personalLink } = route.params;
 
+if (typeof personalLink !== "string") {
+  throw new Error("personalLink must be a string");
+}
+
 const controller = new AbortController();
-const profile = await fetch(
-  new Request(`${host}/profile?personalLink=${personalLink}`, {
-    method: "GET",
-    mode: "cors",
-    signal: controller.signal,
-  }),
-)
-  .then((data) => data.json())
-  .then((json) => reactive(json));
-console.log(
-  profile,
-  profile.User.UserGameStat.lostGamesCount,
-  profile.User.UserGameStat.wonGamesCount,
-);
+const profile = await reactive(getProfileByLink(personalLink, { controller }));
+
 const indicatorColor = computed(() => {
   switch (profile.connectStatus) {
     case "ONLINE":

@@ -32,17 +32,21 @@ export const useGameLobbiesStore = defineStore("game-lobbies", () => {
   };
 
   function onConnected(websocket: WebSocket) {
-    websocket.addEventListener(
-      "message",
-      dispatchMessage.bind(websocket, listeners, (error) => {
-        console.log("useGameLobbiesStore useGameLobbiesStore");
-        notificationStore.addNotificationInQueue({
-          message:
-            "useGameLobbiesStore: " +
-            (error instanceof Error ? error.message : "Unknown error"),
-        });
-      }),
-    );
+    websocket.addEventListener("message", (event) => {
+      dispatchMessage.call(
+        websocket,
+        listeners,
+        (error) => {
+          console.log("useGameLobbiesStore useGameLobbiesStore");
+          notificationStore.addNotificationInQueue({
+            message:
+              "useGameLobbiesStore: " +
+              (error instanceof Error ? error.message : "Unknown error"),
+          });
+        },
+        event,
+      );
+    });
   }
 
   const ws = useWebSocket(`${WS_BASE}/game-lobbies`, { onConnected });
