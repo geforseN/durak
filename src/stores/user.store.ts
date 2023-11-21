@@ -1,32 +1,29 @@
 import { useAsyncState } from "@vueuse/core";
 import { defineStore } from "pinia";
-import { ref } from "vue";
 import { useRouter } from "vue-router";
 
-import { getMe } from "@/api/rest";
+import { getMe, type User } from "@/api/rest";
+
 
 export const useUserStore = defineStore("user", () => {
   const router = useRouter();
-  const user = ref<null>({});
 
-  const user2 = useAsyncState(
-    async () => {
-      const result = await getMe();
-      console.log(result);
-      if (Object.values(result).length === 0) {
-        throw new Error("No user was found");
-      }
-      user.value = result;
-      return result;
+  const user = useAsyncState(
+    () => {
+      return getMe();
     },
-    null,
-    { shallow: false, immediate: true },
+    {} as Partial<User>,
+    {
+      shallow: false,
+      immediate: true,
+    },
   );
 
   const goToGame = async ({ gameId }: { gameId: string }) => {
     const path = `/game/${gameId}`;
     try {
       await router.replace({ path });
+      // TODO remove code here, add methods for lobby|game state
       // user.currentLobbyId = null;
       // user.currentGameId = gameId;
       console.log(`Successfully navigate to ${path}`);
@@ -37,7 +34,6 @@ export const useUserStore = defineStore("user", () => {
 
   return {
     user,
-    user2,
     goToGame,
   };
 });
