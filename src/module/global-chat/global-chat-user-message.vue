@@ -14,5 +14,7 @@ import GlobalChatUserMessageChatBubble from "./global-chat-user-message-chat-bub
 const { message } = defineProps<{ message: UserMessage }>();
 const userStore = useUserStore();
 
-const isMyMessage = computed(() => userStore.user.id === message.sender.id);
+const isMyMessage = computed(
+  () => userStore.user.state.id === message.sender.id,
+);
 </script>

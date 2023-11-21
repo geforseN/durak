@@ -40,9 +40,13 @@ function scrollToLastElement({
 }: Omit<ScrollOptions, "top"> = {}) {
   // NOTE ? maybe can use nextTick from vue instead of queueMicrotask ?
   return queueMicrotask(() => {
-    if (!messagesContainer.value) return;
+    if (!messagesContainer.value) {
+       return;
+    }
     const top = messagesContainer.value.scrollHeight;
-    if (!top) return;
+    if (!top) {
+      return;
+    }
     messagesContainer.value?.scrollTo({ behavior, top });
   });
 }
