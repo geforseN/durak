@@ -7,6 +7,7 @@ import { createSharedComposable } from "@vueuse/core";
 import type { DurakGameSocket } from "@durak-game/durak-dts";
 import type { Card as CardDTO } from "@durak-game/durak-dts";
 import { useGamePlayersStore } from "@/stores/game/players.store";
+import { SOCKET_IO_BASE } from "@/api/socket-io";
 
 export const useSharedDurakGame = createSharedComposable(function useDurakGame({
   isDebugMode = true,
@@ -15,14 +16,10 @@ export const useSharedDurakGame = createSharedComposable(function useDurakGame({
   const draggedCard = ref<CardDTO | null>(null);
   const route = useRoute();
   const router = useRouter();
-  const { VITE_FASTIFY_SERVER_URI: host } = import.meta.env;
-  if (typeof host !== "string") {
-    throw new Error();
-  }
   const gameSocket: Socket<
     DurakGameSocket.ServerToClientEvents,
     DurakGameSocket.ClientToServerEvents
-  > = io(`${host.replace(":3000", ":3001")}/game/${route.params.gameId}`, {
+  > = io(`${SOCKET_IO_BASE}/game/${route.params.gameId}`, {
     withCredentials: true,
     reconnectionAttempts: 3,
   });
