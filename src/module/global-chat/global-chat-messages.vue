@@ -15,7 +15,7 @@
 import { ref, watch } from "vue";
 import { whenever } from "@vueuse/core";
 
-import { useGlobalChatStore } from "@/stores/useGlobalChatStore";
+import { useGlobalChatStore } from "@/stores";
 
 import GlobalChatUserMessage from "./global-chat-user-message.vue";
 

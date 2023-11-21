@@ -10,7 +10,7 @@ import { computed } from "vue";
 import GlobalChatUserMessageAvatar from "./global-chat-user-message-avatar.vue";
 import GlobalChatUserMessageChatBubble from "./global-chat-user-message-chat-bubble.vue";
 
-import { useUserStore } from "@/stores/user.store";
+import { useUserStore } from "@/stores";
 
 import type { UserMessage } from "./types";
 
