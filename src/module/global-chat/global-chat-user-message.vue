@@ -5,11 +5,14 @@
   </div>
 </template>
 <script setup lang="ts">
-import type { UserMessage } from "@/module/global-chat/types";
-import { useUserStore } from "@/stores/user.store";
 import { computed } from "vue";
+
 import GlobalChatUserMessageAvatar from "./global-chat-user-message-avatar.vue";
 import GlobalChatUserMessageChatBubble from "./global-chat-user-message-chat-bubble.vue";
+
+import { useUserStore } from "@/stores/user.store";
+
+import type { UserMessage } from "./types";
 
 const { message } = defineProps<{ message: UserMessage }>();
 const userStore = useUserStore();

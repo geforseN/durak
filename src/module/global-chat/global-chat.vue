@@ -37,13 +37,18 @@
 </template>
 
 <script setup lang="ts">
-import { useGlobalChatStore } from "@/stores/useGlobalChatStore";
-import GlobalChatMessages from "@/module/global-chat/global-chat-messages.vue";
 import { ref } from "vue";
 
+import GlobalChatMessages from "./global-chat-messages.vue";
+
+import { useGlobalChatStore } from "@/stores";
+
 const maxInputLength = 128;
+
 const input = ref("");
 const showTextLength = ref(false);
+
 const globalChatStore = useGlobalChatStore();
+
 const handleMessage = () => globalChatStore.sendMessage(input);
 </script>

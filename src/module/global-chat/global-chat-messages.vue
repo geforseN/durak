@@ -14,10 +14,13 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { whenever } from "@vueuse/core";
+
 import { useGlobalChatStore } from "@/stores/useGlobalChatStore";
+
 import GlobalChatUserMessage from "./global-chat-user-message.vue";
 
 const messagesContainer = ref<HTMLElement>();
+
 const globalChatStore = useGlobalChatStore();
 
 whenever(
@@ -41,13 +44,13 @@ function scrollToLastElement({
   // NOTE ? maybe can use nextTick from vue instead of queueMicrotask ?
   return queueMicrotask(() => {
     if (!messagesContainer.value) {
-       return;
+      return;
     }
     const top = messagesContainer.value.scrollHeight;
     if (!top) {
       return;
     }
-    messagesContainer.value?.scrollTo({ behavior, top });
+    messagesContainer.value.scrollTo({ behavior, top });
   });
 }
 </script>
