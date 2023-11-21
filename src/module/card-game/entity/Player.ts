@@ -22,9 +22,6 @@ export default abstract class Player {
     };
     basePlayer.kind ??= "Player";
     basePlayer.id ??= "";
-    // basePlayer.timer ??= { endTime: { UTC: 0 } };
-    console.log({ basePlayer });
-
     this.info = basePlayer.info;
     this.kind = basePlayer.kind;
     this.id = basePlayer.id;
