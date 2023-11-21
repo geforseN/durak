@@ -1,10 +1,4 @@
 import { computed, reactive, watch } from "vue";
-import type {
-  MaxUserCount as UserCount,
-  CardCount,
-  GameType,
-  LobbySettings,
-} from "@/module/game-lobbies/types";
 
 const defaultSettings: LobbySettings = {
   userCount: 2,
