@@ -10,29 +10,31 @@
     </div>
     <button
       v-if="
-        // TODO has Lobby#hasUserWithId OR PERHAPS userStore.lobby === lobby
-        lobby.slots.some((slot) => slot?.id === userStore.user.id)
+        userStore.user.state.id &&
+        lobby.hasUserWithId(userStore.user.state.id)
       "
-      class="btn-sm btn border-2 border-black bg-error text-black hover:bg-error/75"
+      class="btn btn-sm border-2 border-black bg-error text-black hover:bg-error/75"
       @click="gameLobbiesStore.leaveLobby(lobby.id)"
     >
       Покинуть лобби
     </button>
     <button
       v-if="
-        userStore.user.id === lobby.slots.find((slot) => slot?.isAdmin)?.id &&
-        // line below ensure then slots all filled
-        // TODO add Lobby#isFilled
-        lobby.settings.players.count === lobby.slots.filter((slot) => slot).length
+        userStore.user.state.id &&
+        lobby.hasAdminWithId(userStore.user.state.id) &&
+        lobby.isFull
       "
-      class="btn-sm btn border-2 border-black bg-info text-black hover:bg-info hover:saturate-[1.3]"
+      class="btn btn-sm border-2 border-black bg-info text-black hover:bg-info hover:saturate-[1.3]"
       @click="gameLobbiesStore.createGame(lobby.id)"
     >
       Начать игру
     </button>
     <button
-      v-if="lobby.slots.every((slot) => slot?.id !== userStore.user.id)"
-      class="btn-sm btn border-2 border-black bg-success text-black hover:bg-success hover:saturate-[1.3]"
+      v-if="
+        userStore.user.state.id &&
+        !lobby.hasUserWithId(userStore.user.state.id)
+      "
+      class="btn btn-sm border-2 border-black bg-success text-black hover:bg-success hover:saturate-[1.3]"
       @click="gameLobbiesStore.joinLobby(lobby.id)"
     >
       Присоединиться
@@ -41,11 +43,13 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from "@/stores/user.store";
-import gameTypesDictionary from "../../utils/dictionary/game-types.dictionary";
-import type { Lobby } from "@/module/game-lobbies/types";
-import { useGameLobbiesStore } from "@/stores/useGameLobbiesStore";
-const { lobby } = defineProps<{ lobby: Lobby }>();
+import gameTypesDictionary from "@/utils/dictionary/game-types.dictionary";
+
+import { useUserStore, useGameLobbiesStore } from "@/stores";
+
+import type { ILobby } from "./entity";
+
+const { lobby } = defineProps<{ lobby: ILobby }>();
 
 const userStore = useUserStore();
 const gameLobbiesStore = useGameLobbiesStore();
