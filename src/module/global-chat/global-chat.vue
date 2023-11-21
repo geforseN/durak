@@ -9,26 +9,26 @@
           Ввод сообщения для глобального чата
         </label>
         <input
-          @focus="showTextLength = true"
-          @blur="showTextLength = false"
-          class="input-bordered input h-full w-full px-2"
+          @focus="mustShowInputLengthBadge = true"
+          @blur="mustShowInputLengthBadge = false"
+          class="input input-bordered h-full w-full px-2"
           id="global-chat-input"
           v-model="input"
           placeholder="Нажмите ENTER, что-бы отправить сообщение"
-          @keyup.enter="handleMessage"
+          @keyup.enter="handleMessageSend"
         />
         <div
-          v-if="showTextLength"
-          :class="input?.length > maxInputLength ? 'bg-red-600' : 'bg-accent'"
+          v-if="mustShowInputLengthBadge"
+          :class="input.length > MAX_INPUT_LENGTH ? 'bg-error' : 'bg-accent'"
           class="absolute -bottom-10 right-1.5 rounded border border-neutral p-1 text-xs"
         >
-          {{ input?.length ?? 0 }} / {{ maxInputLength }}
+          {{ input.length }} / {{ MAX_INPUT_LENGTH }}
         </div>
       </div>
       <button
-        class="btn-sm btn ml-0.5 rounded border-2 border-neutral-700"
+        class="btn btn-sm ml-0.5 rounded border-2 border-neutral-700"
         title="Отправить сообщение в общий чат"
-        @click="handleMessage"
+        @click="handleMessageSend"
       >
         Отправить
       </button>
@@ -43,12 +43,12 @@ import GlobalChatMessages from "./global-chat-messages.vue";
 
 import { useGlobalChatStore } from "@/stores";
 
-const maxInputLength = 128;
+const MAX_INPUT_LENGTH = 128;
 
 const input = ref("");
-const showTextLength = ref(false);
+const mustShowInputLengthBadge = ref(false);
 
 const globalChatStore = useGlobalChatStore();
 
-const handleMessage = () => globalChatStore.sendMessage(input);
+const handleMessageSend = () => globalChatStore.sendMessage(input);
 </script>
