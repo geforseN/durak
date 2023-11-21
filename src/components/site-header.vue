@@ -3,36 +3,36 @@
     <nav class="">
       <ul class="navbar flex border-b border-b-neutral bg-primary/50">
         <list-item-link to="/">
-          <home />
+          <icons-home />
         </list-item-link>
         <li class="ml-auto" />
         <list-item-link
-          v-if="userStore.user.currentGameId"
-          :to="`/game/${userStore.user.currentGameId}`"
+          v-if="userStore.user.state.currentGameId"
+          :to="`/game/${userStore.user.state.currentGameId}`"
         >
           Ваша игра
         </list-item-link>
         <button
-          v-if="userStore.user.currentLobbyId"
+          v-if="userStore.user.state.currentGameId"
           class="btn btn-ghost gap-2 text-xl text-secondary"
-          @click="gameLobbiesStore.removeLobby"
+          @click="gameLobbiesStore.leaveLobby"
         >
-          <x-mark class="h-6 w-6" />
-          Выйти из лобби
+          <icons-xmark class="h-6 w-6" />
+          Покинуть лобби
         </button>
         <button
-          v-if="!userStore.user.currentGameId"
+          v-if="!userStore.user.state.currentGameId && !userStore.user.state.currentGameId"
           class="btn btn-primary text-xl transition-colors"
           @click="lobbyCreationModal?.modalRef?.show()"
         >
-          <plus-svg />
+          <icons-plus />
           Создать игру
         </button>
         <teleport to="#app">
           <lobby-creation-modal ref="lobbyCreationModal" />
         </teleport>
         <li class="mr-2"></li>
-        <suspense-user-avatar />
+        <user-avatar />
       </ul>
     </nav>
   </header>
@@ -41,16 +41,17 @@
 import { ref } from "vue";
 
 import ListItemLink from "@/components/list-item-link.vue";
-import Home from "@/components/svg/Home.vue";
-import XMark from "./svg/XMark.vue";
-import PlusSvg from "./svg/Plus.svg.vue";
+import UserAvatar from "@/components/user-avatar.vue";
 
-import { useGameLobbiesStore } from "@/stores/useGameLobbiesStore";
-import { useUserStore } from "@/stores/user.store";
+import IconsHome from "@/components/svg/Home.vue";
+import IconsXmark from "@/components/svg/XMark.vue";
+import IconsPlus from "@/components/svg/Plus.vue";
+
+import { useUserStore ,useGameLobbiesStore } from "@/stores";
 import LobbyCreationModal from "@/module/create-lobby/lobby-creation-modal.vue";
-import SuspenseUserAvatar from "./suspense-user-avatar.vue";
+
+const lobbyCreationModal = ref<InstanceType<typeof LobbyCreationModal>>();
 
 const gameLobbiesStore = useGameLobbiesStore();
 const userStore = useUserStore();
-const lobbyCreationModal = ref<InstanceType<typeof LobbyCreationModal>>();
 </script>
