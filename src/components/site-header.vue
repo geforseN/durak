@@ -13,9 +13,9 @@
           Ваша игра
         </list-item-link>
         <button
-          v-if="userStore.user.state.currentGameId"
+          v-if="userStore.user.state.currentLobbyId"
           class="btn btn-ghost gap-2 text-xl text-secondary"
-          @click="gameLobbiesStore.leaveLobby"
+          @click="lobbiesStore.ws.emits.leaveLobby(userStore.user.state.currentLobbyId)"
         >
           <icons-xmark class="h-6 w-6" />
           Покинуть лобби
@@ -47,11 +47,11 @@ import IconsHome from "@/components/svg/Home.vue";
 import IconsXmark from "@/components/svg/XMark.vue";
 import IconsPlus from "@/components/svg/Plus.vue";
 
-import { useUserStore ,useGameLobbiesStore } from "@/stores";
+import { useUserStore, useLobbiesStore } from "@/stores";
 import LobbyCreationModal from "@/module/create-lobby/lobby-creation-modal.vue";
 
 const lobbyCreationModal = ref<InstanceType<typeof LobbyCreationModal>>();
 
-const gameLobbiesStore = useGameLobbiesStore();
+const lobbiesStore = useLobbiesStore();
 const userStore = useUserStore();
 </script>
