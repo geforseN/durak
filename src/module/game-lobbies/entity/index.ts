@@ -1,16 +1,12 @@
-import type { LobbyUser } from "@/module/global-chat/types";
+import type { LobbyDTO, LobbyUserDTO } from "../types";
 import type { GameSettings } from "@durak-game/durak-dts";
 
-export function createLobby(lobby: Lobby) {
+export function createLobby(lobby: LobbyDTO) {
   return new Lobby(lobby.id, lobby.slots, lobby.settings);
 }
 
-export interface ILobby {
-  id: string;
-  slots: (LobbyUser | null)[];
-  settings: GameSettings;
-
-  get users(): LobbyUser[];
+export interface ILobby extends LobbyDTO {
+  get users(): LobbyUserDTO[];
 
   get isFull(): boolean;
 
@@ -20,7 +16,7 @@ export interface ILobby {
 
   removeUserWithId(userId: string): void;
 
-  putUserByIndex(user: LobbyUser, index: number): void;
+  putUserByIndex(user: LobbyUserDTO, index: number): void;
 
   tryUpdateAdminById(newAdminId: string): void;
 }
@@ -28,12 +24,12 @@ export interface ILobby {
 export class Lobby implements ILobby {
   constructor(
     public readonly id: string,
-    public readonly slots: (LobbyUser | null)[],
+    public readonly slots: (LobbyUserDTO | null)[],
     public readonly settings: GameSettings,
   ) {}
 
   get users() {
-    return this.slots.filter((slot): slot is LobbyUser => !!slot);
+    return this.slots.filter((slot): slot is LobbyUserDTO => !!slot);
   }
 
   get isFull() {
@@ -49,18 +45,14 @@ export class Lobby implements ILobby {
   }
 
   removeUserWithId(userId: string) {
-    const user = this.users.find((user) => user.id === userId);
-    if (!user) {
-      throw new Error("User not found");
-    }
-    const index = this.slots.indexOf(user);
+    const index = this.slots.findIndex((slot) => slot?.id === userId);
     if (index === -1) {
-      throw new Error("User not found");
+      throw new Error("User not found, server send wrong data");
     }
     this.slots[index] = null;
   }
 
-  putUserByIndex(user: LobbyUser, index: number) {
+  putUserByIndex(user: LobbyUserDTO, index: number) {
     this.slots[index] = user;
   }
 
@@ -68,7 +60,7 @@ export class Lobby implements ILobby {
     const pastAdmin = this.users.find((user) => user.isAdmin);
     const newAdmin = this.slots.find((slot) => slot?.id === newAdminId);
     if (!newAdmin) {
-      throw new Error("Server send wrong data");
+      throw new Error("User not found, server send wrong data");
     }
     if (pastAdmin) {
       pastAdmin.isAdmin = false;
