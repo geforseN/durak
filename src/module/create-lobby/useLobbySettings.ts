@@ -1,58 +1,72 @@
-import { computed, reactive, watch } from "vue";
+import { computed, ref, watch } from "vue";
+import {
+  allowedTalonCardCount,
+  allowedDurakGameTypes,
+  allowedPlayerCount,
+  defaultInitialGameSettings,
+  type TalonCardCount,
+  type InitialGameSettings,
+} from "@durak-game/durak-dts";
 
-const defaultSettings: LobbySettings = {
-  userCount: 2,
-  cardCount: 36,
-  gameType: "basic",
-  moveTime: 30_000,
-};
+const indexOfMostGreatestTalonCardCount = allowedTalonCardCount.length - 1;
 
-export const allowedUserCount: UserCount[] = [2, 3, 4, 5, 6];
-export const allowedCardCount: CardCount[] = [24, 36, 52];
-export const allowedGameTypes: GameType[] = ["basic", "perevodnoy"];
-const mostGreatestCardCountIndex = allowedCardCount.length - 1;
+if (typeof indexOfMostGreatestTalonCardCount === "undefined") {
+  throw new Error("mostGreatestCardCountIndex is not a number");
+}
 
 export default function useLobbySettings() {
-  const lobbySettings: LobbySettings = reactive({ ...defaultSettings });
+  const lobbySettings = ref<InitialGameSettings>({
+    ...defaultInitialGameSettings,
+  });
 
-  const resetSettings = () => {
-    lobbySettings.userCount = defaultSettings.userCount;
-    lobbySettings.cardCount = defaultSettings.cardCount;
-    lobbySettings.gameType = defaultSettings.gameType;
-    lobbySettings.moveTime = defaultSettings.moveTime;
-  };
+  function resetToDefault() {
+    lobbySettings.value = { ...defaultInitialGameSettings };
+  }
 
-  const isProperCardCount = (cardCount = lobbySettings.cardCount) => {
-    return cardCount >= lobbySettings.userCount * 6;
-  };
+  function isProperTalonCardCount(cardCount: TalonCardCount) {
+    return cardCount >= lobbySettings.value.talonCardCount * 6;
+  }
+
+  const isCurrentTalonCardCountValid = computed(() => {
+    return isProperTalonCardCount(lobbySettings.value.talonCardCount);
+  });
 
   watch(
-    () => lobbySettings.userCount,
+    () => lobbySettings.value.talonCardCount,
     () => {
-      if (isProperCardCount()) return;
+      if (isCurrentTalonCardCountValid.value) {
+        return;
+      }
       changeCurrentCardCount();
     },
   );
 
-  const changeCurrentCardCount = () => {
-    const currentCardCountIndex = allowedCardCount.indexOf(
-      lobbySettings.cardCount,
+  function changeCurrentCardCount() {
+    const indexOfCurrentTalonCardCount = allowedTalonCardCount.indexOf(
+      lobbySettings.value.talonCardCount,
     );
-    const newCardCountIndex =
-      currentCardCountIndex === mostGreatestCardCountIndex
-        ? currentCardCountIndex
-        : currentCardCountIndex + 1;
-    lobbySettings.cardCount = allowedCardCount[newCardCountIndex];
-  };
-
-  const properCardCountValues = computed(() => {
-    return allowedCardCount.filter(isProperCardCount);
-  });
+    const indexOfNewTalonCardCount =
+      indexOfCurrentTalonCardCount === indexOfMostGreatestTalonCardCount
+        ? indexOfCurrentTalonCardCount
+        : indexOfCurrentTalonCardCount + 1;
+    lobbySettings.value.talonCardCount =
+      allowedTalonCardCount[indexOfNewTalonCardCount];
+  }
 
   return {
-    resetSettings,
-    isProperCardCount,
-    lobbySettings,
-    properCardCountValues,
+    state: lobbySettings,
+    resetToDefault,
+    allowedValues: {
+      talonCardCount: computed(() => {
+        return allowedTalonCardCount.filter(isProperTalonCardCount);
+      }),
+      durakGameTypes: allowedDurakGameTypes,
+      playerCount: allowedPlayerCount,
+    },
+    assertValidLobbySettings() {
+      if (!isCurrentTalonCardCountValid.value) {
+        throw new Error("Invalid lobby settings");
+      }
+    },
   };
 }
