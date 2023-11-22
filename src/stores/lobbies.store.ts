@@ -1,76 +1,96 @@
-import { ref, watch } from "vue";
+import { watch } from "vue";
 import { defineStore } from "pinia";
-import { type Lobby, createLobby } from "@/module/game-lobbies/entity/index";
-import type { LobbyUser } from "@/module/global-chat/types";
-import { useUserStore } from "@/stores/user.store";
+
+import { createLobby } from "@/module/game-lobbies/entity";
+import type { LobbyDTO, LobbyUserDTO } from "@/module/game-lobbies/types";
+import {
+  useLobbies,
+  useLobbiesWebSocket,
+} from "@/module/game-lobbies/composable";
+
+import { useUserStore, useNotificationStore } from "@/stores";
 
 export const useLobbiesStore = defineStore("lobbies", () => {
   const userStore = useUserStore();
+  const notificationStore = useNotificationStore();
+
   const lobbies = useLobbies();
 
-  const restoreState = async ({ state }: { state: Lobby[] }) => {
+  const ws = useLobbiesWebSocket({
+    "notification::push": notificationStore.addNotificationInQueue,
+    "lobbies::restore": restoreState,
+    "lobby::add": addLobby,
+    "lobby::user::join": addUserInLobby,
+    "lobby::user::leave": removeUser,
+    "lobby::admin::update": updateLobbyAdmin,
+    "lobby::remove": deleteLobby,
+    "lobby::upgrade": userStore.goToGame,
+  });
+
+  function restoreState({ state }: { state: LobbyDTO[] }) {
     lobbies.updateWith(state.map(createLobby));
-    userStore.user.tryUpdateCurrentLobby(lobbies.state);
-  };
+    userStore.user._tryUpdateCurrentLobby(lobbies.state);
+  }
 
-  const addLobby = ({ lobby }: { lobby: Lobby }) => {
+  function addLobby({ lobby }: { lobby: LobbyDTO }) {
     lobbies.addLobby(createLobby(lobby));
-  };
+  }
 
-  const deleteLobby = ({ lobbyId }: { lobbyId: Lobby["id"] }) => {
+  function deleteLobby({ lobbyId }: { lobbyId: LobbyDTO["id"] }) {
     lobbies.removeLobbyById(lobbyId);
-  };
+  }
 
-  const addUserInLobby = ({
+  function addUserInLobby({
     user,
     lobbyId,
     slotIndex,
   }: {
-    user: LobbyUser;
-    lobbyId: Lobby["id"];
+    user: LobbyUserDTO;
+    lobbyId: LobbyDTO["id"];
     slotIndex: number;
-  }) => {
+  }) {
     const lobby = lobbies.getLobbyById(lobbyId);
     lobby.putUserByIndex(user, slotIndex);
-    userStore.user2.tryUpdateCurrentLobbyData(lobby);
-    userStore.user2.tryUpdateLobbyAdminData(lobby);
-  };
+    userStore.user.state._tryUpdateCurrentLobbyData(lobby);
+    userStore.user.state._tryUpdateLobbyAdminData(lobby);
+  }
 
-  const removeUser = ({
+  function removeUser({
     lobbyId,
     userId,
   }: {
-    lobbyId: Lobby["id"];
-    userId: LobbyUser["id"];
-  }) => {
+    lobbyId: LobbyDTO["id"];
+    userId: LobbyUserDTO["id"];
+  }) {
     const lobby = lobbies.getLobbyById(lobbyId);
     lobby.removeUserWithId(userId);
-    userStore.user2.tryLeaveLobby(lobby);
-  };
+    userStore.user.state._tryLeaveLobby(lobby);
+  }
 
-  const updateLobbyAdmin = ({
+  function updateLobbyAdmin({
     lobbyId,
     newAdminId,
   }: {
-    lobbyId: Lobby["id"];
-    newAdminId: LobbyUser["id"];
-  }) => {
+    lobbyId: LobbyDTO["id"];
+    newAdminId: LobbyUserDTO["id"];
+  }) {
     const lobby = lobbies.getLobbyById(lobbyId);
     lobby.tryUpdateAdminById(newAdminId);
-  };
+  }
 
   watch(
-    () => userStore.user2.state.id,
+    () => userStore.user.state.id,
     (userId) => {
       // const lobby = lobbies.findLobbyWithUserByUserId(userId);
       // if (!lobby) {
       //   return;
       // }
-      userStore.user2.tryUpdateCurrentLobby(lobbies);
+      userStore.user.state._tryUpdateCurrentLobby(lobbies);
     },
   );
 
   return {
+    state: lobbies.state,
     restoreState,
     addLobby,
     addUserInLobby,
@@ -78,41 +98,6 @@ export const useLobbiesStore = defineStore("lobbies", () => {
     updateLobbyAdmin,
     deleteLobby,
     lobbies,
+    ws,
   };
 });
-
-const useLobbies = () => {
-  const lobbies = ref<LobbyImpl[]>([]);
-
-  function findLobbyById(lobbyId: string) {
-    return lobbies.value.find((lobby) => lobby.id === lobbyId);
-  }
-
-  function getLobbyIndexById(lobbyId: string) {
-    const index = lobbies.value.findIndex((lobby) => lobby.id === lobbyId);
-    if (index < 0) {
-      throw new Error("Lobby not found");
-    }
-    return index;
-  }
-
-  return {
-    state: lobbies,
-    updateWith(state: LobbyImpl[]) {
-      lobbies.value = state;
-    },
-    addLobby(lobby: LobbyImpl) {
-      lobbies.value.push(lobby);
-    },
-    findLobbyById,
-    getLobbyIndexById,
-    getLobbyById(lobbyId: string) {
-      const lobbyIndex = getLobbyIndexById(lobbyId);
-      return lobbies.value[lobbyIndex];
-    },
-    removeLobbyById(lobbyId: string) {
-      const lobbyIndex = getLobbyIndexById(lobbyId);
-      lobbies.value.splice(lobbyIndex, 1);
-    },
-  };
-};
