@@ -1,24 +1,17 @@
-import type { PlayerCount } from "@durak-game/durak-dts";
-import { CustomWebsocketEvent } from "@/api/websocket";
-import type { GameType } from "@durak-game/durak-dts/generated/client";
-import type { TalonCardCount } from "@durak-game/durak-dts";
+import type { InitialGameSettings } from "@durak-game/durak-dts";
 
-export class RemoveLobbyEvent extends CustomWebsocketEvent {
-  constructor(public lobbyId: string) {
-    super("lobby::remove");
-  }
-}
+import { CustomWebsocketEvent } from "@/api/websocket";
 
 export class LeaveLobbyEvent extends CustomWebsocketEvent {
   eventName = "lobby::user::leave";
-  // lobbyId can be optional, server can find lobbyId of user
+  // NOTE: lobbyId MAY be optional, server MUST find user lobby id
   constructor(public lobbyId?: string) {
     super("lobby::user::leave");
   }
 }
 
 export class JoinLobbyEvent extends CustomWebsocketEvent {
-  // slotIndex can be optional, server will make it -1 anyway
+  // NOTE: slotIndex MAY be optional, server MUST make it -1 IF was omitted
   constructor(
     public lobbyId: string,
     public slotIndex: number = -1,
@@ -28,21 +21,14 @@ export class JoinLobbyEvent extends CustomWebsocketEvent {
 }
 
 export class LobbyUpgradeEvent extends CustomWebsocketEvent {
-  // lobbyId can be optional, server can find lobbyId of user
+  // NOTE: lobbyId MAY be optional, server MUST find user lobby id
   constructor(public lobbyId?: string) {
     super("lobby::upgrade");
   }
 }
 
 export class CreateLobbyEvent extends CustomWebsocketEvent {
-  constructor(
-    public settings: {
-      userCount: PlayerCount;
-      gameType: GameType;
-      cardCount: TalonCardCount;
-      moveTime: number;
-    },
-  ) {
+  constructor(public settings: InitialGameSettings) {
     super("lobby::add");
   }
 }
