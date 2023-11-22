@@ -1,11 +1,10 @@
-import { computed, ref, watch } from "vue";
+import { computed, reactive, watch } from "vue";
 import {
   allowedTalonCardCount,
   allowedDurakGameTypes,
   allowedPlayerCount,
   defaultInitialGameSettings,
   type TalonCardCount,
-  type InitialGameSettings,
 } from "@durak-game/durak-dts";
 
 const indexOfMostGreatestTalonCardCount = allowedTalonCardCount.length - 1;
@@ -15,24 +14,27 @@ if (typeof indexOfMostGreatestTalonCardCount === "undefined") {
 }
 
 export default function useLobbySettings() {
-  const lobbySettings = ref<InitialGameSettings>({
+  const lobbySettings = reactive({
     ...defaultInitialGameSettings,
   });
 
   function resetToDefault() {
-    lobbySettings.value = { ...defaultInitialGameSettings };
+    for (const key in defaultInitialGameSettings) {
+      // @ts-expect-error key has string type, but it is keyof typeof defaultInitialGameSettings
+      lobbySettings[key] = defaultInitialGameSettings[key];
+    }
   }
 
-  function isProperTalonCardCount(cardCount: TalonCardCount) {
-    return cardCount >= lobbySettings.value.playerCount * 6;
+  function isProperCardCount(cardCount: TalonCardCount) {
+    return cardCount >= lobbySettings.playerCount * 6;
   }
 
   const isCurrentTalonCardCountValid = computed(() => {
-    return isProperTalonCardCount(lobbySettings.value.talonCardCount);
+    return isProperCardCount(lobbySettings.talonCardCount);
   });
 
   watch(
-    () => lobbySettings.value.playerCount,
+    () => lobbySettings.playerCount,
     () => {
       if (isCurrentTalonCardCountValid.value) {
         return;
@@ -43,13 +45,13 @@ export default function useLobbySettings() {
 
   function changeCurrentCardCount() {
     const indexOfCurrentTalonCardCount = allowedTalonCardCount.indexOf(
-      lobbySettings.value.talonCardCount,
+      lobbySettings.talonCardCount,
     );
     const indexOfNewTalonCardCount =
       indexOfCurrentTalonCardCount === indexOfMostGreatestTalonCardCount
         ? indexOfCurrentTalonCardCount
         : indexOfCurrentTalonCardCount + 1;
-    lobbySettings.value.talonCardCount =
+    lobbySettings.talonCardCount =
       allowedTalonCardCount[indexOfNewTalonCardCount];
   }
 
@@ -58,7 +60,7 @@ export default function useLobbySettings() {
     resetToDefault,
     allowedValues: {
       talonCardCount: computed(() => {
-        return allowedTalonCardCount.filter(isProperTalonCardCount);
+        return allowedTalonCardCount.filter(isProperCardCount);
       }),
       durakGameTypes: allowedDurakGameTypes,
       playerCount: allowedPlayerCount,

@@ -24,7 +24,7 @@
         name="player-count"
         class="my-2"
         :input-values="lobbySettings.allowedValues.playerCount"
-        v-model.number="lobbySettings.state.value.playerCount"
+        v-model.number="lobbySettings.state.playerCount"
       >
         Количество игроков
       </radio-input-group>
@@ -32,7 +32,7 @@
         class="my-2"
         name="card-count"
         :input-values="lobbySettings.allowedValues.talonCardCount.value"
-        v-model.number="lobbySettings.state.value.talonCardCount"
+        v-model.number="lobbySettings.state.talonCardCount"
       >
         Количество карт
       </radio-input-group>
@@ -41,7 +41,7 @@
         id="game-type"
         :options="lobbySettings.allowedValues.durakGameTypes"
         :options-dictionary="gameTypesDictionary"
-        v-model="lobbySettings.state.value.gameType"
+        v-model="lobbySettings.state.gameType"
       >
         Тип игры
       </select-group>
@@ -51,7 +51,7 @@
           @click="
             try {
               lobbySettings.assertValidLobbySettings();
-              emit('create-lobby', lobbySettings.state.value);
+              emit('create-lobby', lobbySettings.state);
             } catch {
               emit('failed-create-lobby');
             }
@@ -87,8 +87,8 @@ import SelectGroup from "./lobby-creation-select.vue";
 const lobbySettings = useLobbySettings();
 
 const emit = defineEmits<{
-  "create-lobby": [InitialGameSettings],
-  "failed-create-lobby": [],
+  "create-lobby": [InitialGameSettings];
+  "failed-create-lobby": [];
 }>();
 
 const modalRef = ref<HTMLDialogElement | null>(null);
