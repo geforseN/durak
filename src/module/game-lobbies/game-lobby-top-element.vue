@@ -10,11 +10,10 @@
     </div>
     <button
       v-if="
-        userStore.user.state.id &&
-        lobby.hasUserWithId(userStore.user.state.id)
+        userStore.user.state.id && lobby.hasUserWithId(userStore.user.state.id)
       "
       class="btn btn-sm border-2 border-black bg-error text-black hover:bg-error/75"
-      @click="gameLobbiesStore.leaveLobby(lobby.id)"
+      @click="emit('leaveLobby')"
     >
       Покинуть лобби
     </button>
@@ -25,17 +24,16 @@
         lobby.isFull
       "
       class="btn btn-sm border-2 border-black bg-info text-black hover:bg-info hover:saturate-[1.3]"
-      @click="gameLobbiesStore.createGame(lobby.id)"
+      @click="emit('startGame')"
     >
       Начать игру
     </button>
     <button
       v-if="
-        userStore.user.state.id &&
-        !lobby.hasUserWithId(userStore.user.state.id)
+        userStore.user.state.id && !lobby.hasUserWithId(userStore.user.state.id)
       "
       class="btn btn-sm border-2 border-black bg-success text-black hover:bg-success hover:saturate-[1.3]"
-      @click="gameLobbiesStore.joinLobby(lobby.id)"
+      @click="emit('joinLobby')"
     >
       Присоединиться
     </button>
@@ -44,13 +42,16 @@
 
 <script setup lang="ts">
 import gameTypesDictionary from "@/utils/dictionary/game-types.dictionary";
-
-import { useUserStore, useGameLobbiesStore } from "@/stores";
+import { useUserStore } from "@/stores";
 
 import type { ILobby } from "./entity";
 
 const { lobby } = defineProps<{ lobby: ILobby }>();
+const emit = defineEmits<{
+  "startGame": [];
+  "joinLobby": [];
+  "leaveLobby": [];
+}>();
 
 const userStore = useUserStore();
-const gameLobbiesStore = useGameLobbiesStore();
 </script>

@@ -10,7 +10,7 @@
       <button
         v-else
         class="card-bg flex items-center justify-center rounded-lg border-4 border-primary p-0 hover:scale-[1.01] hover:border-primary hover:bg-success sm:h-[137px] sm:w-[86px] md:h-[172px] md:w-[108px] lg:h-[207px] lg:w-[130px]"
-        @click="gameLobbiesStore.joinLobby(lobby.id, index)"
+        @click="emit('join-lobby', index)"
       >
         <span
           class="w-3/4 rounded bg-white px-1 py-2 text-xs font-bold text-black sm:border-2 sm:border-primary md:text-base lg:text-lg"
@@ -23,13 +23,9 @@
 </template>
 
 <script setup lang="ts">
-import { useGameLobbiesStore } from "@/stores";
-
 import GameLobbyUser from "./game-lobby-user.vue";
-
 import type { ILobby } from "./entity";
 
 const { lobby } = defineProps<{ lobby: ILobby }>();
-
-const gameLobbiesStore = useGameLobbiesStore();
+const emit = defineEmits<{ "join-lobby": [number] }>();
 </script>
