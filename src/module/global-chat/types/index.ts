@@ -1,21 +1,9 @@
-export type UserMessage = {
-  text: string;
-  date: number;
-  formattedDate: string;
-  sender: Sender;
-  id: `${string}-${string}-${string}-${string}-${string}`;
-  replyMessageId?: `${string}-${string}-${string}-${string}-${string}`;
-};
-
-// TODO remove User
-export type User = {
-  id: string;
+type SenderProfile = {
   userId: string;
   nickname: string;
   personalLink: string;
   photoUrl: string;
   connectStatus: "ONLINE" | "AWAY" | "OFFLINE";
-  currentGameId: string | null;
 };
 
 type Sender = {
@@ -25,21 +13,15 @@ type Sender = {
   id: string;
   isAnonymous: boolean;
   num: number;
-  profile: UserProfile;
+  profile: SenderProfile;
   updatedAt: string;
 };
 
-// TODO remove type to own module
-export type LobbyUser = {
-  id: string;
-  profile: UserProfile;
-  isAdmin: boolean;
-};
-
-type UserProfile = {
-  userId: string;
-  nickname: string;
-  personalLink: string;
-  photoUrl: string;
-  connectStatus: "ONLINE" | "AWAY" | "OFFLINE";
+export type UserMessage = {
+  text: string;
+  date: number;
+  formattedDate: string;
+  sender: Sender;
+  id: `${string}-${string}-${string}-${string}-${string}`;
+  replyMessageId?: `${string}-${string}-${string}-${string}-${string}`;
 };
