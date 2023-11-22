@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import type { LobbyUser } from "../global-chat/types";
+import type { LobbyUserDTO } from './types';
 
-const { user, index } = defineProps<{ user: LobbyUser; index: number }>();
+const { user, index } = defineProps<{ user: LobbyUserDTO; index: number }>();
 </script>
