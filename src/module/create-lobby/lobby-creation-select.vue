@@ -9,15 +9,15 @@
       v-bind="attrs"
       v-model="model"
       :id="id"
-      class="select-bordered select select-sm max-w-xs text-center text-xl min-[420px]:select-md focus:outline-2 focus:outline-primary min-[420px]:text-2xl"
+      class="select select-bordered select-sm max-w-xs text-center text-xl min-[420px]:select-md focus:outline-2 focus:outline-primary min-[420px]:text-2xl"
     >
       <option
         v-for="option of options"
-        :key="option"
+        :key="option.toString()"
         :value="option"
         :name="option"
       >
-        {{ optionsDictionary[option] || option }}
+        {{ optionsDictionary[option.toString()] || option }}
       </option>
     </select>
   </div>
@@ -27,7 +27,7 @@ import { useAttrs } from "vue";
 
 const attrs = useAttrs();
 const { options, optionsDictionary, id } = defineProps<{
-  options: string[];
+  options: readonly T[];
   optionsDictionary: Record<string, string>;
   id: string;
 }>();

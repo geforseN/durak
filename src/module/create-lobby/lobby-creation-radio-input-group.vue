@@ -23,9 +23,12 @@
 </template>
 <script setup lang="ts" generic="T extends string | number">
 import { useAttrs } from "vue";
-const attrs = useAttrs() as { name: string };
+
 const model = defineModel<T>();
+
 const props = defineProps<{
-  inputValues: T[];
+  inputValues: readonly T[];
 }>();
+
+const attrs = useAttrs() as { name: string };
 </script>
