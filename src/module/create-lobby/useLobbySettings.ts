@@ -24,7 +24,7 @@ export default function useLobbySettings() {
   }
 
   function isProperTalonCardCount(cardCount: TalonCardCount) {
-    return cardCount >= lobbySettings.value.talonCardCount * 6;
+    return cardCount >= lobbySettings.value.playerCount * 6;
   }
 
   const isCurrentTalonCardCountValid = computed(() => {
@@ -32,7 +32,7 @@ export default function useLobbySettings() {
   });
 
   watch(
-    () => lobbySettings.value.talonCardCount,
+    () => lobbySettings.value.playerCount,
     () => {
       if (isCurrentTalonCardCountValid.value) {
         return;
