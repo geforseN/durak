@@ -1,11 +1,14 @@
-import { dispatchMessage, WS_BASE } from "@/api/websocket";
-import type { UserMessage } from "@/module/global-chat/types";
-import { ChatMessage } from "@/module/global-chat/ws-events";
-import { useNotificationStore } from "@/stores/notification.store";
-import formatTime from "@/utils/intl/format-time";
-import { useWebSocket } from "@vueuse/core";
-import { defineStore } from "pinia";
 import { ref, type Ref } from "vue";
+import { defineStore } from "pinia";
+import { useWebSocket } from "@vueuse/core";
+
+import formatTime from "@/utils/intl/format-time";
+import { ChatMessage } from "@/module/global-chat/ws-events";
+import type { UserMessage } from "@/module/global-chat/types";
+
+import { useNotificationStore } from "@/stores";
+import { dispatchMessage, WS_BASE } from "@/api/websocket";
+
 
 export const useGlobalChatStore = defineStore("global-chat", () => {
   const messages = ref<UserMessage[]>([]);

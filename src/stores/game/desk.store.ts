@@ -1,13 +1,21 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
-import type { DeskSlot, Card } from "@/module/card-game/types";
-import { useGameStateStore } from "./game.state.store";
-import type { DurakGameSocket } from "@durak-game/durak-dts";
+import type {
+  DeskSlot,
+  Card,
+  DurakGameSocket,
+  EmptyDeskSlot,
+  AttackedDeskSlot,
+  DefendedDeskSlot,
+} from "@durak-game/durak-dts";
+
 import BackendPayloadError from "@/error/BackendPayloadError";
+import { useGameStateStore } from "./game.state.store";
 
 export const useGameDeskStore = defineStore("game-desk", () => {
-  const gameStateStore = useGameStateStore();
   const slots = ref<DeskSlot[]>([]);
+
+  const gameStateStore = useGameStateStore();
 
   const clear = () => {
     slots.value = slots.value.map(() => ({}));
@@ -38,7 +46,7 @@ export const useGameDeskStore = defineStore("game-desk", () => {
   };
 
   const ranks = computed(() => {
-    const cards = slots.value.flatMap<Card>(Object.values);
+    const cards = slots.value.flatMap<Card>(slot => Object.values(slot));
     const cardRanks = cards
       .map((card) => card.rank)
       .filter((value) => value !== undefined);
@@ -46,23 +54,23 @@ export const useGameDeskStore = defineStore("game-desk", () => {
   });
 
   const emptySlots = computed(() => {
-    return slots.value.filter((slot) => !slot.attackCard && !slot.defendCard);
+    return slots.value.filter(
+      (slot): slot is EmptyDeskSlot => !slot.attackCard && !slot.defendCard,
+    );
   });
 
   const defendedSlots = computed<Required<DeskSlot>[]>(() => {
-    return slots.value.filter((slot) => slot.attackCard && slot.defendCard) as {
-      attackCard: Card;
-      defendCard: Card;
-    }[];
+    return slots.value.filter(
+      (slot): slot is DefendedDeskSlot =>
+        !!slot.attackCard && !!slot.defendCard,
+    );
   });
 
-  const unbeatenSlots = computed<Required<Pick<DeskSlot, "attackCard">>[]>(
-    () => {
-      return slots.value.filter(
-        (slot) => slot.attackCard && !slot.defendCard,
-      ) as { attackCard: Card }[];
-    },
-  );
+  const unbeatenSlots = computed(() => {
+    return slots.value.filter(
+      (slot): slot is AttackedDeskSlot => !!slot.attackCard && !slot.defendCard,
+    );
+  });
 
   const unbeatenTrumpSlots = computed(() => {
     return unbeatenSlots.value.filter((unbeatenSlot) => {
