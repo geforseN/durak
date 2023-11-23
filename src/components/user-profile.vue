@@ -10,7 +10,7 @@
         <div class="avatar indicator w-min">
           <span
             class="badge indicator-item right-6 top-6 h-7 w-7"
-            :class="indicatorColor"
+            :class="indicatorColor[profile.connectStatus]"
           />
           <div
             class="box-content h-40 w-40 rounded-full border-4 border-neutral"
@@ -51,11 +51,11 @@
 </template>
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import { computed, onUnmounted, reactive } from "vue";
+import { onUnmounted, reactive } from "vue";
+
 import { getProfileByLink } from "@/api/rest";
 
-const route = useRoute();
-const { personalLink } = route.params;
+const { personalLink } = useRoute().params;
 
 if (typeof personalLink !== "string") {
   throw new Error("personalLink must be a string");
@@ -64,18 +64,11 @@ if (typeof personalLink !== "string") {
 const controller = new AbortController();
 const profile = await reactive(getProfileByLink(personalLink, { controller }));
 
-const indicatorColor = computed(() => {
-  switch (profile.connectStatus) {
-    case "ONLINE":
-      return "bg-green-400";
-    case "AWAY":
-      return "bg-yellow-400";
-    case "OFFLINE":
-      return "bg-gray-400";
-    default:
-      return "bg-gray-100";
-  }
-});
+const indicatorColor = {
+  ONLINE: "bg-green-400",
+  AWAY: "bg-yellow-400",
+  OFFLINE: "bg-gray-400",
+};
 
 onUnmounted(() => controller.abort());
 </script>
