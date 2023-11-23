@@ -7,7 +7,7 @@
     "dev:concurrent": "conc  \"vite\" \"cd ./durak-server && npm run dev:respawn\" ",
     "build-ts": "run-p type-check build-only",
     "preview": "vite preview",
-    "build": "vite build && cd ./durak-server && npm run build:tsc",
+    "build": "vite build && cd ./durak-server && npm ci && tsc",
     "build:to-server": "rm -r ../durak-server/static/ && vite build && cp -rf ./dist/ ../durak-server/static/",
     "build:to-server2": "vite build && cp -rf ./dist/ ../durak-server/static/",
     "build:to-server3": "vite build && rm -r ../durak-server/static/ && cp -rf ./dist/ ../durak-server/static/",
