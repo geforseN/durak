@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/durak-server/dist/src/index.js"
+    }
+  ]
+}
