@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import { type Socket, io } from "socket.io-client";
-import { useNotificationStore } from "@/stores/notification.store";
+import { useNotificationStore } from "@/stores";
 import { useRoute, useRouter } from "vue-router";
 import { useGameStateStore, useGameDeskStore } from "@/stores/game";
 import { createSharedComposable } from "@vueuse/core";

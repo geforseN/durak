@@ -47,7 +47,7 @@ import { ref } from "vue";
 import { useGameSelfStore } from "@/stores/game";
 import { useEventListener } from "@vueuse/core";
 import { useSharedDurakGame } from "@/module/card-game/composable/useDurakGame";
-import { useNotificationStore } from "@/stores/notification.store";
+import { useNotificationStore } from "@/stores";
 
 const props = defineProps<{
   attackCard?: Card;
