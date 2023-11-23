@@ -1,6 +1,6 @@
 <template>
   <div class="flex min-h-screen flex-col">
-    <site-header
+    <top-nav
       :class="
         router.currentRoute.value.path.match(uuidRegExp) && 'bg-purple-400'
       "
@@ -11,9 +11,10 @@
 </template>
 
 <script setup lang="ts">
-import SiteHeader from "@/components/site-header.vue";
-import NotificationQueue from "@/components/notification-queue.vue";
 import { useRouter } from "vue-router";
+
+import TopNav from "@/components/top-nav/top-nav.vue";
+import NotificationQueue from "@/components/notification-queue.vue";
 
 const router = useRouter();
 const uuidRegExp =

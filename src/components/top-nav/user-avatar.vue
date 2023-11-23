@@ -15,29 +15,30 @@
   </form>
   <template v-else-if="userStore.user.state">
     <anonymous-user-caption v-if="userStore.user.state.isAnonymous" />
-    <li v-if="userStore.user.state.profile" class="ml-2">
-      <router-link
-        :to="`/profile/${userStore.user.state.profile.personalLink}`"
-        class="h-12 w-12 rounded border border-primary"
-        active-class="shadow-lg shadow-primary"
-      >
-        <img
-          :src="userStore.user.state.profile.photoUrl"
-          :alt="`${userStore.user.state.profile.nickname} profile picture`"
-          :title="userStore.user.state.profile.nickname"
-          class="rounded"
-        />
-      </router-link>
-    </li>
+    <list-item-link
+      v-if="userStore.user.state.profile"
+      :to="`/profile/${userStore.user.state.profile.personalLink}`"
+      class="ml-2 p-0 rounded border border-primary"
+      active-class="shadow-lg shadow-primary"
+    >
+      <img
+        width="48"
+        height="48"
+        :src="userStore.user.state.profile.photoUrl"
+        :alt="`${userStore.user.state.profile.nickname} profile picture`"
+        :title="userStore.user.state.profile.nickname"
+        class="rounded"
+      />
+    </list-item-link>
   </template>
 </template>
 <script lang="ts" setup>
 import { ref } from "vue";
 
-import AnonymousUserCaption from "@/components/anonymous-user-caption.vue";
+import AnonymousUserCaption from "@/components/top-nav/anonymous-user-caption.vue";
+import ListItemLink from "@/components/top-nav/list-item-link.vue";
 
 import { useUserStore } from "@/stores";
-
 import { CREATE_ANON_USER_URL } from "@/api/rest";
 
 const isCreatingAnonymousAccount = ref(false);

@@ -1,9 +1,9 @@
 <template>
-  <li>
+  <li class="contents">
     <router-link
       :to="to"
-      v-bind="attrs"
-      class="btn btn-outline gap-2 border"
+      v-bind="$attrs"
+      class="btn btn-outline gap-2 border align-middle"
       active-class="underline underline-offset-8 decoration-black"
     >
       <slot></slot>
@@ -12,10 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import { useAttrs } from "vue";
 import type { RouteLocationRaw } from "vue-router";
 
-const attrs = useAttrs();
 const { to } = defineProps<{
   to: RouteLocationRaw;
 }>();
