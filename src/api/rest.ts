@@ -37,7 +37,7 @@ const UserSchema = object({
 export type User = Input<typeof UserSchema>;
 
 export async function getMe() {
-  const response = await fetch(`api/me`, { credentials: "include" });
+  const response = await fetch(`/api/me`, { credentials: "include" });
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -45,19 +45,14 @@ export async function getMe() {
   return parse(UserSchema, json);
 }
 
+// TODO: add type
 export async function getProfileByLink(
   personalLink: string,
   { controller }: { controller: AbortController },
 ) {
-  // TODO: remove REST_BASE usage, add api/ prefix
-  const response = await fetch(
-    `${REST_BASE}/profile?personalLink=${personalLink}`,
-    {
-      method: "GET",
-      mode: "cors",
-      signal: controller.signal,
-    },
-  );
+  const response = await fetch(`/api/profiles/${personalLink}`, {
+    signal: controller.signal,
+  });
   return response.json();
 }
 
