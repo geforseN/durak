@@ -1,24 +1,40 @@
 <template>
-  <form
-    v-if="userStore.user.error"
-    :action="CREATE_ANON_USER_URL"
-    method="post"
-  >
+  <template v-if="userStore.user.error">
+    <form :action="CREATE_ANON_USER_URL" method="post">
+      <button
+        @click="isCreatingAnonymousAccount = true"
+        class="btn btn-accent"
+        :class="isCreatingAnonymousAccount && 'loading'"
+        type="submit"
+      >
+        Create anonymous account
+      </button>
+    </form>
+
     <button
-      @click="isCreatingAnonymousAccount = true"
-      class="btn btn-accent"
-      :class="isCreatingAnonymousAccount && 'loading'"
-      type="submit"
+      class="btn"
+      @click="
+        {
+          isCreatingAnonymousAccount = true;
+          createUser()
+            .then((response) => {
+              isCreatingAnonymousAccount = false;
+              console.log({ response });
+              return response.text();
+            })
+            .then(console.log);
+        }
+      "
     >
-      Create anonymous account
+      Create anon user (fetch, no form)
     </button>
-  </form>
+  </template>
   <template v-else-if="userStore.user.state">
     <anonymous-user-caption v-if="userStore.user.state.isAnonymous" />
     <list-item-link
       v-if="userStore.user.state.profile"
       :to="`/profile/${userStore.user.state.profile.personalLink}`"
-      class="ml-2 p-0 rounded border border-primary"
+      class="ml-2 rounded border border-primary p-0"
       active-class="shadow-lg shadow-primary"
     >
       <img
@@ -39,7 +55,7 @@ import AnonymousUserCaption from "@/components/top-nav/anonymous-user-caption.vu
 import ListItemLink from "@/components/top-nav/list-item-link.vue";
 
 import { useUserStore } from "@/stores";
-import { CREATE_ANON_USER_URL } from "@/api/rest";
+import { CREATE_ANON_USER_URL, createUser } from "@/api/rest";
 
 const isCreatingAnonymousAccount = ref(false);
 const userStore = useUserStore();

@@ -58,3 +58,11 @@ export async function getProfileByLink(
 
 // TODO
 export async function getDurakGames() {}
+
+
+export function createUser() {
+  return fetch(CREATE_ANON_USER_URL, {
+    method: "POST",
+    credentials: "same-origin",
+  });
+}
