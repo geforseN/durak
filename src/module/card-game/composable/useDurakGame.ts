@@ -22,6 +22,7 @@ export const useSharedDurakGame = createSharedComposable(function useDurakGame({
   > = io(`${SOCKET_IO_BASE}/game/${route.params.gameId}`, {
     withCredentials: true,
     reconnectionAttempts: 3,
+    transports: ["websocket"],
   });
   if (isDebugMode) {
     gameSocket.onAny((event: any, ...args: any) => {
