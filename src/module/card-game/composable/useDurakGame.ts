@@ -19,11 +19,13 @@ export const useSharedDurakGame = createSharedComposable(function useDurakGame({
   const gameSocket: Socket<
     DurakGameSocket.ServerToClientEvents,
     DurakGameSocket.ClientToServerEvents
-  > = io(`${SOCKET_IO_BASE}/game/${route.params.gameId}`, {
-    withCredentials: true,
-    reconnectionAttempts: 3,
-    transports: ["websocket"],
-  });
+  > = io(
+    `${SOCKET_IO_BASE}/game/${route.params.gameId}`,
+    {
+      withCredentials: true,
+      reconnectionAttempts: 3,
+    },
+  );
   if (isDebugMode) {
     gameSocket.onAny((event: any, ...args: any) => {
       console.log(`%c${event}`, "color: red", ...args);
