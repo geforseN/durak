@@ -37,7 +37,9 @@ const UserSchema = object({
 export type User = Input<typeof UserSchema>;
 
 export async function getMe() {
-  const response = await fetch(`/api/me`, { credentials: "include" });
+  const response = await fetch(`${REST_BASE}/api/me`, {
+    credentials: "include",
+  });
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -50,7 +52,7 @@ export async function getProfileByLink(
   personalLink: string,
   { controller }: { controller: AbortController },
 ) {
-  const response = await fetch(`/api/profiles/${personalLink}`, {
+  const response = await fetch(`${REST_BASE}/api/profiles/${personalLink}`, {
     signal: controller.signal,
   });
   return response.json();

@@ -1,8 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/api/:match*",
-      "destination": "https://play-durak.up.railway.app/:match*"
-    }
-  ]
-}
