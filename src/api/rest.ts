@@ -39,6 +39,7 @@ export type User = Input<typeof UserSchema>;
 export async function getMe() {
   const response = await fetch(`${REST_BASE}/api/me`, {
     credentials: "include",
+    mode: "cors",
   });
   if (!response.ok) {
     throw new Error("Network response was not ok");
@@ -61,10 +62,10 @@ export async function getProfileByLink(
 // TODO
 export async function getDurakGames() {}
 
-
 export function createUser() {
   return fetch(CREATE_ANON_USER_URL, {
     method: "POST",
-    credentials: "same-origin",
+    credentials: "include",
+    mode: "cors",
   });
 }
