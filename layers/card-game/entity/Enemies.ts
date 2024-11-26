@@ -1,4 +1,4 @@
-import BackendPayloadError from "@/error/BackendPayloadError";
+import { BackendPayloadError } from "@/utils/errors";
 import type Enemy from "./Enemy";
 
 type EnemiesCount = number;

@@ -1,7 +1,9 @@
-import BackendPayloadError from "@/error/BackendPayloadError";
-import UserWrongInputError from "@/error/UserWrongInputError";
-import type { CardDTO } from "@durak-game/durak-dts";
 import { computed, type Ref } from "vue";
+import {
+  BackendPayloadError,
+  UserWrongInputError
+} from "@/utils/errors";
+import type { CardDTO } from "@durak-game/durak-dts";
 
 export default function useSelfHand(cards: Ref<CardDTO[]>) {
   const isEmpty = computed(() => cards.value.length === 0);

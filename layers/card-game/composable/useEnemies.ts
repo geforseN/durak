@@ -1,4 +1,4 @@
-import BackendPayloadError from "@/error/BackendPayloadError";
+import { BackendPayloadError } from "@/utils/errors";
 import { computed, type Ref } from "vue";
 import type useEnemy from "./useEnemy";
 

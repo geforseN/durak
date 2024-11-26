@@ -8,9 +8,8 @@ import type {
   AttackedDeskSlot,
   DefendedDeskSlot,
 } from "@durak-game/durak-dts";
-
-import BackendPayloadError from "@/error/BackendPayloadError";
-import { useGameStateStore } from "./game.state.store";
+import { BackendPayloadError } from "@/utils/errors";
+import { useGameStateStore } from "@/stores/game/game.state.store";
 
 export const useGameDeskStore = defineStore("game-desk", () => {
   const slots = ref<DeskSlot[]>([]);
