@@ -2,8 +2,8 @@
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": [
     "env.d.ts",
-    "src/**/*",
-    "src/**/*.vue"
+    "app/**/*",
+    "layers/**/*"
   ],
   "compilerOptions": {
     "lib": [
@@ -14,7 +14,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": [
-        "./src/*"
+        "./app/*"
       ]
     },
   },
