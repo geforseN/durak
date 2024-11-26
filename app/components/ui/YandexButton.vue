@@ -21,7 +21,6 @@
     <label class="text-white"><slot /></label>
   </a>
 </template>
-
 <script setup lang="ts">
 
 const yandexUrl =
