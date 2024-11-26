@@ -1,7 +1,7 @@
 import { computed, reactive, type ComputedRef } from "vue";
 import { defineStore } from "pinia";
 import { useGameDeskStore } from "@/stores/game";
-import type { GameState } from "@/module/card-game/types";
+import type { GameState } from "$/card-game/types";
 import { useGamePlayersStore } from "./players.store";
 import type { DurakGameSocket } from "@durak-game/durak-dts";
 import type { Socket } from "socket.io-client";

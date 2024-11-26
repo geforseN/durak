@@ -1,5 +1,5 @@
 import { computed } from "vue";
-import type { Card } from "@/module/card-game/types";
+import type { Card } from "$/card-game/types";
 import cardPowerDictionary from "@/utils/dictionary/card-power.dictionary";
 import suitsDictionary from "@/utils/dictionary/suits.dictionary";
 import {

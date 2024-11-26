@@ -8,7 +8,7 @@ import type {
   PlayerKind,
 } from "@durak-game/durak-dts";
 import type { Socket } from "socket.io-client";
-import useSelf from "@/module/card-game/composable/useSelf";
+import useSelf from "$/card-game/composable/useSelf";
 
 export type PlayerData = {
   info: PlayerInfo;

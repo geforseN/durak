@@ -60,7 +60,7 @@ import IconsXmark from "@/components/svg/XMark.vue";
 import IconsPlus from "@/components/svg/Plus.vue";
 
 import { useUserStore, useLobbiesStore } from "@/stores";
-import LobbyCreationModal from "@/module/create-lobby/lobby-creation-modal.vue";
+import LobbyCreationModal from "$/create-lobby/lobby-creation-modal.vue";
 
 const lobbyCreationModal = ref<InstanceType<typeof LobbyCreationModal>>();
 

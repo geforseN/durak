@@ -1,8 +1,8 @@
 import { reactive, ref } from "vue";
 import { defineStore } from "pinia";
 import type { Enemy } from "@durak-game/durak-dts";
-import useEnemies from "@/module/card-game/composable/useEnemies";
-import useEnemy from "@/module/card-game/composable/useEnemy";
+import useEnemies from "$/card-game/composable/useEnemies";
+import useEnemy from "$/card-game/composable/useEnemy";
 
 export const useGameEnemiesStore = defineStore("game-enemies", () => {
   const enemiesData = ref<ReturnType<typeof useEnemy>[]>([]);

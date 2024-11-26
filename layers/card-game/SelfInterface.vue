@@ -18,8 +18,8 @@
   </div>
 </template>
 <script setup lang="ts">
-import SelfDeck from "@/module/card-game/SelfDeck.vue";
-import SelfAllowedInterface from "@/module/card-game/SelfAllowedInterface.vue";
+import SelfDeck from "$/card-game/SelfDeck.vue";
+import SelfAllowedInterface from "$/card-game/SelfAllowedInterface.vue";
 import { useGameSelfStore } from "@/stores/game";
 
 const selfStore = useGameSelfStore();

@@ -26,6 +26,7 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./app", import.meta.url)),
+        "$": fileURLToPath(new URL("./layers", import.meta.url)),
       },
     },
   };

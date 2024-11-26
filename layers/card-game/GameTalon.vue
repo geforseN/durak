@@ -17,8 +17,8 @@
 
 <script setup lang="ts">
 import { useGameStateStore } from "@/stores/game";
-import BasicCard from "@/module/card-game/BasicCard.vue";
-import CardBackground from "@/module/card-game/CardBackground.vue";
+import BasicCard from "$/card-game/BasicCard.vue";
+import CardBackground from "$/card-game/CardBackground.vue";
 
 const gameStateStore = useGameStateStore();
 </script>

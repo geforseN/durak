@@ -8,8 +8,8 @@
 </template>
 
 <script setup lang="ts">
-import GameLobbies from "@/module/game-lobbies/game-lobbies.vue";
-import GlobalChat from "@/module/global-chat/global-chat.vue";
+import GameLobbies from "$/game-lobbies/game-lobbies.vue";
+import GlobalChat from "$/global-chat/global-chat.vue";
 </script>
 <style>
 html,

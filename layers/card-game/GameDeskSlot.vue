@@ -40,13 +40,13 @@
 </template>
 
 <script setup lang="ts">
-import BasicCard from "@/module/card-game/BasicCard.vue";
-import MiniCard from "@/module/card-game/MIniCard.vue";
+import BasicCard from "$/card-game/BasicCard.vue";
+import MiniCard from "$/card-game/MIniCard.vue";
 import type { Card } from "./types";
 import { ref } from "vue";
 import { useGameSelfStore } from "@/stores/game";
 import { useEventListener } from "@vueuse/core";
-import { useSharedDurakGame } from "@/module/card-game/composable/useDurakGame";
+import { useSharedDurakGame } from "$/card-game/composable/useDurakGame";
 import { useNotificationStore } from "@/stores";
 
 const props = defineProps<{

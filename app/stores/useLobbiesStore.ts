@@ -1,12 +1,12 @@
 import { watch } from "vue";
 import { defineStore } from "pinia";
 
-import { createLobby } from "@/module/game-lobbies/entity";
-import type { LobbyDTO, LobbyUserDTO } from "@/module/game-lobbies/types";
+import { createLobby } from "$/game-lobbies/entity";
+import type { LobbyDTO, LobbyUserDTO } from "$/game-lobbies/types";
 import {
   useLobbies,
   useLobbiesWebSocket,
-} from "@/module/game-lobbies/composable";
+} from "$/game-lobbies/composable";
 
 import { useUserStore, useNotificationStore } from "@/stores";
 

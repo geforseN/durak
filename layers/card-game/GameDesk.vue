@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import GameDeskSlot from "@/module/card-game/GameDeskSlot.vue";
+import GameDeskSlot from "$/card-game/GameDeskSlot.vue";
 import { useGameDeskStore } from "@/stores/game";
 import { useSharedDurakGame } from "./composable/useDurakGame";
 

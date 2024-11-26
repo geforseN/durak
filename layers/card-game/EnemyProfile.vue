@@ -31,9 +31,9 @@
   </section>
 </template>
 <script setup lang="ts">
-import EnemyAvatar from "@/module/card-game/EnemyProfileAvatar.vue";
-import EnemyStackedCards from "@/module/card-game/EnemyProfileStackedCards.vue";
-import EnemyKindBadge from "@/module/card-game/EnemyProfileKindBadge.vue";
+import EnemyAvatar from "$/card-game/EnemyProfileAvatar.vue";
+import EnemyStackedCards from "$/card-game/EnemyProfileStackedCards.vue";
+import EnemyKindBadge from "$/card-game/EnemyProfileKindBadge.vue";
 import type useEnemy from "./composable/useEnemy";
 
 const { enemy } = defineProps<{

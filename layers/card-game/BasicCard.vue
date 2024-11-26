@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Rank, Suit } from "@/module/card-game/types";
+import type { Rank, Suit } from "$/card-game/types";
 import suitsDictionary from "@/utils/dictionary/suits.dictionary";
 import { computed } from "vue";
 

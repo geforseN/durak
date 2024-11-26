@@ -3,8 +3,8 @@ import { defineStore } from "pinia";
 import { useWebSocket } from "@vueuse/core";
 
 import formatTime from "@/utils/intl/format-time";
-import { ChatMessage } from "@/module/global-chat/ws-events";
-import type { UserMessage } from "@/module/global-chat/types";
+import { ChatMessage } from "$/global-chat/ws-events";
+import type { UserMessage } from "$/global-chat/types";
 
 import { useNotificationStore } from "@/stores";
 import { dispatchMessage, WS_BASE } from "@/api/websocket";

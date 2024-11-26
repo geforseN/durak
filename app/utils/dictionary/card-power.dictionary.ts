@@ -1,4 +1,4 @@
-import type { Rank } from "@/module/card-game/types";
+import type { Rank } from "$/card-game/types";
 
 const cardPowerDictionary: Record<Rank, number> = {
   "2": 1,

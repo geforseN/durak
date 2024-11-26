@@ -28,7 +28,7 @@ import { computed } from "vue";
 import { useGamePlayersStore, useGameSelfStore } from "@/stores/game";
 import { useEventListener } from "@vueuse/core";
 import EmojiHappy from "@/components/svg/EmojiHappy.vue";
-import { useSharedDurakGame } from "@/module/card-game/composable/useDurakGame";
+import { useSharedDurakGame } from "$/card-game/composable/useDurakGame";
 
 const durakGame = useSharedDurakGame();
 const selfStore = useGameSelfStore();
