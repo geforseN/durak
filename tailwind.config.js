@@ -2,7 +2,7 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
+  content: ["./index.html", "./{app,layers}/**/*.{vue,js,ts,jsx,tsx}"],
   theme: {
     screens: {
       xxs: "310px",
