@@ -1,40 +1,29 @@
-import {
-  boolean,
-  email,
-  nullish,
-  number,
-  object,
-  string,
-  uuid,
-  enumType,
-  parse,
-  nullable,
-  type Input,
-} from "valibot";
+import * as v from 'valibot';
 
 export const REST_BASE = import.meta.env.VITE_SERVER_REST_BASE;
 
 export const CREATE_ANON_USER_URL = import.meta.env.VITE_SERVER_ANON_AUTH_ROUTE;
 
-const UserSchema = object({
-  id: string([uuid()]),
-  profile: object({
-    connectStatus: enumType(["OFFLINE", "ONLINE", "AWAY"]),
-    nickname: string(),
-    personalLink: string(/* cuid */),
-    photoUrl: string(),
-    updatedAt: string(),
-    userId: string([uuid()]),
+const UserSchema = v.object({
+  id: v.pipe(v.string(), v.uuid()),
+  profile: v.object({
+    connectStatus: v.picklist(["OFFLINE", "ONLINE", "AWAY"]),
+    nickname: v.string(),
+    personalLink: v.string(/* cuid */),
+    photoUrl: v.string(),
+    updatedAt: v.string(),
+    userId: v.pipe(v.string(), v.uuid()),
   }),
-  createdAt: string(),
-  currentGameId: nullish(string([uuid()])),
-  currentLobbyId: nullish(string([uuid()])),
-  email: nullable(string([email()])),
-  num: number(),
-  updatedAt: string(),
-  isAnonymous: boolean(),
+  createdAt: v.string(),
+  currentGameId: v.nullish(v.pipe(v.string(), v.uuid())),
+  currentLobbyId: v.nullish(v.pipe(v.string(), v.uuid())),
+  email: v.nullable(v.pipe(v.string(), v.email())),
+  num: v.number(),
+  updatedAt: v.string(),
+  isAnonymous: v.boolean(),
 });
-export type User = Input<typeof UserSchema>;
+
+export type User = v.InferInput<typeof UserSchema>;
 
 export async function getMe() {
   const response = await fetch(`${REST_BASE}/api/me`, {
@@ -45,7 +34,7 @@ export async function getMe() {
     throw new Error("Network response was not ok");
   }
   const json = await response.json();
-  return parse(UserSchema, json);
+  return v.parse(UserSchema, json);
 }
 
 // TODO: add type

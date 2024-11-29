@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { computed } from "vue";
-import { array, enumType, is, number, object, optional, string } from "valibot";
+import * as v from 'valibot';
 import type { Socket } from "socket.io-client";
 import {
   playerKinds,
@@ -13,50 +13,50 @@ import {
 
 import { useGameEnemiesStore, useGameSelfStore } from "./index";
 
-const cardType = object({ rank: enumType(ranks), suit: enumType(suits) });
-const playerKindType = enumType(playerKinds);
+const cardType = v.object({ rank: v.picklist(ranks), suit: v.picklist(suits) });
+const playerKindType = v.picklist(playerKinds);
 
 const schemas = {
   "player::receiveCards": [
-    object({
-      id: string(),
-      addedCardsCount: number(),
-      handCount: optional(number()),
+    v.object({
+      id: v.string(),
+      addedCardsCount: v.number(),
+      handCount: v.optional(v.number()),
     }),
-    object({
-      addedCards: array(cardType),
-      handCount: optional(number()),
+    v.object({
+      addedCards: v.array(cardType),
+      handCount: v.optional(v.number()),
     }),
   ],
   "player::removeCard": [
-    object({
-      player: object({ id: string() }),
-      newCardsCount: optional(number()),
+    v.object({
+      player: v.object({ id: v.string() }),
+      newCardsCount: v.optional(v.number()),
     }),
-    object({
-      player: optional(object({ newCardsCount: number() })),
+    v.object({
+      player: v.optional(v.object({ newCardsCount: v.number() })),
       card: cardType,
     }),
   ],
   "allowedPlayer::defaultBehavior": [
-    object({
-      allowedPlayer: object({ id: string() }),
-      defaultBehavior: object({
-        callTime: object({ UTC: number() }),
+    v.object({
+      allowedPlayer: v.object({ id: v.string() }),
+      defaultBehavior: v.object({
+        callTime: v.object({ UTC: v.number() }),
       }),
     }),
-    object({
-      defaultBehavior: object({
-        callTime: object({ UTC: number() }),
+    v.object({
+      defaultBehavior: v.object({
+        callTime: v.object({ UTC: v.number() }),
       }),
     }),
   ],
   "player::changedKind": [
-    object({
-      id: string(),
+    v.object({
+      id: v.string(),
       newKind: playerKindType,
     }),
-    object({
+    v.object({
       newKind: playerKindType,
     }),
   ],
@@ -76,12 +76,12 @@ export const useGamePlayersStore = defineStore("players-store", () => {
 
   const putCardsToPlayer = ({ player }: { player: unknown }) => {
     const [enemy, self] = schemas["player::receiveCards"];
-    if (is(enemy, player)) {
+    if (v.is(enemy, player)) {
       return enemiesStore.enemies
         .getById(player.id)
         .increaseCardCount(player.addedCardsCount);
     }
-    if (is(self, player)) {
+    if (v.is(self, player)) {
       return selfStore.self.receiveCard(...player.addedCards);
     }
     throw new Error(`player::receiveCards incorrect payload:${player}`);
@@ -89,10 +89,10 @@ export const useGamePlayersStore = defineStore("players-store", () => {
 
   const changePlayerKind = ({ player }: { player: unknown }) => {
     const [enemy, self] = schemas["player::changedKind"];
-    if (is(enemy, player)) {
+    if (v.is(enemy, player)) {
       return enemiesStore.enemies.getById(player.id).updateKind(player.newKind);
     }
-    if (is(self, player)) {
+    if (v.is(self, player)) {
       return selfStore.self.updateKind(player.newKind);
     }
     throw new Error(`player::changedKind incorrect payload:${player}`);
@@ -112,10 +112,10 @@ export const useGamePlayersStore = defineStore("players-store", () => {
 
   const removeCardFromPlayer = (payload: object) => {
     const [enemy, self] = schemas["player::removeCard"];
-    if (is(self, payload)) {
+    if (v.is(self, payload)) {
       return selfStore.self.removeCard(payload.card);
     }
-    if (is(enemy, payload)) {
+    if (v.is(enemy, payload)) {
       return enemiesStore.enemies
         .getById(payload.player.id)
         .decrementCardCount();
@@ -125,7 +125,7 @@ export const useGamePlayersStore = defineStore("players-store", () => {
   const updateTimerForNewAllowedPlayer = (payload: object) => {
     const [enemy, self] = schemas["allowedPlayer::defaultBehavior"];
 
-    if (!is(self, payload) && !is(enemy, payload)) {
+    if (!v.is(self, payload) && !v.is(enemy, payload)) {
       throw new Error("Invalid payload allowedPlayer::defaultBehavior");
     }
   };
