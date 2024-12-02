@@ -13,6 +13,7 @@ if (!baseURL) {
 export default defineConfig({
   snapshotDir: 'e2e/__snapshots__',
   testMatch: ['**\/*.e2e.spec.ts', 'e2e\/*.spec.ts'],
+  globalTimeout: process.env.CI ? 4 * 60 * 1000 : undefined,
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -73,6 +74,6 @@ export default defineConfig({
   webServer: process.env.CI ? undefined : {
     command: 'pnpm dev',
     url: baseURL,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: true,
   },
 });
