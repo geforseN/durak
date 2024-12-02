@@ -2,7 +2,6 @@ import { defineConfig, devices } from '@playwright/test';
 import 'dotenv/config';
 
 const baseURL = process.env.PLAYWRIGHT_BASE_URL;
-console.log({ baseURL });
 if (!baseURL) {
   throw new Error('PLAYWRIGHT_BASE_URL environment variable is not defined');
 }
