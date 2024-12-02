@@ -6,6 +6,12 @@ if (!baseURL) {
   throw new Error('PLAYWRIGHT_BASE_URL environment variable is not defined');
 }
 
+if (process.env.CI && !process.env.VERCEL_AUTOMATION_BYPASS_SECRET) {
+  throw new Error(
+    'VERCEL_AUTOMATION_BYPASS_SECRET environment variable is not defined',
+  );
+}
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -29,8 +35,12 @@ export default defineConfig({
     baseURL,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    extraHTTPHeaders: process.env.CI 
+      ? {
+        'x-vercel-protection-bypass': process.env.VERCEL_AUTOMATION_BYPASS_SECRET!,
+      } 
+      : undefined
   },
-
   /* Configure projects for major browsers */
   projects: [
     {
