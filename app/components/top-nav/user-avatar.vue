@@ -10,24 +10,6 @@
         Create anonymous account
       </button>
     </form>
-
-    <button
-      class="btn"
-      @click="
-        {
-          isCreatingAnonymousAccount = true;
-          createUser()
-            .then((response) => {
-              isCreatingAnonymousAccount = false;
-              console.log({ response });
-              return response.text();
-            })
-            .then(console.log);
-        }
-      "
-    >
-      Create anon user (fetch, no form)
-    </button>
   </template>
   <template v-else-if="userStore.user.state">
     <anonymous-user-caption v-if="userStore.user.state.isAnonymous" />
@@ -55,7 +37,7 @@ import AnonymousUserCaption from "@/components/top-nav/anonymous-user-caption.vu
 import ListItemLink from "@/components/top-nav/list-item-link.vue";
 
 import { useUserStore } from "@/stores";
-import { CREATE_ANON_USER_URL, createUser } from "@/api/rest";
+import { CREATE_ANON_USER_URL } from "@/api/rest";
 
 const isCreatingAnonymousAccount = ref(false);
 const userStore = useUserStore();
