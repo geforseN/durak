@@ -4,6 +4,7 @@
     class="select"
     name="app-theme-select"
     id="app-theme-select"
+    data-testid="app-theme-select"
   >
     <option v-for="[value, label] of Object.entries(appThemes)" :key="value" :value>
       {{ label }}
