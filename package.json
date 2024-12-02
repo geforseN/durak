@@ -2,6 +2,7 @@
   "name": "durak-vue-client",
   "version": "0.0.0",
   "private": true,
+  "packageManager": "pnpm@9.14.4",
   "scripts": {
     "dev": "conc \"vite\" \"cd ./server && pnpm dev\" ",
     "build-ts": "run-p type-check build-only",
