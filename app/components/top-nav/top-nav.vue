@@ -45,6 +45,8 @@
         </teleport>
       </template>
       <li class="mr-2" />
+      <app-theme-select />
+      <li class="mr-2" />
       <user-avatar />
     </ul>
   </nav>
@@ -52,6 +54,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
+import AppThemeSelect from "@/components/app-theme-select.vue";
 import ListItemLink from "@/components/top-nav/list-item-link.vue";
 import UserAvatar from "@/components/top-nav/user-avatar.vue";
 
