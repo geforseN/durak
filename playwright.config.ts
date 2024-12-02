@@ -10,7 +10,8 @@ if (!baseURL) {
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testMatch: '**\/*.e2e.spec.ts',
+  snapshotDir: 'e2e/__snapshots__',
+  testMatch: ['**\/*.e2e.spec.ts', 'e2e\/*.spec.ts'],
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -68,9 +69,9 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+  webServer: {
+    command: 'pnpm dev',
+    url: baseURL,
+    reuseExistingServer: !process.env.CI,
+  },
 });
