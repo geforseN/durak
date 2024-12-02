@@ -22,6 +22,6 @@ module.exports = {
     require("@savvywombat/tailwindcss-grid-areas"),
   ],
   daisyui: {
-    themes: ["corporate"],
+    themes: ["corporate", "dark"],
   },
 };
