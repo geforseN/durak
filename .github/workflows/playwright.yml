@@ -27,13 +27,19 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Set Playwright Browsers Cache Key
+        id: playwright-browsers-cache
+        run: |
+          echo "KEY=$(echo ${GITHUB_REF#refs/heads/})-${{ runner.os }}" >> $GITHUB_OUTPUT
+        shell: bash
+
       - name: Restore Playwright Browsers Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4.1.2
         with:
-          path: ~/.cache/ms-playwright
-          key: playwright-browsers-${{ runner.os }}-${{ hashFiles('package-lock.json', 'pnpm-lock.yaml') }}
+          path: ~/.cache/playwright-browsers
+          key: ${{ steps.playwright-browsers-cache.outputs.KEY }}
           restore-keys: |
-            playwright-browsers-${{ runner.os }}-
+            ${{ steps.playwright-browsers-cache.outputs.KEY }}
 
       - name: Install Playwright Browsers
         run: pnpm playwright:install
