@@ -6,23 +6,26 @@
   font-family: sans-serif;
 }
 
-
 @layer components {
   .card-bg {
-  --x: 1.7;
-  --first: #c2a813;
-  --second: #ffffff;
-  background-color: var(--first);
-  background-image: repeating-linear-gradient(
-      45deg,
-      transparent, transparent calc(5px*var(--x)),
-      var(--second) calc(5px*var(--x)), var(--second) calc(6px*var(--x))
-  ),
-  repeating-linear-gradient(
-      -45deg,
-      transparent, transparent calc(5px*var(--x)),
-      var(--second) calc(5px*var(--x)), var(--second) calc(6px*var(--x))
-  );
+    --x: 1.7;
+    --first: #c2a813;
+    --second: #ffffff;
+    background-color: var(--first);
+    background-image: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent calc(5px * var(--x)),
+        var(--second) calc(5px * var(--x)),
+        var(--second) calc(6px * var(--x))
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent calc(5px * var(--x)),
+        var(--second) calc(5px * var(--x)),
+        var(--second) calc(6px * var(--x))
+      );
   }
 }
 
@@ -37,15 +40,15 @@
   }
 
   .scrollbar::-webkit-scrollbar {
-    @apply w-3
+    @apply w-3;
   }
   .scrollbar::-webkit-scrollbar-track {
-    @apply bg-neutral-500/75
+    @apply bg-neutral-500/75;
   }
   .scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-neutral-700/75
+    @apply bg-neutral-700/75;
   }
   .scrollbar::-webkit-scrollbar-thumb:hover {
-    @apply bg-neutral-900/75
+    @apply bg-neutral-900/75;
   }
 }
