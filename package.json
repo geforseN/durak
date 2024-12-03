@@ -10,6 +10,7 @@
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "test:e2e": "playwright test",
+    "test:e2e:snapshots:update": "pnpm test:e2e --update-snapshots",
     "playwright:install":" playwright install --with-deps"
   },
   "dependencies": {
