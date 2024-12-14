@@ -32,10 +32,10 @@
     <input
       type="radio"
       name="game-desk-slot"
+      class="focus:outline-cyan-400 focus:outline-dashed focus:outline-4 focus:outline-offset-2 z-10 rounded-md w-full h-full appearance-none absolute inset-0"
       @focus="isFocused = true"
       @blur="isFocused = false"
-      class="focus:outline-cyan-400 focus:outline-dashed focus:outline-4 focus:outline-offset-2 z-10 rounded-md w-full h-full appearance-none absolute inset-0"
-    />
+    >
   </div>
 </template>
 

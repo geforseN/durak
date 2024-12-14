@@ -1,18 +1,21 @@
 <template>
   <div class="flex gap-x-0.5">
     <shield-svg
-      class="w-6 h-6 border border-black rounded bg-blue-700"
       v-if="kind.includes('Defender')"
+      class="w-6 h-6 border border-black rounded bg-blue-700"
     />
     <swords-svg
-      class="w-6 h-6 border border-black rounded bg-red-700"
       v-else-if="kind.includes('Attacker')"
+      class="w-6 h-6 border border-black rounded bg-red-700"
     />
     <div
-      class="w-6 h-6 border border-black rounded bg-green-700 flex justify-center items-center"
       v-if="kind.includes('Allowed')"
+      class="w-6 h-6 border border-black rounded bg-green-700 flex justify-center items-center"
     >
-      <clock-svg v-if="hasTimer" class="w-6 h-6" />
+      <clock-svg
+        v-if="hasTimer"
+        class="w-6 h-6"
+      />
     </div>
   </div>
 </template>

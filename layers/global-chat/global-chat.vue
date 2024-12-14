@@ -5,18 +5,21 @@
     <global-chat-messages />
     <div class="mt-2 flex items-stretch gap-0.5">
       <div class="relative flex-1">
-        <label class="sr-only" for="global-chat-input">
+        <label
+          class="sr-only"
+          for="global-chat-input"
+        >
           Ввод сообщения для глобального чата
         </label>
         <input
-          @focus="mustShowInputLengthBadge = true"
-          @blur="mustShowInputLengthBadge = false"
-          class="input input-bordered h-full w-full px-2"
           id="global-chat-input"
           v-model="input"
+          class="input input-bordered h-full w-full px-2"
           placeholder="Нажмите ENTER, что-бы отправить сообщение"
+          @focus="mustShowInputLengthBadge = true"
+          @blur="mustShowInputLengthBadge = false"
           @keyup.enter="handleMessageSend"
-        />
+        >
         <div
           v-if="mustShowInputLengthBadge"
           :class="input.length > MAX_INPUT_LENGTH ? 'bg-error' : 'bg-accent'"

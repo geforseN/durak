@@ -1,11 +1,14 @@
 <template>
   <template v-if="userStore.user.error">
-    <form :action="CREATE_ANON_USER_URL" method="post">
+    <form
+      :action="CREATE_ANON_USER_URL"
+      method="post"
+    >
       <button
-        @click="isCreatingAnonymousAccount = true"
         class="btn btn-accent"
         :class="isCreatingAnonymousAccount && 'loading'"
         type="submit"
+        @click="isCreatingAnonymousAccount = true"
       >
         Create anonymous account
       </button>
@@ -26,7 +29,7 @@
         :alt="`${userStore.user.state.profile.nickname} profile picture`"
         :title="userStore.user.state.profile.nickname"
         class="rounded"
-      />
+      >
     </list-item-link>
   </template>
 </template>

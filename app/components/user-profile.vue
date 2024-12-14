@@ -20,30 +20,24 @@
               height="160"
               :src="profile.photoUrl"
               :alt="`${profile.nickname} profile picture`"
-            />
+            >
           </div>
         </div>
         <div
           class="flex flex-col gap-y-2 divide-y-2 divide-slate-700 rounded border border-neutral bg-slate-400/20 p-4"
         >
-          <span class="text-xl font-medium"
-            >Количество побед:
-            {{ profile.User.UserGameStat.wonGamesCount }}</span
-          >
-          <span class="text-xl font-medium"
-            >Количество поражений:
-            {{ profile.User.UserGameStat.lostGamesCount }}</span
-          >
-          <span class="text-xl font-medium"
-            >Процент:
+          <span class="text-xl font-medium">Количество побед:
+            {{ profile.User.UserGameStat.wonGamesCount }}</span>
+          <span class="text-xl font-medium">Количество поражений:
+            {{ profile.User.UserGameStat.lostGamesCount }}</span>
+          <span class="text-xl font-medium">Процент:
             {{
               (
                 (profile.User.UserGameStat.wonGamesCount /
                   (profile.User.UserGameStat.lostGamesCount +
                     profile.User.UserGameStat.wonGamesCount) || 0) * 100
               ).toFixed(2)
-            }}%</span
-          >
+            }}%</span>
         </div>
       </div>
     </section>

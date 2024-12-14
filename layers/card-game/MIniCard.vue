@@ -6,8 +6,7 @@
     <span
       class="self-end relative bottom-1"
       :class="(props.suit === '♥' || props.suit === '♦') && 'text-red-600'"
-      >{{ props.suit }}</span
-    >
+    >{{ props.suit }}</span>
   </div>
 </template>
 <script setup lang="ts">

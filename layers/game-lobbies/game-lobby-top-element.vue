@@ -20,8 +20,8 @@
     <button
       v-if="
         userStore.user.state.id &&
-        lobby.hasAdminWithId(userStore.user.state.id) &&
-        lobby.isFull
+          lobby.hasAdminWithId(userStore.user.state.id) &&
+          lobby.isFull
       "
       class="btn btn-sm border-2 border-black bg-info text-black hover:bg-info hover:saturate-[1.3]"
       @click="emit('startGame')"

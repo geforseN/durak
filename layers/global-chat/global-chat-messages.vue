@@ -1,7 +1,7 @@
 <template>
   <section
-    class="scrollbar flex flex-1 flex-col overflow-y-scroll rounded border-2 border-neutral/70 bg-accent/50"
     ref="messagesContainer"
+    class="scrollbar flex flex-1 flex-col overflow-y-scroll rounded border-2 border-neutral/70 bg-accent/50"
   >
     <global-chat-user-message
       v-for="message of globalChatStore.messages"

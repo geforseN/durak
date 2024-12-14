@@ -4,20 +4,20 @@
     class="flex flex-col items-center justify-between gap-0.5 min-[320px]:flex-row sm:gap-3"
   >
     <label :for="attrs.name + '#' + model">
-      <slot></slot>
+      <slot />
     </label>
     <div class="join">
       <input
-        :id="attrs.name + '#' + value"
-        type="radio"
         v-for="value of props.inputValues"
-        class="btn join-item btn-sm min-[420px]:btn-md min-[420px]:text-xl"
+        :id="attrs.name + '#' + value"
         :key="value"
+        v-model="model"
+        type="radio"
+        class="btn join-item btn-sm min-[420px]:btn-md min-[420px]:text-xl"
         :aria-label="value.toString()"
         :value="value"
-        v-model="model"
         v-bind="attrs"
-      />
+      >
     </div>
   </div>
 </template>

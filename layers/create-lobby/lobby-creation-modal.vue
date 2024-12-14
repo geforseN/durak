@@ -1,5 +1,8 @@
 <template>
-  <dialog ref="modalRef" class="modal text-xl min-[350px]:text-2xl">
+  <dialog
+    ref="modalRef"
+    class="modal text-xl min-[350px]:text-2xl"
+  >
     <section class="modal-box flex flex-col border-4 border-primary">
       <div class="flex justify-between">
         <h2
@@ -21,27 +24,27 @@
         </form>
       </div>
       <radio-input-group
+        v-model.number="lobbySettings.state.playerCount"
         name="player-count"
         class="my-2"
         :input-values="lobbySettings.allowedValues.playerCount"
-        v-model.number="lobbySettings.state.playerCount"
       >
         Количество игроков
       </radio-input-group>
       <radio-input-group
+        v-model.number="lobbySettings.state.talonCardCount"
         class="my-2"
         name="card-count"
         :input-values="lobbySettings.allowedValues.talonCardCount.value"
-        v-model.number="lobbySettings.state.talonCardCount"
       >
         Количество карт
       </radio-input-group>
       <select-group
-        class="my-2"
         id="game-type"
+        v-model="lobbySettings.state.gameType"
+        class="my-2"
         :options="lobbySettings.allowedValues.durakGameTypes"
         :options-dictionary="gameTypesDictionary"
-        v-model="lobbySettings.state.gameType"
       >
         Тип игры
       </select-group>
@@ -68,7 +71,10 @@
         Сброс параметров
       </button>
     </section>
-    <form method="dialog" class="modal-backdrop bg-black/50">
+    <form
+      method="dialog"
+      class="modal-backdrop bg-black/50"
+    >
       <button>Отменить создание игровой комнаты</button>
     </form>
   </dialog>

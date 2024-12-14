@@ -3,7 +3,7 @@
     <card-background
       v-if="
         !gameStateStore.talon.hasOneCard &&
-        !gameStateStore.talon.isEmpty
+          !gameStateStore.talon.isEmpty
       "
       class="relative left-5 z-10"
     />

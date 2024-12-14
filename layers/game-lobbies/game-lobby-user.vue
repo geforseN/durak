@@ -20,7 +20,7 @@
       :src="user.profile.photoUrl"
       :alt="`${user.profile.nickname} profile picture`"
       class="avatar h-full rounded-xl border border-black sm:col-start-2 sm:row-start-3 sm:h-auto sm:place-self-end"
-    />
+    >
   </article>
 </template>
 
