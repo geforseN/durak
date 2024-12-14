@@ -2,7 +2,7 @@
   "name": "durak-vue-client",
   "version": "0.0.0",
   "private": true,
-  "packageManager": "pnpm@9.14.4",
+  "packageManager": "pnpm@9.15.0",
   "scripts": {
     "dev": "conc \"vite\" \"cd ./server && pnpm dev\" ",
     "build-ts": "run-p type-check build-only",
@@ -32,7 +32,7 @@
     "@savvywombat/tailwindcss-grid-areas": "^4.0.0",
     "@total-typescript/ts-reset": "^0.6.1",
     "@types/eslint": "^9.6.1",
-    "@types/node": "22.10.1",
+    "@types/node": "22.10.2",
     "@types/socket.io": "^3.0.2",
     "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^8.16.0",
@@ -57,7 +57,7 @@
     "tailwindcss-debug-screens": "^2.2.1",
     "typescript": "5.7.2",
     "typescript-eslint": "^8.18.0",
-    "vite": "6.0.2",
+    "vite": "6.0.3",
     "vue-tsc": "^2.1.10"
   }
 }
