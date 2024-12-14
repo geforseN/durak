@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint .",
+    "lintfix": "eslint . --fix",
     "test:e2e": "playwright test",
     "test:e2e:snapshots:update": "pnpm test:e2e --update-snapshots",
     "playwright:install": "playwright install --with-deps"
