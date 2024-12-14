@@ -1,6 +1,7 @@
 <template>
   <nav
-    class="navbar gap-1 xs:gap-2 sticky top-0 z-10 flex h-12 min-h-0 items-end border-b border-b-neutral bg-primary/50 xs:h-16"
+    data-testid="top-nav"
+    class="navbar sticky top-0 z-10 flex h-12 min-h-0 items-end gap-1 border-b border-b-neutral bg-primary/50 xs:h-16 xs:gap-2"
   >
     <ul class="contents">
       <list-item-link
