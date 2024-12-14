@@ -1,5 +1,8 @@
 <template>
-  <div class="chat" :class="isMyMessage ? 'chat-end' : 'chat-start'">
+  <div
+    class="chat"
+    :class="isMyMessage ? 'chat-end' : 'chat-start'"
+  >
     <global-chat-user-message-avatar v-bind="{ message, isMyMessage }" />
     <global-chat-user-message-chat-bubble v-bind="{ message, isMyMessage }" />
   </div>

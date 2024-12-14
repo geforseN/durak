@@ -30,7 +30,7 @@
         canBeUsedForAttack && 'outline outline-yellow-500',
       ]"
       class="cursor-pointer h-[116px] w-[83px] border-2 border-black rounded bg-cover bg-black transition-all ease-out"
-    ></div>
+    />
     <!-- TODO -->
     <!-- TODO -->
     <!-- TODO -->
@@ -45,10 +45,10 @@
     <input
       type="radio"
       name="self-card"
+      class="z-10 rounded-md w-full h-full appearance-none absolute inset-0 outline-none"
       @focus="handleCardFocus"
       @blur="handleCardBlur"
-      class="z-10 rounded-md w-full h-full appearance-none absolute inset-0 outline-none"
-    />
+    >
   </div>
 </template>
 

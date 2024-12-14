@@ -6,7 +6,6 @@
     <emoji-happy class="dark:fill-white" />
     <button
       v-show="selfStore.self.canMakeMove"
-      @click="durakGame.stopMove"
       class="btn flex flex-col h-max text-white bg-black focus:outline-2 focus:outline-blue-300"
       :class="[
         canSelfEndPursuit && 'bg-rose-900',
@@ -14,11 +13,10 @@
         canSelfGaveUp && 'bg-rose-500',
         selfStore.self.isSurrendered && 'bg-rose-400',
       ]"
+      @click="durakGame.stopMove"
     >
       <span class="text-lg">{{ allowedActionMessage }}</span>
-      <span class="text-xs/3"
-        >Нажмите <kbd class="kbd kbd-xs bg-slate-700 rounded">S</kbd></span
-      >
+      <span class="text-xs/3">Нажмите <kbd class="kbd kbd-xs bg-slate-700 rounded">S</kbd></span>
     </button>
   </div>
 </template>

@@ -2,7 +2,10 @@
   <div
     class="grid grid-cols-2 xs:grid-cols-3 grid-flow-row bg-primary justify-items-center"
   >
-    <template v-for="(slot, index) of deskStore.slots" :key="index">
+    <template
+      v-for="(slot, index) of deskStore.slots"
+      :key="index"
+    >
       <game-desk-slot
         :attack-card="slot.attackCard"
         :defend-card="slot.defendCard"

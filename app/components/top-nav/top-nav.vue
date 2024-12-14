@@ -13,7 +13,10 @@
       >
         Ваша игра
       </list-item-link>
-      <li v-else-if="userStore.user.state.currentLobbyId" class="contents">
+      <li
+        v-else-if="userStore.user.state.currentLobbyId"
+        class="contents"
+      >
         <button
           class="btn btn-ghost gap-2 text-xl text-secondary"
           @click="

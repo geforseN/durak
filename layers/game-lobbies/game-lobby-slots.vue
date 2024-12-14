@@ -1,6 +1,9 @@
 <template>
   <div class="flex flex-col justify-center gap-2 sm:flex-row">
-    <template v-for="(slot, index) of lobby.slots" :key="slot?.id">
+    <template
+      v-for="(slot, index) of lobby.slots"
+      :key="slot?.id"
+    >
       <game-lobby-user
         v-if="slot"
         :user="slot"
