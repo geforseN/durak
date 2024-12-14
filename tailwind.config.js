@@ -1,26 +1,24 @@
-const defaultTheme = require("tailwindcss/defaultTheme");
+import defaultTheme from "tailwindcss/defaultTheme";
+import daisyui from "daisyui";
+import debugScreens from "tailwindcss-debug-screens";
+import gridAreas from "@savvywombat/tailwindcss-grid-areas";
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: ["./index.html", "./{app,layers}/**/*.{vue,js,ts,jsx,tsx}"],
   theme: {
     screens: {
       xxs: "310px",
-      xs: "475px" /* 
-      'sm': '640px'
-      'md': '768px'
-      'lg': '1024px'
-      'xl': '1280px'
-      '2xl': '1536px' */,
-      ...defaultTheme.screens,
+      xs: "475px",
+      sm: defaultTheme.screens.sm,
+      md: defaultTheme.screens.md,
+      lg: defaultTheme.screens.lg,
+      xl: defaultTheme.screens.xl,
+      "2xl": defaultTheme.screens["2xl"],
     },
     extend: {},
   },
-  plugins: [
-    require("daisyui"),
-    require("tailwindcss-debug-screens"),
-    require("@savvywombat/tailwindcss-grid-areas"),
-  ],
+  plugins: [daisyui, debugScreens, gridAreas],
   daisyui: {
     themes: ["corporate", "dark"],
   },
