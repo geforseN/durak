@@ -1,5 +1,6 @@
 <template>
   <div class="drawer drawer-end">
+    <!-- NOTE: do not remove #app-drawer, it is used by open and close buttons -->
     <input
       id="app-drawer"
       type="checkbox"
