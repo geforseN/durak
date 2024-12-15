@@ -13,12 +13,20 @@
     <li class="ml-auto" />
     <app-theme-select class="hidden xs:select-md xs:block" />
     <user-auth />
-    <app-drawer-open-burger-button />
+    <app-drawer-open-burger-button
+      :size="isSmall ? 'small' : 'medium'"
+    />
   </nav>
 </template>
 <script setup lang="ts">
+import { computed } from "vue";
 import AppThemeSelect from "@/components/app-theme-select.vue";
 import IconsHome from "@/components/svg/Home.vue";
 import AppDrawerOpenBurgerButton from "$/app-drawer/components/app-drawer-open-burger-button.vue";
 import UserAuth from "$/user-auth/components/user-auth.vue";
+import { useAppStore } from "@/stores";
+
+const appStore = useAppStore();
+
+const isSmall = computed(() => appStore.screen.isExtraSmall);
 </script>
