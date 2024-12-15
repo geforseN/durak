@@ -10,7 +10,7 @@
     >
       <icons-home />
     </router-link>
-    <li class="ml-auto" />
+    <div class="ml-auto" />
     <!-- NOTE: using v-show because app-theme-select must initialize state -->
     <!-- otherwise user theme will not be taken from storage -->
     <!-- TODO: use v-if and defineAsyncComponent -->
