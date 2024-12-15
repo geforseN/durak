@@ -78,17 +78,6 @@ export const useLobbiesStore = defineStore("lobbies", () => {
     lobby.tryUpdateAdminById(newAdminId);
   }
 
-  watch(
-    () => userStore.user.state.id,
-    (userId) => {
-      // const lobby = lobbies.findLobbyWithUserByUserId(userId);
-      // if (!lobby) {
-      //   return;
-      // }
-      // userStore.user.state._tryUpdateCurrentLobby(lobbies);
-    },
-  );
-
   return {
     state: lobbies.state,
     restoreState,
