@@ -3,23 +3,22 @@
     data-testid="top-nav"
     class="navbar sticky top-0 z-[1] flex h-12 min-h-0 items-end gap-1 border-b border-b-neutral bg-primary/50 xs:h-16 xs:gap-2"
   >
-    <ul class="contents">
-      <list-item-link
-        class="btn btn-outline btn-sm border align-middle xs:btn-md"
-        to="/"
-      >
-        <icons-home />
-      </list-item-link>
-      <li class="ml-auto" />
-      <app-theme-select class="select-sm xs:select-md" />
-      <user-avatar />
-    </ul>
+    <router-link
+      class="btn btn-outline btn-sm border align-middle xs:btn-md"
+      active-class="underline underline-offset-8 decoration-black"
+      to="/"
+    >
+      <icons-home />
+    </router-link>
+    <li class="ml-auto" />
+    <app-theme-select class="hidden xs:select-md xs:block" />
+    <user-auth />
+    <app-drawer-open-burger-button />
   </nav>
 </template>
 <script setup lang="ts">
 import AppThemeSelect from "@/components/app-theme-select.vue";
-import ListItemLink from "@/components/top-nav/list-item-link.vue";
-import UserAvatar from "@/components/top-nav/user-avatar.vue";
-
 import IconsHome from "@/components/svg/Home.vue";
+import AppDrawerOpenBurgerButton from "$/app-drawer/components/app-drawer-open-burger-button.vue";
+import UserAuth from "$/user-auth/components/user-auth.vue";
 </script>
