@@ -2,8 +2,7 @@ import { useAsyncState } from "@vueuse/core";
 import { defineStore } from "pinia";
 import { useRouter } from "vue-router";
 
-import { getMe, type User } from "@/api/rest";
-
+import { getMe } from "@/api/rest";
 
 export const useUserStore = defineStore("user", () => {
   const router = useRouter();
@@ -12,7 +11,7 @@ export const useUserStore = defineStore("user", () => {
     () => {
       return getMe();
     },
-    {} as Partial<User>,
+    null,
     {
       shallow: false,
       immediate: true,
