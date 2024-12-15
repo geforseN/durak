@@ -1,0 +1,40 @@
+name: autofix.ci
+
+on:
+  pull_request:
+  push:
+    branches: main
+
+permissions:
+  contents: read
+
+jobs:
+  lintfix:
+    name: Lint
+
+    timeout-minutes: 2
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Git repository
+        uses: actions/checkout@v4.2.2
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: 22
+          cache: pnpm
+      
+      - name: Install Node.js dependencies
+        run: pnpm install
+      
+      - name: Lintfix
+        continue-on-error: true
+        run: pnpm lintfix
+      
+      - name: autofix.ci
+        uses: autofix-ci/action@v1.3.1
