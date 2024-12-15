@@ -17,7 +17,17 @@
         aria-label="close sidebar"
         class="drawer-overlay"
       />
-      <slot name="content" />
+      <slot name="content">
+        <app-drawer-default-content />
+      </slot>
     </div>
   </div>
 </template>
+<!-- FIXME: aria i18n -->
+<script setup lang="ts">
+import { defineAsyncComponent } from "vue";
+
+const AppDrawerDefaultContent = defineAsyncComponent(() =>
+  import("./app-drawer-default-content.vue"),
+);
+</script>
