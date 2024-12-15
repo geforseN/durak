@@ -27,17 +27,17 @@
     >
       <!-- prettier-ignore -->
       <label
-        for="app-theme-select"
+        :for="appThemeSelectId"
         class="label w-full cursor-pointer"
       >
         Theme
       </label>
-      <app-theme-select />
+      <app-theme-select :id="appThemeSelectId" />
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { defineAsyncComponent } from "vue";
+import { defineAsyncComponent, useId } from "vue";
 import AppDrawerCloseButton from "$/app-drawer/components/app-drawer-close-button.vue";
 import UserAvatarAsLink from "$/user-avatar/components/user-avatar-as-link.vue";
 import AppThemeSelect from "@/components/app-theme-select.vue";
@@ -48,4 +48,6 @@ const AnonymousUserCaption = defineAsyncComponent(
 );
 
 const userStore = useUserStore();
+
+const appThemeSelectId = useId();
 </script>
