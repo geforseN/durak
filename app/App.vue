@@ -1,6 +1,6 @@
 <template>
   <with-app-drawer>
-    <div class="flex min-h-screen flex-col">
+    <div class="flex min-h-screen flex-col bg-base-100">
       <top-nav :class="isGamePage && 'bg-purple-400'" />
       <router-view />
       <notification-queue />
