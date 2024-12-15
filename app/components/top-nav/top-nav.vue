@@ -11,7 +11,11 @@
       <icons-home />
     </router-link>
     <li class="ml-auto" />
-    <app-theme-select class="hidden xs:select-md xs:block" />
+    <!-- NOTE: using v-show because app-theme-select must initialize state -->
+    <!-- otherwise user theme will not be taken from storage -->
+    <!-- TODO: use v-if and defineAsyncComponent -->
+    <!-- TODO: move theme state to store and trigger value getter call in App.vue -->
+    <app-theme-select v-show="!isSmall" />
     <user-auth />
     <app-drawer-open-burger-button
       :size="isSmall ? 'small' : 'medium'"
