@@ -1,6 +1,6 @@
 <template>
   <select
-    id="app-theme-select"
+    :id
     v-model="theme"
     class="select"
     name="app-theme-select"
@@ -41,7 +41,7 @@ class AppThemeLocaleStorageRepository<T extends string> {
 }
 </script>
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, useId } from "vue";
 
 const appThemes = {
   system: "System",
@@ -55,6 +55,12 @@ const themeRepository = new AppThemeLocaleStorageRepository(
     typeof value === "string" && value in appThemes,
   "system",
 );
+
+const { 
+  id = useId()
+} = defineProps<{
+  id?: string;
+}>();
 
 const theme = ref(themeRepository.defaultValue);
 
