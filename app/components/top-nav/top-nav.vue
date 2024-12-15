@@ -15,6 +15,7 @@
     <user-auth />
     <app-drawer-open-burger-button
       :size="isSmall ? 'small' : 'medium'"
+      @click="appStore.drawer.openButton.handleClick"
     />
   </nav>
 </template>

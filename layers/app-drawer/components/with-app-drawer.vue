@@ -18,7 +18,9 @@
         class="drawer-overlay"
       />
       <slot name="content">
-        <app-drawer-default-content />
+        <app-drawer-default-content
+          v-if="appStore.drawer.openButton.isClickedOnce"
+        />
       </slot>
     </div>
   </div>
@@ -26,8 +28,11 @@
 <!-- FIXME: aria i18n -->
 <script setup lang="ts">
 import { defineAsyncComponent } from "vue";
+import { useAppStore } from "@/stores";
 
-const AppDrawerDefaultContent = defineAsyncComponent(() =>
-  import("./app-drawer-default-content.vue"),
+const AppDrawerDefaultContent = defineAsyncComponent(
+  () => import("./app-drawer-default-content.vue"),
 );
+
+const appStore = useAppStore();
 </script>
