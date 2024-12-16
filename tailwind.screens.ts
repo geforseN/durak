@@ -1,4 +1,4 @@
-import defaultTheme from "tailwindcss/defaultTheme";
+import defaultTheme from "tailwindcss/defaultTheme.js";
 
 /** @type {NonNullable<import('tailwindcss').Config['theme']>['screens']} */
 export default {
