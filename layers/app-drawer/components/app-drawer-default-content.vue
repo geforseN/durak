@@ -45,7 +45,7 @@
 import { defineAsyncComponent, useId } from "vue";
 import AppDrawerCloseButton from "$/app-drawer/components/app-drawer-close-button.vue";
 import UserAvatarAsLink from "$/user-avatar/components/user-avatar-as-link.vue";
-import AppThemeSelect from "$/app-theme-select/components/app-theme-select.vue";
+import AppThemeSelect from "$/app-theme/components/app-theme-select.vue";
 import { useAppStore, useUserStore } from "@/stores";
 
 const AnonymousUserCaption = defineAsyncComponent(
