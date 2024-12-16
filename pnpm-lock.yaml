@@ -39,9 +39,24 @@ importers:
       '@eslint/compat':
         specifier: ^1.2.4
         version: 1.2.4(eslint@9.17.0(jiti@1.21.6))
+      '@iconify-json/iconamoon':
+        specifier: ^1.2.1
+        version: 1.2.1
+      '@iconify-json/material-symbols':
+        specifier: ^1.2.10
+        version: 1.2.10
       '@iconify-json/material-symbols-light':
         specifier: ^1.2.10
         version: 1.2.10
+      '@iconify-json/mdi':
+        specifier: ^1.2.1
+        version: 1.2.1
+      '@iconify-json/mdi-light':
+        specifier: ^1.2.1
+        version: 1.2.1
+      '@iconify-json/rivet-icons':
+        specifier: ^1.2.1
+        version: 1.2.1
       '@playwright/test':
         specifier: ^1.49.0
         version: 1.49.1
@@ -141,6 +156,9 @@ importers:
       unplugin-icons:
         specifier: ^0.22.0
         version: 0.22.0(@vue/compiler-sfc@3.5.13)
+      unplugin-vue-components:
+        specifier: ^0.28.0
+        version: 0.28.0(@babel/parser@7.26.2)(rollup@4.27.4)(vue@3.5.13(typescript@5.7.2))
       vite:
         specifier: 6.0.3
         version: 6.0.3(@types/node@22.10.2)(jiti@1.21.6)(yaml@2.6.1)
@@ -531,8 +549,23 @@ packages:
     resolution: {integrity: sha512-c7hNEllBlenFTHBky65mhq8WD2kbN9Q6gk0bTk8lSBvc554jpXSkST1iePudpt7+A/AQvuHs9EMqjHDXMY1lrA==}
     engines: {node: '>=18.18'}
 
+  '@iconify-json/iconamoon@1.2.1':
+    resolution: {integrity: sha512-r9uuB2kfeLpi3T74fMnoQxfmKiALQ7mW0MoktDLBt70XtDmxGptf5boOmVdXgYQorNOVqEbjyvBEJRu+HR+g6w==}
+
   '@iconify-json/material-symbols-light@1.2.10':
     resolution: {integrity: sha512-W7evNvjf5ZM0L2r9J0aEzg844C9l6cBNRFtGkveeOkLnjV6dMtDx9lgOHMvFnzjmZ2EMenv/ZLg4P/EyG5R/Ig==}
+
+  '@iconify-json/material-symbols@1.2.10':
+    resolution: {integrity: sha512-GcZxhOFStM7Dk/oZvJSaW0tR/k6NwTq+KDzYgCNBDg52ktZuRa/gkjRiYooJm/8PAe9NBYxIx8XjS/wi4sasdQ==}
+
+  '@iconify-json/mdi-light@1.2.1':
+    resolution: {integrity: sha512-kTs9efbpF5GDcevR9PWCDJQrV1Vfr6RS8KJyGIPM6zxd8AGGAtNCxyACrJ+zeq6K99ZmcTIPr8tlymmPFAxwnw==}
+
+  '@iconify-json/mdi@1.2.1':
+    resolution: {integrity: sha512-dSkQU78gsZV6Yxnq78+LuX7jzeFC/5NAmz7O3rh558GimGFcwMVY/OtqRowIzjqJBmMmWZft7wkFV4TrwRXjlg==}
+
+  '@iconify-json/rivet-icons@1.2.1':
+    resolution: {integrity: sha512-IOtWwnoXC1B8YhcA8NecjJMGDIMZZ7yGy6h23Tvv6bYwy/mnWe8j6F5UcFhL60CBRz6u42k+FuJzIEvNyfeQMg==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -589,6 +622,15 @@ packages:
     resolution: {integrity: sha512-Ky+BVzPz8pL6PQxHqNRW1k3mIyv933LML7HktS8uik0bUXNCdPhoS/kLihiO1tMf/egaJb4IutXd7UywvXEW+g==}
     engines: {node: '>=18'}
     hasBin: true
+
+  '@rollup/pluginutils@5.1.4':
+    resolution: {integrity: sha512-USm05zrsFxYLPdWWq+K3STlWiT/3ELn3RcV5hJMghpeAIhxfsUIg6mt12CBJBInWMV4VneoV7SfGv8xIwo2qNQ==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
 
   '@rollup/rollup-android-arm-eabi@4.27.4':
     resolution: {integrity: sha512-2Y3JT6f5MrQkICUyRVCw4oa0sutfAsgaSsb0Lmmy1Wi2y7X5vT9Euqw4gOsCyy0YfKURBg35nhUKZS4mDcfULw==}
@@ -1549,6 +1591,9 @@ packages:
   magic-string@0.30.14:
     resolution: {integrity: sha512-5c99P1WKTed11ZC0HMJOj6CDIue6F8ySu+bJL+85q1zBEIY8IklrJ1eiKC2NDRh3Ct3FcvmJPyQHb9erXMTJNw==}
 
+  magic-string@0.30.17:
+    resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
+
   merge2@1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
@@ -1690,6 +1735,10 @@ packages:
   picomatch@2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
+
+  picomatch@4.0.2:
+    resolution: {integrity: sha512-M7BAV6Rlcy5u+m6oPhAPFgJTzAioX/6B0DxyvDlo9l8+T3nLKbrczg2WLUyzd45L8RqfUMyGPzekbMvX2Ldkwg==}
+    engines: {node: '>=12'}
 
   pify@2.3.0:
     resolution: {integrity: sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==}
@@ -2094,6 +2143,19 @@ packages:
       vue-template-compiler:
         optional: true
       vue-template-es2015-compiler:
+        optional: true
+
+  unplugin-vue-components@0.28.0:
+    resolution: {integrity: sha512-jiTGtJ3JsRFBjgvyilfrX7yUoGKScFgbdNw+6p6kEXU+Spf/rhxzgvdfuMcvhCcLmflB/dY3pGQshYBVGOUx7Q==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      '@babel/parser': ^7.15.8
+      '@nuxt/kit': ^3.2.2
+      vue: 2 || 3
+    peerDependenciesMeta:
+      '@babel/parser':
+        optional: true
+      '@nuxt/kit':
         optional: true
 
   unplugin@2.1.0:
@@ -2606,7 +2668,27 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.1': {}
 
+  '@iconify-json/iconamoon@1.2.1':
+    dependencies:
+      '@iconify/types': 2.0.0
+
   '@iconify-json/material-symbols-light@1.2.10':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/material-symbols@1.2.10':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/mdi-light@1.2.1':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/mdi@1.2.1':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/rivet-icons@1.2.1':
     dependencies:
       '@iconify/types': 2.0.0
 
@@ -2673,6 +2755,14 @@ snapshots:
   '@playwright/test@1.49.1':
     dependencies:
       playwright: 1.49.1
+
+  '@rollup/pluginutils@5.1.4(rollup@4.27.4)':
+    dependencies:
+      '@types/estree': 1.0.6
+      estree-walker: 2.0.2
+      picomatch: 4.0.2
+    optionalDependencies:
+      rollup: 4.27.4
 
   '@rollup/rollup-android-arm-eabi@4.27.4':
     optional: true
@@ -3731,6 +3821,10 @@ snapshots:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
 
+  magic-string@0.30.17:
+    dependencies:
+      '@jridgewell/sourcemap-codec': 1.5.0
+
   merge2@1.4.1: {}
 
   micromatch@4.0.8:
@@ -3850,6 +3944,8 @@ snapshots:
   picocolors@1.1.1: {}
 
   picomatch@2.3.1: {}
+
+  picomatch@4.0.2: {}
 
   pify@2.3.0: {}
 
@@ -4215,6 +4311,25 @@ snapshots:
     optionalDependencies:
       '@vue/compiler-sfc': 3.5.13
     transitivePeerDependencies:
+      - supports-color
+
+  unplugin-vue-components@0.28.0(@babel/parser@7.26.2)(rollup@4.27.4)(vue@3.5.13(typescript@5.7.2)):
+    dependencies:
+      '@antfu/utils': 0.7.10
+      '@rollup/pluginutils': 5.1.4(rollup@4.27.4)
+      chokidar: 3.6.0
+      debug: 4.4.0
+      fast-glob: 3.3.2
+      local-pkg: 0.5.1
+      magic-string: 0.30.17
+      minimatch: 9.0.5
+      mlly: 1.7.3
+      unplugin: 2.1.0
+      vue: 3.5.13(typescript@5.7.2)
+    optionalDependencies:
+      '@babel/parser': 7.26.2
+    transitivePeerDependencies:
+      - rollup
       - supports-color
 
   unplugin@2.1.0:
