@@ -14,6 +14,7 @@
     v-else-if="userStore.user.state"
     class="contents"
   >
+    <lobbies-top-nav v-if="!isSmall" />
     <anonymous-user-caption
       v-if="userStore.user.state.isAnonymous"
       :size="isSmall ? 'small' : 'medium'"
@@ -25,10 +26,12 @@
     />
   </div>
 </template>
+<!-- TODO: refactor -->
 <script lang="ts" setup>
 import { computed, ref, defineAsyncComponent } from "vue";
 import UserAvatarAsLink from "$/user-avatar/components/user-avatar-as-link.vue";
 import AppButtonCreateAnonymousUser from "$/user-auth/components/app-button-create-anonymous-user.vue";
+import LobbiesTopNav from "$/game-lobbies/components/lobbies-top-nav.vue";
 import { useUserStore, useAppStore } from "@/stores";
 import { CREATE_ANON_USER_URL } from "@/api/rest";
 
