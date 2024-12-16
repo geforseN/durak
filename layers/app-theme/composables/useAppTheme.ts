@@ -1,5 +1,5 @@
 import { onMounted, ref, watch } from "vue";
-import type { AppThemeRepository } from "./utils/repository.interface";
+import type { AppThemeRepository } from "../utils/repository.interface";
 
 export function useAppTheme<T extends string>(
   themes: Record<T, string>,

@@ -3,7 +3,7 @@ import { mount } from "@vue/test-utils";
 import { setActivePinia, createPinia } from "pinia";
 import { createApp } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
-import * as useAppThemeModule from "./useAppTheme.ts";
+import * as useAppThemeModule from "./useAppTheme";
 import App from "@/App.vue";
 import { routes } from "@/router/index.ts";
 
