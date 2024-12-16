@@ -2,6 +2,8 @@ import { fileURLToPath, URL } from "node:url";
 import { defineConfig, loadEnv } from "vite";
 import vue from "@vitejs/plugin-vue";
 import icons from "unplugin-icons/vite";
+import IconsResolver from "unplugin-icons/resolver";
+import Components from "unplugin-vue-components/vite";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -16,6 +18,10 @@ export default defineConfig(({ mode }) => {
       }),
       icons({
         autoInstall: true,
+        defaultClass: "h-6 w-6 xs:h-8 xs:w-8",
+      }),
+      Components({
+        resolvers: [IconsResolver()],
       }),
     ],
     server: {
