@@ -1,0 +1,50 @@
+name: Vitest
+
+on:
+  push:
+    branches: main
+    paths:
+      - '!**/*.md' 
+  pull_request:
+    branches: main
+    paths:
+      - '!**/*.md'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout Git repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Get pnpm store directory
+        id: get-pnpm-store
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v4.2.0
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.get-pnpm-store.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run tests
+        run: pnpm test
