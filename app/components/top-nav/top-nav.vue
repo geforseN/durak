@@ -11,11 +11,11 @@
       <icons-home />
     </router-link>
     <div class="ml-auto" />
-    <!-- NOTE: using v-show because app-theme-select must initialize state -->
-    <!-- otherwise user theme will not be taken from storage -->
-    <!-- TODO: use v-if and defineAsyncComponent -->
-    <!-- TODO: move theme state to store and trigger value getter call in App.vue -->
-    <app-theme-select v-show="!isSmall" />
+    <app-theme-select
+      v-if="!isSmall"
+      v-model="appStore.theme.selected"
+      :values="Object.entries(appStore.theme.record)"
+    />
     <user-auth />
     <app-drawer-open-burger-button
       :size="isSmall ? 'small' : 'medium'"
@@ -24,12 +24,15 @@
   </nav>
 </template>
 <script setup lang="ts">
-import { computed } from "vue";
-import AppThemeSelect from "@/components/app-theme-select.vue";
+import { computed, defineAsyncComponent } from "vue";
 import IconsHome from "@/components/svg/Home.vue";
 import AppDrawerOpenBurgerButton from "$/app-drawer/components/app-drawer-open-burger-button.vue";
 import UserAuth from "$/user-auth/components/user-auth.vue";
 import { useAppStore } from "@/stores";
+
+const AppThemeSelect = defineAsyncComponent(
+  () => import("@/components/app-theme-select.vue"),
+);
 
 const appStore = useAppStore();
 
