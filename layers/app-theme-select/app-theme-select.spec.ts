@@ -3,7 +3,7 @@ import { mount } from "@vue/test-utils";
 import { setActivePinia, createPinia } from "pinia";
 import { createApp } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
-import * as appThemeModule from "./app-theme-select.ts";
+import * as useAppThemeModule from "./useAppTheme.ts";
 import App from "@/App.vue";
 import { routes } from "@/router/index.ts";
 
@@ -13,7 +13,7 @@ const router = createRouter({
 });
 
 test("useAppTheme is called once on App mount", () => {
-  const useAppTheme = vi.spyOn(appThemeModule, "useAppTheme");
+  const useAppTheme = vi.spyOn(useAppThemeModule, "useAppTheme");
   const pinia = createPinia();
   createApp(App).use(router).use(pinia);
   setActivePinia(pinia);
