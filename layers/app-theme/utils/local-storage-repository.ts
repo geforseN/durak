@@ -1,6 +1,6 @@
 import type { AppThemeRepository } from "./repository.interface";
 
-export class AppThemeLocaleStorageRepository<T extends string>
+export class AppThemeLocalStorageRepository<T extends string>
   implements AppThemeRepository<T>
 {
   constructor(
