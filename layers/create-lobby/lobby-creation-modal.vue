@@ -13,9 +13,9 @@
         <form method="dialog">
           <button
             title="Отменить создание игровой комнаты"
+            aria-label="Отменить создание игровой комнаты"
             class="btn btn-square btn-error"
           >
-            <span class="sr-only">Отменить создание игровой комнаты</span>
             <i-material-symbols-light-close />
           </button>
         </form>
