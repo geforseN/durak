@@ -1,6 +1,7 @@
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig, loadEnv } from "vite";
 import vue from "@vitejs/plugin-vue";
+import icons from "unplugin-icons/vite";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -13,6 +14,7 @@ export default defineConfig(({ mode }) => {
           defineModel: true,
         },
       }),
+      icons(),
     ],
     server: {
       proxy: {
@@ -25,8 +27,8 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./app", import.meta.url)),
-        "$": fileURLToPath(new URL("./layers", import.meta.url)),
-        '@@': fileURLToPath(new URL(".", import.meta.url)),
+        $: fileURLToPath(new URL("./layers", import.meta.url)),
+        "@@": fileURLToPath(new URL(".", import.meta.url)),
       },
     },
   };
