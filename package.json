@@ -7,7 +7,6 @@
   "scripts": {
     "dev": "conc \"vite\" \"cd ./server && pnpm dev\" ",
     "build": "vite build",
-    "build-ts": "run-p type-check build-only",
     "preview": "vite preview",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint .",
