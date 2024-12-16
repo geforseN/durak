@@ -31,7 +31,7 @@ import UserAuth from "$/user-auth/components/user-auth.vue";
 import { useAppStore } from "@/stores";
 
 const AppThemeSelect = defineAsyncComponent(
-  () => import("$/app-theme-select/components/app-theme-select.vue"),
+  () => import("$/app-theme/components/app-theme-select.vue"),
 );
 
 const appStore = useAppStore();

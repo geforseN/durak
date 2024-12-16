@@ -6,7 +6,7 @@ import {
   appThemes,
   isAppTheme,
   AppThemeLocaleStorageRepository,
-} from "$/app-theme-select";
+} from "$/app-theme";
 
 export const useAppStore = defineStore("app", () => {
   const screen = useAppScreen();
