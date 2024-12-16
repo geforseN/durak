@@ -4,7 +4,7 @@
     data-testid="app-drawer-default-content"
   >
     <div class="relative -top-2 right-2 flex w-full justify-end">
-      <app-drawer-close-button />
+      <app-drawer-close-button :size />
     </div>
     <div
       v-if="userStore.user.state"
@@ -43,7 +43,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineAsyncComponent, useId } from "vue";
+import { computed, defineAsyncComponent, useId } from "vue";
 import AppDrawerCloseButton from "$/app-drawer/components/app-drawer-close-button.vue";
 import UserAvatarAsLink from "$/user-avatar/components/user-avatar-as-link.vue";
 import AppThemeSelect from "$/app-theme/components/app-theme-select.vue";
@@ -58,4 +58,8 @@ const appStore = useAppStore();
 const userStore = useUserStore();
 
 const appThemeSelectId = useId();
+
+const size = computed(() =>
+  appStore.screen.isExtraSmall ? "small" : "medium",
+);
 </script>
