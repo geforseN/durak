@@ -41,6 +41,7 @@
     "@vitest/eslint-plugin": "^1.1.16",
     "@vue/eslint-config-prettier": "^10.1.0",
     "@vue/eslint-config-typescript": "^14.1.4",
+    "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "0.7.0",
     "autoprefixer": "^10.4.15",
     "concurrently": "^9.1.0",
