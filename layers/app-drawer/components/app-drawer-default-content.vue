@@ -39,7 +39,9 @@
         :values="Object.entries(appStore.theme.record)"
       />
     </div>
-    <lobbies-top-nav v-if="userStore.user.state" />
+    <div class="mx-2 flex flex-col items-stretch">
+      <lobbies-top-nav v-if="userStore.user.state" />
+    </div>
   </div>
 </template>
 <script setup lang="ts">

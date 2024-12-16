@@ -39,6 +39,7 @@
   </template>
 </template>
 <!-- FIXME: i18n -->
+<!-- FIXME: refactor, add responsive -->
 <script lang="ts" setup>
 import { useTemplateRef } from "vue";
 import LobbyCreationModal from "$/create-lobby/lobby-creation-modal.vue";
