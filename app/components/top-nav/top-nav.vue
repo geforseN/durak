@@ -8,7 +8,7 @@
       active-class="underline underline-offset-8 decoration-black"
       to="/"
     >
-      <icons-home />
+      <home-icon class="h-6 w-6 xs:h-8 xs:w-8" />
     </router-link>
     <div class="ml-auto" />
     <app-theme-select
@@ -24,8 +24,8 @@
   </nav>
 </template>
 <script setup lang="ts">
+import HomeIcon from "~icons/material-symbols-light/home-outline";
 import { computed, defineAsyncComponent } from "vue";
-import IconsHome from "@/components/svg/Home.vue";
 import AppDrawerOpenBurgerButton from "$/app-drawer/components/app-drawer-open-burger-button.vue";
 import UserAuth from "$/user-auth/components/user-auth.vue";
 import { useAppStore } from "@/stores";
