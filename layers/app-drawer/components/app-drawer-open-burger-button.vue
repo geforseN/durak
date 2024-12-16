@@ -4,6 +4,7 @@
     aria-label="open sidebar"
     class="btn btn-square btn-ghost"
     :class="size === 'small' ? 'btn-sm' : 'btn-md'"
+    data-testid="app-drawer-open-burger-button"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"

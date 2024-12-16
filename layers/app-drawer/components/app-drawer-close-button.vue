@@ -3,6 +3,7 @@
     for="app-drawer"
     aria-label="close sidebar"
     class="btn btn-square btn-error btn-sm xs:btn-md"
+    data-testid="app-drawer-close-button"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
