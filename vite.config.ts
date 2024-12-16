@@ -14,7 +14,9 @@ export default defineConfig(({ mode }) => {
           defineModel: true,
         },
       }),
-      icons(),
+      icons({
+        autoInstall: true,
+      }),
     ],
     server: {
       proxy: {
