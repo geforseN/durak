@@ -7,12 +7,13 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    IIconamoonClockThin: typeof import('~icons/iconamoon/clock-thin')['default']
     IMaterialSymbolsLightClose: typeof import('~icons/material-symbols-light/close')['default']
     IMaterialSymbolsLightHomeOutline: typeof import('~icons/material-symbols-light/home-outline')['default']
     IMaterialSymbolsLightPlayingCardsSharp: typeof import('~icons/material-symbols-light/playing-cards-sharp')['default']
-    IMdiCardsPlaying: typeof import('~icons/mdi/cards-playing')['default']
-    IMdiLightPlus: typeof import('~icons/mdi-light/plus')['default']
+    IMaterialSymbolsLightSwords: typeof import('~icons/material-symbols-light/swords')['default']
     IRivetIconsHappy: typeof import('~icons/rivet-icons/happy')['default']
+    ISiShieldLine: typeof import('~icons/si/shield-line')['default']
     ISolarHamburgerMenuLinear: typeof import('~icons/solar/hamburger-menu-linear')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
