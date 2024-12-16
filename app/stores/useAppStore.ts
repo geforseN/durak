@@ -15,7 +15,7 @@ export const useAppStore = defineStore("app", () => {
 
   const theme = useAppTheme(
     appThemes,
-    new AppThemeLocaleStorageRepository("theme", isAppTheme, "system"),
+    new AppThemeLocaleStorageRepository("durak-app:theme", isAppTheme, "system"),
   );
 
   return {
