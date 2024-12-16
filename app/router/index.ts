@@ -7,28 +7,30 @@ import Index from "@/views/index-page.vue";
 // https://habr.com/ru/post/491116/
 // https://github.com/TomDoesTech/Google-OAuth-NodeJS
 
+export const routes = [
+  {
+    path: "/",
+    name: "home",
+    component: Index,
+  },
+  {
+    path: "/profile/:personalLink/",
+    name: "user-profile",
+    component: () => import("../views/user-profile.vue"),
+  },
+  {
+    path: "/game/:gameId/",
+    name: "durak-game",
+    component: () => import("../views/durak-game.vue"),
+    meta: {
+      layout: "",
+    },
+  },
+];
+
 const router = createRouter({
   history: createWebHistory(),
   strict: false,
-  routes: [
-    {
-      path: "/",
-      name: "home",
-      component: Index,
-    },
-    {
-      path: "/profile/:personalLink/",
-      name: "user-profile",
-      component: () => import("../views/user-profile.vue"),
-    },
-    {
-      path: "/game/:gameId/",
-      name: "durak-game",
-      component: () => import("../views/durak-game.vue"),
-      meta: {
-        layout: "",
-      },
-    },
-  ],
+  routes,
 });
 export default router;
