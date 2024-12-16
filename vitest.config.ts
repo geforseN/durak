@@ -1,31 +1,19 @@
-import vue from "@vitejs/plugin-vue";
-import { fileURLToPath } from "url";
-import { defineConfig, defaultExclude } from "vitest/config";
+import { defineConfig, mergeConfig, defaultExclude } from "vitest/config";
+import viteConfig from "./vite.config";
 
-export default defineConfig({
-  test: {
-    include: ["**/*.spec.ts"],
-    exclude: defaultExclude.concat(
-      "./server",
-      "**/*.e2e.spec.ts",
-      "./e2e/__snapshots__",
-    ),
-    environment: 'jsdom',
-  },
-  plugins: [
-    // @ts-expect-error it works :)
-    vue({
-      script: {
-        propsDestructure: true,
-        defineModel: true,
+export default defineConfig((configEnv) =>
+  mergeConfig(
+    viteConfig(configEnv),
+    defineConfig({
+      test: {
+        include: ["**/*.spec.ts"],
+        exclude: defaultExclude.concat(
+          "./server",
+          "**/*.e2e.spec.ts",
+          "./e2e/__snapshots__",
+        ),
+        environment: "jsdom",
       },
     }),
-  ],
-  resolve: {
-    alias: {
-      "@": fileURLToPath(new URL("./app", import.meta.url)),
-      $: fileURLToPath(new URL("./layers", import.meta.url)),
-      "@@": fileURLToPath(new URL(".", import.meta.url)),
-    },
-  },
-});
+  ),
+);
