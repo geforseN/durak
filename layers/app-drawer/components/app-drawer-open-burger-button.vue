@@ -2,26 +2,14 @@
   <label
     for="app-drawer"
     aria-label="open sidebar"
-    class="btn btn-square btn-ghost"
+    class="btn btn-square btn-ghost border border-base-content"
     :class="size === 'small' ? 'btn-sm' : 'btn-md'"
     data-testid="app-drawer-open-burger-button"
   >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      :width="size === 'small' ? 24 : 40"
-      :height="size === 'small' ? 24 : 40"
-      viewBox="0 0 24 24"
-    >
-      <path
-        fill="none"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-width="1.5"
-        d="M20 7H4m16 5H4m16 5H4"
-      />
-    </svg>
+    <i-solar-hamburger-menu-linear />
   </label>
 </template>
+<!-- FIXME: aria i18n -->
 <script setup lang="ts">
 defineProps<{
   size: "small" | "medium";

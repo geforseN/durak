@@ -1,29 +1,23 @@
 <template>
   <div class="flex gap-x-0.5">
-    <shield-svg
+    <i-si-shield-line
       v-if="kind.includes('Defender')"
-      class="w-6 h-6 border border-black rounded bg-blue-700"
+      class="h-6 w-6 rounded border border-black bg-blue-700"
     />
-    <swords-svg
+    <i-material-symbols-light-swords
       v-else-if="kind.includes('Attacker')"
-      class="w-6 h-6 border border-black rounded bg-red-700"
+      class="rounded border border-black bg-red-700"
     />
     <div
       v-if="kind.includes('Allowed')"
-      class="w-6 h-6 border border-black rounded bg-green-700 flex justify-center items-center"
+      class="flex h-6 w-6 items-center justify-center rounded border border-black bg-green-700"
     >
-      <clock-svg
-        v-if="hasTimer"
-        class="w-6 h-6"
-      />
+      <i-iconamoon-clock-thin v-if="hasTimer" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import ShieldSvg from "@/components/svg/Shield.vue";
-import SwordsSvg from "@/components/svg/Swords.vue";
-import ClockSvg from "@/components/svg/Clock.vue";
 import type { PlayerKind } from "./types";
 
 const { kind, hasTimer } = defineProps<{

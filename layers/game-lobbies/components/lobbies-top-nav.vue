@@ -15,17 +15,17 @@
         lobbiesStore.ws.emits.leaveLobby(userStore.user.state.currentLobbyId)
       "
     >
-      <icons-xmark class="h-6 w-6" />
+      <i-material-symbols-light-close />
       Leave Lobby
     </button>
   </div>
   <template v-else>
     <button
-      class="btn btn-primary text-xl transition-colors"
+      class="btn btn-primary text-xl gap-0.5"
       @click="lobbyCreationModalRef?.modalRef?.show()"
     >
-      <icons-plus />
       Create Game
+      <i-material-symbols-light-playing-cards-sharp />
     </button>
 
     <teleport to="#app">
@@ -41,8 +41,6 @@
 <!-- FIXME: i18n -->
 <script lang="ts" setup>
 import { useTemplateRef } from "vue";
-import IconsXmark from "@/components/svg/XMark.vue";
-import IconsPlus from "@/components/svg/Plus.vue";
 import LobbyCreationModal from "$/create-lobby/lobby-creation-modal.vue";
 import { useLobbiesStore, useUserStore } from "@/stores";
 
