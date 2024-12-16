@@ -5,7 +5,7 @@ import {
   useAppTheme,
   appThemes,
   isAppTheme,
-  AppThemeLocaleStorageRepository,
+  AppThemeLocalStorageRepository,
 } from "$/app-theme";
 
 export const useAppStore = defineStore("app", () => {
@@ -15,7 +15,7 @@ export const useAppStore = defineStore("app", () => {
 
   const theme = useAppTheme(
     appThemes,
-    new AppThemeLocaleStorageRepository("durak-app:theme", isAppTheme, "system"),
+    new AppThemeLocalStorageRepository("durak-app:theme", isAppTheme, "system"),
   );
 
   return {
