@@ -13,7 +13,7 @@
         <form method="dialog">
           <button
             title="Отменить создание игровой комнаты"
-            class="btn btn-square bg-error transition-colors hover:bg-error hover:saturate-150"
+            class="btn btn-square btn-error"
           >
             <span class="sr-only">Отменить создание игровой комнаты</span>
             <i-material-symbols-light-close />
