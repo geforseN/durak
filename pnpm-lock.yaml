@@ -57,6 +57,9 @@ importers:
       '@iconify-json/rivet-icons':
         specifier: ^1.2.1
         version: 1.2.1
+      '@iconify-json/solar':
+        specifier: ^1.2.1
+        version: 1.2.1
       '@playwright/test':
         specifier: ^1.49.0
         version: 1.49.1
@@ -566,6 +569,9 @@ packages:
 
   '@iconify-json/rivet-icons@1.2.1':
     resolution: {integrity: sha512-IOtWwnoXC1B8YhcA8NecjJMGDIMZZ7yGy6h23Tvv6bYwy/mnWe8j6F5UcFhL60CBRz6u42k+FuJzIEvNyfeQMg==}
+
+  '@iconify-json/solar@1.2.1':
+    resolution: {integrity: sha512-LA3WZ7HOi5O/sEc2M+BcQNJYNFDnUKP+ZldmNf8kwndnCuFMo+fukt6tSu4BqYRsRgp/Ku4xnys1JGBDi+QtCQ==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -2689,6 +2695,10 @@ snapshots:
       '@iconify/types': 2.0.0
 
   '@iconify-json/rivet-icons@1.2.1':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/solar@1.2.1':
     dependencies:
       '@iconify/types': 2.0.0
 
