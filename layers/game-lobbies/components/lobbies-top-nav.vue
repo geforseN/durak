@@ -41,6 +41,8 @@
 <!-- FIXME: i18n -->
 <script lang="ts" setup>
 import { useTemplateRef } from "vue";
+import IconsXmark from "@/components/svg/XMark.vue";
+import IconsPlus from "@/components/svg/Plus.vue";
 import LobbyCreationModal from "$/create-lobby/lobby-creation-modal.vue";
 import { useLobbiesStore, useUserStore } from "@/stores";
 
