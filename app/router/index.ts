@@ -7,7 +7,7 @@ import Index from "@/views/index-page.vue";
 // https://habr.com/ru/post/491116/
 // https://github.com/TomDoesTech/Google-OAuth-NodeJS
 
-export const routes = [
+const routes = [
   {
     path: "/",
     name: "home",
@@ -28,9 +28,10 @@ export const routes = [
   },
 ];
 
-const router = createRouter({
+export const router = createRouter({
   history: createWebHistory(),
   strict: false,
   routes,
 });
+
 export default router;

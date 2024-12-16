@@ -2,15 +2,9 @@ import { expect, test, vi } from "vitest";
 import { mount } from "@vue/test-utils";
 import { setActivePinia, createPinia } from "pinia";
 import { createApp } from "vue";
-import { createRouter, createWebHistory } from "vue-router";
 import * as useAppThemeModule from "./useAppTheme";
 import App from "@/App.vue";
-import { routes } from "@/router/index.ts";
-
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-});
+import { router } from "@/router/index.ts";
 
 test("useAppTheme is called once on App mount", () => {
   const useAppTheme = vi.spyOn(useAppThemeModule, "useAppTheme");
