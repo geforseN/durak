@@ -6,6 +6,7 @@
   "packageManager": "pnpm@9.15.0",
   "scripts": {
     "dev": "conc \"vite\" \"cd ./server && pnpm dev\" ",
+    "build": "vite build",
     "build-ts": "run-p type-check build-only",
     "preview": "vite preview",
     "type-check": "vue-tsc --noEmit",
