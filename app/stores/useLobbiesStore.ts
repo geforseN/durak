@@ -2,12 +2,25 @@ import { defineStore } from "pinia";
 
 import { createLobby } from "$/game-lobbies/entity";
 import type { LobbyDTO, LobbyUserDTO } from "$/game-lobbies/types";
-import {
-  useLobbies,
-  useLobbiesWebSocket,
-} from "$/game-lobbies/composable";
+import { useLobbies, useLobbiesWebSocket } from "$/game-lobbies/composable";
 
 import { useUserStore, useNotificationStore } from "@/stores";
+
+function isFailedToGetLobbiesNotificationAlert(
+  notification: object | undefined,
+) {
+  return (
+    notification &&
+    "notificationAlert" in notification &&
+    typeof notification.notificationAlert === "object" &&
+    notification.notificationAlert !== null &&
+    "message" in notification.notificationAlert &&
+    typeof notification.notificationAlert.message === "string" &&
+    notification.notificationAlert.message.startsWith(
+      "Не удалось получить данный игровых лобби.",
+    )
+  );
+}
 
 export const useLobbiesStore = defineStore("lobbies", () => {
   const userStore = useUserStore();
@@ -16,7 +29,16 @@ export const useLobbiesStore = defineStore("lobbies", () => {
   const lobbies = useLobbies();
 
   const ws = useLobbiesWebSocket({
-    "notification::push": notificationStore.addNotificationInQueue,
+    "notification::push": (
+      notification: Parameters<
+        typeof notificationStore.addNotificationInQueue
+      >[0],
+    ) => {
+      if (isFailedToGetLobbiesNotificationAlert(notification)) {
+        return;
+      }
+      notificationStore.addNotificationInQueue(notification);
+    },
     "lobbies::restore": restoreState,
     "lobby::add": addLobby,
     "lobby::user::join": addUserInLobby,
