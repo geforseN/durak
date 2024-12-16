@@ -17,7 +17,7 @@ if (process.env.CI && !process.env.VERCEL_AUTOMATION_BYPASS_SECRET) {
  */
 export default defineConfig({
   snapshotDir: 'e2e/__snapshots__',
-  testMatch: ['**\/*.e2e.spec.ts', 'e2e\/*.spec.ts'],
+  testMatch: ['**/*.e2e.spec.ts', 'e2e/*.spec.ts'],
   globalTimeout: process.env.CI ? 4 * 60 * 1000 : undefined,
   /* Run tests in files in parallel */
   fullyParallel: true,
