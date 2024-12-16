@@ -3,7 +3,7 @@
     <span class="flex gap-2 justify-center items-center dark:text-white">
       Время твоего хода
     </span>
-    <emoji-happy class="dark:fill-white" />
+    <i-rivet-icons-happy />  
     <button
       v-show="selfStore.self.canMakeMove"
       class="btn flex flex-col h-max text-white bg-black focus:outline-2 focus:outline-blue-300"
@@ -25,7 +25,6 @@
 import { computed } from "vue";
 import { useGamePlayersStore, useGameSelfStore } from "@/stores/game";
 import { useEventListener } from "@vueuse/core";
-import EmojiHappy from "@/components/svg/EmojiHappy.vue";
 import { useSharedDurakGame } from "$/card-game/composable/useDurakGame";
 
 const durakGame = useSharedDurakGame();

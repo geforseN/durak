@@ -16,10 +16,7 @@
             class="btn btn-square bg-error transition-colors hover:bg-error hover:saturate-150"
           >
             <span class="sr-only">Отменить создание игровой комнаты</span>
-            <icons-xmark
-              class="stroke-black stroke-[3] p-1"
-              aria-hidden="true"
-            />
+            <i-material-symbols-light-close />
           </button>
         </form>
       </div>
@@ -83,7 +80,6 @@
 import { ref } from "vue";
 import type { InitialGameSettings } from "@durak-game/durak-dts";
 
-import IconsXmark from "@/components/svg/XMark.vue";
 import gameTypesDictionary from "@/utils/dictionary/game-types.dictionary";
 
 import useLobbySettings from "./useLobbySettings";
