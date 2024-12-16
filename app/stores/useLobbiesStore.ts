@@ -1,4 +1,3 @@
-import { watch } from "vue";
 import { defineStore } from "pinia";
 
 import { createLobby } from "$/game-lobbies/entity";
@@ -29,7 +28,6 @@ export const useLobbiesStore = defineStore("lobbies", () => {
 
   function restoreState({ state }: { state: LobbyDTO[] }) {
     lobbies.updateWith(state.map(createLobby));
-    // userStore.user._tryUpdateCurrentLobby(lobbies.state);
   }
 
   function addLobby({ lobby }: { lobby: LobbyDTO }) {
@@ -51,8 +49,6 @@ export const useLobbiesStore = defineStore("lobbies", () => {
   }) {
     const lobby = lobbies.getLobbyById(lobbyId);
     lobby.putUserByIndex(user, slotIndex);
-    // userStore.user.state._tryUpdateCurrentLobbyData(lobby);
-    // userStore.user.state._tryUpdateLobbyAdminData(lobby);
   }
 
   function removeUser({
@@ -64,7 +60,6 @@ export const useLobbiesStore = defineStore("lobbies", () => {
   }) {
     const lobby = lobbies.getLobbyById(lobbyId);
     lobby.removeUserWithId(userId);
-    // userStore.user.state._tryLeaveLobby(lobby);
   }
 
   function updateLobbyAdmin({
