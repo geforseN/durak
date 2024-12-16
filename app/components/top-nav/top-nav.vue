@@ -4,7 +4,9 @@
     class="navbar sticky top-0 z-[1] flex h-12 min-h-0 items-end gap-1 border-b border-b-neutral bg-primary/50 xs:h-16 xs:gap-2"
   >
     <router-link
-      class="btn btn-outline btn-sm border align-middle xs:btn-md"
+
+      class="btn btn-outline btn-square border-base-100 text-base-100"
+      :class="isSmall ? 'btn-sm' : 'btn-md'"
       active-class="underline underline-offset-8 decoration-black"
       to="/"
     >
