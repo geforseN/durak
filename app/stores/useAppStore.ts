@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { useAppScreen } from "@/composable/useAppScreen";
 import { useAppDrawer } from "$/app-drawer/composables/useAppDrawer";
-import { useAppTheme } from "@/components/app-theme-select";
+import { useAppTheme } from "$/app-theme-select/app-theme-select";
 
 
 export const useAppStore = defineStore("app", () => {
