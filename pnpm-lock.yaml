@@ -57,6 +57,9 @@ importers:
       '@iconify-json/rivet-icons':
         specifier: ^1.2.1
         version: 1.2.1
+      '@iconify-json/si':
+        specifier: ^1.2.2
+        version: 1.2.2
       '@iconify-json/solar':
         specifier: ^1.2.1
         version: 1.2.1
@@ -569,6 +572,9 @@ packages:
 
   '@iconify-json/rivet-icons@1.2.1':
     resolution: {integrity: sha512-IOtWwnoXC1B8YhcA8NecjJMGDIMZZ7yGy6h23Tvv6bYwy/mnWe8j6F5UcFhL60CBRz6u42k+FuJzIEvNyfeQMg==}
+
+  '@iconify-json/si@1.2.2':
+    resolution: {integrity: sha512-P6BqOtvMDtZ4pX1/FSIFet33y3kdJ9utqVZlcUdl8iwTjCiOyPqEkVt8Hob6j1A0pQqDg+BhDc0lXMNixBInIQ==}
 
   '@iconify-json/solar@1.2.1':
     resolution: {integrity: sha512-LA3WZ7HOi5O/sEc2M+BcQNJYNFDnUKP+ZldmNf8kwndnCuFMo+fukt6tSu4BqYRsRgp/Ku4xnys1JGBDi+QtCQ==}
@@ -2695,6 +2701,10 @@ snapshots:
       '@iconify/types': 2.0.0
 
   '@iconify-json/rivet-icons@1.2.1':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/si@1.2.2':
     dependencies:
       '@iconify/types': 2.0.0
 
