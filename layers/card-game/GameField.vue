@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import { useGameEnemiesStore } from "@/stores/game";
-import EnemyProfile from "$/card-game/EnemyProfile.vue";
+import EnemyProfile from "$/card-game/components/enemy/EnemyProfile.vue";
 import GameBoard from "$/card-game/GameBoard.vue";
 
 const enemiesStore = useGameEnemiesStore();

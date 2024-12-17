@@ -17,7 +17,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import type { PlayerKind } from "./types";
+import type { PlayerKind } from "../../types";
 
 const { kind, hasTimer } = defineProps<{
   kind: PlayerKind;
