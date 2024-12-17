@@ -10,6 +10,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import type { Card } from "./types";
+import type { Card } from "../../types";
 const props = defineProps<Card>();
 </script>

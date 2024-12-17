@@ -23,7 +23,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import SelfCard from "$/card-game/SelfCard.vue";
+import SelfCard from "$/card-game/components/card/SelfCard.vue";
 import type { CardDTO } from "@durak-game/durak-dts";
 
 const { cards, isEmpty } = defineProps<{
