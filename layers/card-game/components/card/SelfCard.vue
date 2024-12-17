@@ -31,17 +31,6 @@
       ]"
       class="cursor-pointer h-[116px] w-[83px] border-2 border-black rounded bg-cover bg-black transition-all ease-out"
     />
-    <!-- TODO -->
-    <!-- TODO -->
-    <!-- TODO -->
-    <!-- TODO remove commented code -->
-    <!-- <div v-if="isFocused"
-      class="pointer-events-none select-none absolute top-8 right-1/2 translate-x-1/2 flex justify-center border-red-500 border bg-slate-300 w-max h-max">
-      Card <br /> index: <br /> {{ index }}</div> -->
-    <!-- TODO -->
-    <!-- TODO -->
-    <!-- TODO -->
-    <!-- TODO -->
     <input
       type="radio"
       name="self-card"
