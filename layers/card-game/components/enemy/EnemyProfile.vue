@@ -12,11 +12,7 @@
       :has-timer="true"
       class="absolute -bottom-4 right-[4px] grid-in-[role] xxs:left-2 xxs:right-0"
     />
-    <div
-      class="m-2 grid auto-rows-[10px] grid-cols-6 pr-4 grid-in-[cards] xxs:mb-6 min-[400px]:-mr-1.5 min-[400px]:grid-cols-9 md:m-0 md:-mr-4 md:pr-6"
-    >
-      <enemy-stacked-cards :count="enemy.cardCount" />
-    </div>
+    <enemy-stacked-cards :count="enemy.cardCount.value" />
     <router-link
       :to="`/profile/${enemy.info.profile.personalLink}`"
       :title="enemy.info.profile.nickname"
