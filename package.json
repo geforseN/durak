@@ -5,7 +5,7 @@
   "private": true,
   "packageManager": "pnpm@9.15.0",
   "scripts": {
-    "dev": "conc \"vite\" \"cd ./server && pnpm dev\" ",
+    "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "type-check": "vue-tsc --noEmit",

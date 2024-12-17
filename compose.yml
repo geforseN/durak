@@ -1,0 +1,45 @@
+services:
+  server:
+    container_name: fastify_server
+    image: durak-server
+    extends:
+      file: ./server/compose.yml
+      service: server
+    ports:
+      - "10000:10000"
+    networks:
+      durak_default:
+        aliases:
+          - server
+  
+  postgres:
+    container_name: postgres_prisma
+    extends:
+      file: ./server/compose.yml
+      service: postgres
+    networks:
+      - durak_default
+  
+  frontend:
+    container_name: vue_frontend
+    image: durak-frontend
+    env_file:
+      - path: .env.development
+        required: true
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    networks:
+      - durak_default
+    environment:
+      - VITE_DEV_SERVER_HOST=0.0.0.0
+
+networks:
+  durak_default:
+    driver: bridge
+
+volumes:
+  pgdata:
+    driver: local
