@@ -7,6 +7,6 @@
   </main>
 </template>
 <script setup lang="ts">
-import GameField from "$/card-game/GameField.vue";
+import GameField from "$/card-game/components/game/GameField.vue";
 import SelfInterface from "$/card-game/SelfInterface.vue";
 </script>

@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import BasicCard from "$/card-game/components/card/BasicCard.vue";
 import MiniCard from "$/card-game/components/card/MIniCard.vue";
-import type { Card } from "./types";
+import type { Card } from "../../types";
 import { ref } from "vue";
 import { useGameSelfStore } from "@/stores/game";
 import { useEventListener } from "@vueuse/core";

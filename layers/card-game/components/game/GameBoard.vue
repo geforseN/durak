@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import GameDesk from "$/card-game/GameDesk.vue";
-import GameTalon from "$/card-game/GameTalon.vue";
-import GameDiscard from "$/card-game/GameDiscard.vue";
+import GameDesk from "$/card-game/components/game/GameDesk.vue";
+import GameTalon from "$/card-game/components/game/GameTalon.vue";
+import GameDiscard from "$/card-game/components/game/GameDiscard.vue";
 </script>
