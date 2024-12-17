@@ -11,9 +11,6 @@
         suit: props.suit,
       })
     "
-    @focus="handleFocus"
-    @blur="handleBlur"
-    @pointerover="handlePointOver"
   >
     <div
       :style="{
@@ -60,11 +57,6 @@ const {
 } = useGameCard(props);
 
 const isFocused = ref(false);
-
-// TODO add logic for card event listeners (if it even needed)
-const handleFocus = () => {};
-const handleBlur = () => {};
-const handlePointOver = () => {};
 
 const handleCardFocus = () => {
   isFocused.value = true;
