@@ -7,7 +7,7 @@
       "
       class="relative left-5 z-10"
     />
-    <basic-card
+    <game-card
       v-bind="gameStateStore.talon.trumpCard"
       class="absolute top-0 rotate-90"
       :class="gameStateStore.talon.isEmpty && 'opacity-30'"
@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { useGameStateStore } from "@/stores/game";
-import BasicCard from "$/card-game/components/card/BasicCard.vue";
+import GameCard from "$/card-game/components/card/game-card.vue";
 import CardBackground from "$/card-game/components/card/CardBackground.vue";
 
 const gameStateStore = useGameStateStore();

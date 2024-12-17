@@ -7,12 +7,12 @@
         <span class="w-full h-full bg-secondary-focus grid place-items-center">
           <span class="opacity-50 select-none">{{ props.index + 1 }}</span>
         </span>
-        <basic-card
+        <game-card
           v-if="props.attackCard"
           v-bind="props.attackCard"
           class="absolute"
         />
-        <basic-card
+        <game-card
           v-if="props.defendCard"
           v-bind="props.defendCard"
           class="absolute translate-x-2.5 xxs:translate-x-3 lg:translate-x-3.5 z-10"
@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import BasicCard from "$/card-game/components/card/BasicCard.vue";
+import GameCard from "$/card-game/components/card/game-card.vue";
 import MiniCard from "$/card-game/components/card/MIniCard.vue";
 import type { Card } from "../../types";
 import { ref } from "vue";
