@@ -1,4 +1,8 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHistory,
+  type RouteRecordRaw,
+} from "vue-router";
 import Index from "@/views/index-page.vue";
 
 // TODO
@@ -26,7 +30,7 @@ const routes = [
       layout: "",
     },
   },
-];
+] satisfies RouteRecordRaw[];
 
 export const router = createRouter({
   history: createWebHistory(),
