@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import GameCard from "$/card-game/components/card/game-card.vue";
-import MiniCard from "$/card-game/components/card/MIniCard.vue";
+import MiniCard from "$/card-game/components/card/mini-card.vue";
 import type { Card } from "../../types";
 import { ref } from "vue";
 import { useGameSelfStore } from "@/stores/game";
