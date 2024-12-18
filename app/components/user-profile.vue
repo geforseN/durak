@@ -16,6 +16,7 @@
             class="box-content h-40 w-40 rounded-full border-4 border-neutral"
           >
             <img
+              v-if="profile.photoUrl"
               width="160"
               height="160"
               :src="profile.photoUrl"
@@ -27,15 +28,15 @@
           class="flex flex-col gap-y-2 divide-y-2 divide-slate-700 rounded border border-neutral bg-slate-400/20 p-4"
         >
           <span class="text-xl font-medium">Количество побед:
-            {{ profile.User.UserGameStat.wonGamesCount }}</span>
+            {{ profile.user.gameStat.wonGamesCount }}</span>
           <span class="text-xl font-medium">Количество поражений:
-            {{ profile.User.UserGameStat.lostGamesCount }}</span>
+            {{ profile.user.gameStat.lostGamesCount }}</span>
           <span class="text-xl font-medium">Процент:
             {{
               (
-                (profile.User.UserGameStat.wonGamesCount /
-                  (profile.User.UserGameStat.lostGamesCount +
-                    profile.User.UserGameStat.wonGamesCount) || 0) * 100
+                (profile.user.gameStat.wonGamesCount /
+                  (profile.user.gameStat.lostGamesCount +
+                    profile.user.gameStat.wonGamesCount) || 0) * 100
               ).toFixed(2)
             }}%</span>
         </div>
