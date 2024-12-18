@@ -33,9 +33,6 @@ importers:
         specifier: ^4.2.4
         version: 4.5.0(vue@3.5.13(typescript@5.7.2))
     devDependencies:
-      '@durak-game/durak-dts':
-        specifier: ^0.5.1
-        version: 0.5.1
       '@eslint/compat':
         specifier: ^1.2.4
         version: 1.2.4(eslint@9.17.0(jiti@1.21.6))
@@ -206,9 +203,6 @@ packages:
   '@babel/types@7.26.0':
     resolution: {integrity: sha512-Z/yiTPj+lDVnF7lWeKCIJzaIkI0vYO87dMpZ4bg4TDrFe4XXLFWL1TbXU27gBP3QccxV9mZICCrnjnYlJjXHOA==}
     engines: {node: '>=6.9.0'}
-
-  '@durak-game/durak-dts@0.5.1':
-    resolution: {integrity: sha512-LQcqa1uQVxYLmDL1e1xwpcA2SrbQ27HC9x5RgJfOYbAkacbGqY+TSkCuKdJKtBdG5/+xcPTUWTSLtIDFxb74Ng==}
 
   '@esbuild/aix-ppc64@0.21.5':
     resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
@@ -2478,8 +2472,6 @@ snapshots:
     dependencies:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
-
-  '@durak-game/durak-dts@0.5.1': {}
 
   '@esbuild/aix-ppc64@0.21.5':
     optional: true
