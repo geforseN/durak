@@ -1,4 +1,5 @@
-import * as v from 'valibot';
+import * as v from "valibot";
+import type { UserProfile } from "@@/server/src/plugins/modules/user-profile/user-profile.auto-load";
 
 export const REST_BASE = import.meta.env.VITE_SERVER_REST_BASE;
 
@@ -37,7 +38,6 @@ export async function getMe() {
   return v.parse(UserSchema, json);
 }
 
-// TODO: add type
 export async function getProfileByLink(
   personalLink: string,
   { controller }: { controller: AbortController },
@@ -45,7 +45,11 @@ export async function getProfileByLink(
   const response = await fetch(`${REST_BASE}/api/profiles/${personalLink}`, {
     signal: controller.signal,
   });
-  return response.json();
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  const json = await response.json();
+  return json as UserProfile;
 }
 
 // TODO
