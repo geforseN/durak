@@ -7,7 +7,10 @@
         Профиль игрока {{ profile.nickname }}
       </h1>
       <div class="flex flex-wrap gap-8">
-        <div class="avatar indicator w-min">
+        <div 
+          v-if="profile.photoUrl"
+          class="avatar indicator w-min"
+        >
           <span
             class="badge indicator-item right-6 top-6 h-7 w-7"
             :class="indicatorColor[profile.connectStatus]"
@@ -16,7 +19,6 @@
             class="box-content h-40 w-40 rounded-full border-4 border-neutral"
           >
             <img
-              v-if="profile.photoUrl"
               width="160"
               height="160"
               :src="profile.photoUrl"
@@ -27,34 +29,31 @@
         <div
           class="flex flex-col gap-y-2 divide-y-2 divide-slate-700 rounded border border-neutral bg-slate-400/20 p-4"
         >
-          <span class="text-xl font-medium">Количество побед:
-            {{ profile.user.gameStat.wonGamesCount }}</span>
-          <span class="text-xl font-medium">Количество поражений:
-            {{ profile.user.gameStat.lostGamesCount }}</span>
-          <span class="text-xl font-medium">Процент:
-            {{
-              (
-                (profile.user.gameStat.wonGamesCount /
-                  (profile.user.gameStat.lostGamesCount +
-                    profile.user.gameStat.wonGamesCount) || 0) * 100
-              ).toFixed(2)
-            }}%</span>
+          <span class="text-xl font-medium">
+            Количество побед:
+            {{ profile.user.gameStat.wonGamesCount }}
+          </span>
+          <span class="text-xl font-medium">
+            Количество поражений:
+            {{ profile.user.gameStat.lostGamesCount }}
+          </span>
+          <span class="text-xl font-medium">
+            Процент:
+            {{ userWinRatePercent }}
+          </span>
         </div>
       </div>
     </section>
   </main>
 </template>
+<!-- FIXME: i18n -->
 <script setup lang="ts">
-import { useRoute } from "vue-router";
-import { onUnmounted, reactive } from "vue";
-
+import { computed, onUnmounted, reactive } from "vue";
+import { getRouteStringParam } from "@/router/utils";
 import { getProfileByLink } from "@/api/rest";
+import { calculateWinRatePercent } from "@/utils/calculate-win-rate-percent";
 
-const { personalLink } = useRoute().params;
-
-if (typeof personalLink !== "string") {
-  throw new Error("personalLink must be a string");
-}
+const personalLink = getRouteStringParam("personalLink");
 
 const controller = new AbortController();
 const profile = await reactive(getProfileByLink(personalLink, { controller }));
@@ -66,4 +65,11 @@ const indicatorColor = {
 };
 
 onUnmounted(() => controller.abort());
+
+const userWinRatePercent = computed(() =>
+  calculateWinRatePercent({
+    winsCount: profile.user.gameStat.wonGamesCount,
+    losesCount: profile.user.gameStat.lostGamesCount,
+  })
+);
 </script>
