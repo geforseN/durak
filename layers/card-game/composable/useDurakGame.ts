@@ -1,36 +1,58 @@
-import { ref } from "vue";
 import { type Socket, io } from "socket.io-client";
 import { useNotificationStore } from "@/stores";
 import { useRoute, useRouter } from "vue-router";
 import { useGameStateStore, useGameDeskStore } from "@/stores/game";
 import { createSharedComposable } from "@vueuse/core";
 import type { DurakGameSocket } from "@durak-game/durak-dts";
-import type { Card as CardDTO } from "@durak-game/durak-dts";
 import { useGamePlayersStore } from "@/stores/game/players.store";
 import { SOCKET_IO_BASE } from "@/api/socket-io";
+import { useSelfDraggedCard } from "../composables/self/useSelfCardDrag";
+import type { Card } from "@durak-game/durak-dts";
+
+function makePromiseWithResolvers<T>() {
+  const object = {};
+  const promise = new Promise<T>((res, rej) => {
+    // @ts-ignore
+    object.resolve = res;
+    // @ts-ignore
+    object.reject = rej;
+  });
+  // @ts-ignore
+  object.promise = promise;
+  return object as {
+    resolve: (value: T) => void;
+    reject: (reason?: any) => void;
+    promise: Promise<T>;
+  };
+}
+
+function makeCardDropOnDesk(socket: Socket) {
+  return function onDropOnDesk(card: Card, slotIndex: number) {
+    socket.emit("superPlayer__putCardOnDesk", card, slotIndex);
+  };
+}
 
 export const useSharedDurakGame = createSharedComposable(function useDurakGame({
   isDebugMode = true,
 }: { isDebugMode?: boolean } = {}) {
   console.log("init useDurakGame");
-  const draggedCard = ref<CardDTO | null>(null);
-  const route = useRoute();
-  const router = useRouter();
   const gameSocket: Socket<
     DurakGameSocket.ServerToClientEvents,
     DurakGameSocket.ClientToServerEvents
-  > = io(
-    `${SOCKET_IO_BASE}/game/${route.params.gameId}`,
-    {
-      withCredentials: true,
-      reconnectionAttempts: 3,
-    },
-  );
+  > = io(`${SOCKET_IO_BASE}/game/${route.params.gameId}`, {
+    withCredentials: true,
+    reconnectionAttempts: 3,
+  });
   if (isDebugMode) {
     gameSocket.onAny((event: any, ...args: any) => {
       console.log(`%c${event}`, "color: red", ...args);
     });
   }
+  const dropCardOnDesk = makeCardDropOnDesk(gameSocket);
+  const selfDraggedCard = useSelfDraggedCard({
+    onDropOnDesk: dropCardOnDesk,
+  });
+
   const notificationStore = useNotificationStore();
   const playersStore = useGamePlayersStore();
   const deskStore = useGameDeskStore();
@@ -40,84 +62,73 @@ export const useSharedDurakGame = createSharedComposable(function useDurakGame({
     gameSocket.emit("superPlayer__stopMove");
   };
 
-  const handleCardDrag = (_event: DragEvent, card: CardDTO) => {
-    draggedCard.value = card;
-  };
+  let resolveGameState: () => void;
+  const gameStatePromise = new Promise<void>((resolve) => {
+    resolveGameState = resolve;
+  });
 
-  const handleCardDragEnd = (_event: DragEvent, _card: CardDTO) => {
-    draggedCard.value = null;
-  };
+  function wrapWithGameState<T extends (...args: any[]) => void>(
+    handler: T,
+  ): (...args: Parameters<T>) => void {
+    return (...args: Parameters<T>) => {
+      gameStatePromise.then(() => handler(...args));
+    };
+  }
 
-  const handleCardDropOnDesk = (card: CardDTO, slotIndex: number) => {
-    gameSocket.emit("superPlayer__putCardOnDesk", card, slotIndex);
-  };
-
-  const handleDraggedCardDropOnDesk = (slotIndex: number) => {
-    if (!draggedCard.value) {
-      return;
-    }
-    handleCardDropOnDesk(draggedCard.value, slotIndex);
-  };
-
-  // NOTE: DELETED events
-  // 1) defender__gaveUp
-  // 2) game__currentId
-  // also rename of all events
   gameSocket
     .on("game::state::restore", ({ state }) => {
       gameStateStore.restore({ state, gameSocket });
+      resolveGameState();
     })
-    .on("nonStartedGame::playerJoined", () => {})
-    .on("nonStartedGame::details", () => {})
-    .on("finishedGame::notFound", () => {
-      // TODO - redirect to separate 404 page
-      router.push({ path: "/game/stat" });
-    })
-    .on("finishedGame::restore", (payload) => {
-      // TODO - redirect to separate state, props of that page is received state from event listener
-      router
-        .push({
-          path: "/game/stat:gameId",
-          params: { gameId: payload.state.uuid },
-        })
-        .then(() => {})
-        .catch(() => {});
-    })
-    .on("notification::push", notificationStore.addNotificationInQueue)
-    .on("desk::becameClear", deskStore.clear)
-    .on("desk::receivedCard", deskStore.insertCard)
-    .on("discard::receivedCards", (discard) => {
-      if (discard.isReceivedFirstCards) {
-        gameStateStore.discard.isEmpty = false;
-      }
-    })
-    .on("talon::madeDistribution", ({ distributionCards, receiver, talon }) => {
-      if (distributionCards.isMainTrumpCardIncluded) {
-        gameStateStore.talon.isEmpty = true;
-      }
-      if (talon.isOnlyTrumpCardRemained) {
-        gameStateStore.talon.hasOneCard = true;
-      }
-    })
-    .on("player::receiveCards", playersStore.putCardsToPlayer)
-    .on("player::changedKind", playersStore.changePlayerKind)
-    .on("player::removeCard", playersStore.removeCardFromPlayer)
+    .on(
+      "notification::push",
+      wrapWithGameState(notificationStore.addNotificationInQueue),
+    )
+    .on("desk::becameClear", wrapWithGameState(deskStore.clear))
+    .on("desk::receivedCard", wrapWithGameState(deskStore.insertCard))
+    .on(
+      "discard::receivedCards",
+      wrapWithGameState((discard) => {
+        if (discard.isReceivedFirstCards) {
+          gameStateStore.discard.isEmpty = false;
+        }
+      }),
+    )
+    .on(
+      "talon::madeDistribution",
+      wrapWithGameState(({ distributionCards, talon }) => {
+        if (distributionCards.isMainTrumpCardIncluded) {
+          gameStateStore.talon.isEmpty = true;
+        }
+        if (talon.isOnlyTrumpCardRemained) {
+          gameStateStore.talon.hasOneCard = true;
+        }
+      }),
+    )
+    .on(
+      "player::receiveCards",
+      wrapWithGameState(playersStore.putCardsToPlayer),
+    )
+    .on("player::changedKind", wrapWithGameState(playersStore.changePlayerKind))
+    .on(
+      "player::removeCard",
+      wrapWithGameState(playersStore.removeCardFromPlayer),
+    )
     .on(
       "allowedPlayer::defaultBehavior",
-      playersStore.updateTimerForNewAllowedPlayer,
+      wrapWithGameState(playersStore.updateTimerForNewAllowedPlayer),
     )
-    .on("round::new", ({ round }) => {
-      gameStateStore.round.number = round.number;
-    })
-    .on("move::new", ({ move: { name, performer, insert } }) => {})
-    .on("game::over", ({ durak: { id } }) => {})
+    .on(
+      "round::new",
+      wrapWithGameState(({ round }) => {
+        gameStateStore.round.number = round.number;
+      }),
+    )
     .connect();
 
   return {
-    handleCardDropOnDesk,
-    handleDraggedCardDropOnDesk,
-    handleCardDrag,
-    handleCardDragEnd,
+    selfDraggedCard,
+    dropCardOnDesk,
     stopMove,
   };
 });
