@@ -37,9 +37,6 @@ export default defineConfig(({ mode }) => {
         "@": fileURLToPath(new URL("./app", import.meta.url)),
         $: fileURLToPath(new URL("./layers", import.meta.url)),
         "@@": fileURLToPath(new URL(".", import.meta.url)),
-        "@durak-game/durak-dts": fileURLToPath(
-          new URL("./shared/index.ts", import.meta.url)
-        )
       },
     },
   };

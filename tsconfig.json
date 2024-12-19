@@ -25,9 +25,6 @@
       "game/*":  [
         "./layers/card-game/*"
       ],
-      "@durak-game/durak-dts": [
-        "./shared/index.ts"
-      ]
     },
     "types": [
       "unplugin-icons/types/vue",
