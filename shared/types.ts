@@ -18,8 +18,6 @@ export type {
   UserGameStat,
 };
 
-export type * as DurakGameSocket from "./socket-io-types";
-
 export type InitialGameSettings = {
   playerCount: PlayerCount;
   talonCardCount: TalonCardCount;
