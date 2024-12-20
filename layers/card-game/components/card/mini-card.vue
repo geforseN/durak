@@ -12,7 +12,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import type { Card } from "game/types";
+import type { Card } from "$/card-game/types";
 
 defineProps<Card>();
 </script>
