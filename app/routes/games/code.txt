@@ -1,0 +1,9 @@
+import { ref } from "vue";
+import * as rest from "$/card-game/api/getDurakGame";
+import * as socketIO from "$/card-game/layers/socket-io/makeSocket";
+const data = ref();
+
+const gameState = await rest.getDurakGame(id);
+const socket = socketIO.makeDurakGameSocket(id);
+
+
