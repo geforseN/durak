@@ -1,10 +1,10 @@
 <template>
-  <div class="relative rounded-lg">
+  <div class="relative rounded-lg bg-neutral text-neutral-content">
     <div>
       <div
         class="cursor-auto relative grid place-items-center font-bold text-3xl border sm:border-2 border-primary rounded h-[83px] w-[60px] xxs:h-[116px] xxs:w-[83px] md:h-[132px] md:w-[96px] lg:h-[158px] lg:w-[115px]"
       >
-        <span class="w-full h-full bg-secondary-focus grid place-items-center">
+        <span class="w-full h-full grid place-items-center">
           <span class="opacity-50 select-none">{{ props.index + 1 }}</span>
         </span>
         <game-card
@@ -21,7 +21,7 @@
     </div>
     <div
       v-if="isFocused"
-      class="flex flex-wrap gap-1 w-full justify-center content-start bg-secondary-focus bottom-0.5 absolute z-10 border-2 border-black content-box"
+      class="flex flex-wrap gap-1 w-full justify-center content-start bottom-0.5 absolute z-10 border-2 border-black content-box"
     >
       <mini-card
         v-for="card of selfStore.self.cards"
@@ -32,7 +32,7 @@
     <input
       type="radio"
       name="game-desk-slot"
-      class="focus:outline-cyan-400 focus:outline-dashed focus:outline-4 focus:outline-offset-2 z-10 rounded-md w-full h-full appearance-none absolute inset-0"
+      class="focus:outline-accent focus:outline-dashed focus:outline-4 focus:outline-offset-2 z-10 rounded-md w-full h-full appearance-none absolute inset-0"
       @focus="isFocused = true"
       @blur="isFocused = false"
     >

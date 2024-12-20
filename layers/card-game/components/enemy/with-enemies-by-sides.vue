@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="flex flex-col gap-2">
     <div
-      class="flex h-full w-full max-w-5xl items-center justify-around self-center rounded border-2 border-neutral-900 bg-neutral p-2 max-lg:rounded-t-none"
+      class="flex h-full w-full max-w-5xl items-center justify-around self-center"
     >
       <enemy-profile
         v-for="enemy of top"

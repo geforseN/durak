@@ -1,6 +1,6 @@
 <template>
   <main
-    class="flex min-h-[90vh] flex-col items-center justify-evenly gap-y-2 bg-secondary dark:bg-secondary-content"
+    class="flex min-h-[90vh] flex-col items-center justify-evenly gap-y-2 bg-base-100"
   >
     <with-enemies-by-sides
       :top="[{ 
@@ -15,7 +15,7 @@
             connectStatus: 'ONLINE',
             nickname: 'Anon',
             personalLink: 'link-asd',
-            photoUrl: 'https://cdn.7tv.app/emote/01GB9W6V0000098BZVD7GKTW0F/2x.avif',
+            photoUrl: 'https://cdn.7tv.app/emote/01GB9W6V0000098BZVD7GKTW0F/4x.avif',
             userId: 'asd'
           }
         }}]"

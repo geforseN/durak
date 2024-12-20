@@ -1,6 +1,6 @@
 <template>
   <div
-    class="grid grid-flow-row grid-cols-2 justify-items-center bg-primary xs:grid-cols-3"
+    class="grid grid-flow-row grid-cols-2 justify-items-center xs:grid-cols-3"
   >
     <template
       v-for="slot of slots_"

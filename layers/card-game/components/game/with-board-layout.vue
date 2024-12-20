@@ -1,6 +1,6 @@
 <template>
   <div
-    class="grid max-w-xs grid-cols-2 place-items-center gap-y-3 rounded-xl border-2 border-neutral-900 bg-neutral p-2 py-5 xs:max-w-md lg:max-w-none lg:grid-cols-[150px_1fr_150px]"
+    class="grid max-w-xs bg-slate-500 grid-cols-2 place-items-center gap-y-3 rounded-xl border-2 border-base-content p-2 py-5 xs:max-w-md lg:max-w-none lg:grid-cols-[150px_1fr_150px]"
   >
     <slot
       name="discard"

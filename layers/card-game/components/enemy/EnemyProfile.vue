@@ -1,6 +1,6 @@
 <template>
   <section
-    class="debug-screens relative grid w-[80px] grid-cols-[auto] grid-rows-[1fr_auto_auto] justify-items-end rounded border border-neutral-800 bg-primary p-2 grid-areas-[avatar,cards,nickname] xxs:w-[140px] xxs:grid-cols-2 xxs:grid-rows-none xxs:grid-areas-[avatar_cards,nickname_nickname] xs:w-[160px] sm:w-[210px]"
+    class="relative grid w-[80px] grid-cols-[auto] grid-rows-[1fr_auto_auto] justify-items-end rounded border border-neutral-800 bg-primary p-2 grid-areas-[avatar,cards,nickname] xxs:w-[140px] xxs:grid-cols-2 xxs:grid-rows-none xxs:grid-areas-[avatar_cards,nickname_nickname] xs:w-[160px] sm:w-[210px]"
   >
     <enemy-avatar
       :src="enemy.info.profile.photoUrl"
@@ -19,7 +19,7 @@
       class="grid-in-[nickname] xxs:w-full"
     >
       <span
-        class="link-hover link mt-3 line-clamp-2 break-all text-xs font-bold xxs:line-clamp-1 xs:text-sm sm:text-base md:text-lg xl:text-xl 2xl:text-2xl"
+        class="link-hove link mt-3 line-clamp-2 break-all text-xs font-bold xxs:line-clamp-1 xs:text-sm sm:text-base md:text-lg xl:text-xl 2xl:text-2xl"
       >
         {{ enemy.info.profile.nickname }}
       </span>
