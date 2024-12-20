@@ -5,6 +5,10 @@
     "app/**/*",
     "layers/**/*"
   ],
+  "exclude": [
+    "node_modules",
+    "server",
+  ],
   "compilerOptions": {
     "lib": [
       "es2022",
@@ -12,6 +16,7 @@
       "DOM"
     ],
     "baseUrl": ".",
+    "outDir": "dist",
     "paths": {
       "@/*": [
         "./app/*"
