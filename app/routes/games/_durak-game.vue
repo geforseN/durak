@@ -22,15 +22,15 @@
       :left="[]"
       :right="[]"
     >
-      <WithBoardLayout>
+      <with-board-layout>
         <template #discard="_props">
-          <GameDiscard
+          <game-discard
             :is-empty="false"
             :class="_props.class"
           />
         </template>
         <template #talon="_props">
-          <GameTalon
+          <game-talon
             :is-empty="false"
             :has-one-card="false"
             :trump-card="{ rank: '10', suit: '♠' }"
@@ -38,7 +38,7 @@
           />
         </template>
         <template #desk="_props">
-          <GameDesk
+          <game-desk
             :slots="
               Array.from({ length: 6 }, () => ({
                 attackCard: undefined,
@@ -48,7 +48,7 @@
             :class="_props.class"
           />
         </template>
-      </WithBoardLayout>
+      </with-board-layout>
     </with-enemies-by-sides>
     <self-interface />
   </main>
