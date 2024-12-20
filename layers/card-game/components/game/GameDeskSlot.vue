@@ -61,7 +61,7 @@ const selfStore = useGameSelfStore();
 
 useEventListener("keyup", async (event) => {
   if (!isFocused.value) {
-    return console.log("DEBUG: not focused");
+    return console.debug("DEBUG: not focused");
   }
   try {
     const cardIndex = getCardIndex(event);
