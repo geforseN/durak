@@ -54,18 +54,42 @@
         </template>
       </with-board-layout>
     </with-enemies-by-sides>
-    <self-interface />
+    <with-self-interface>
+      <template #top>
+        <self-allowed-interface v-show="self.isAllowed" />
+      </template>
+      <template #deck>
+        <self-deck
+          :cards="self.cards"
+        />
+      </template>
+    </with-self-interface>
   </main>
 </template>
 <script setup lang="ts">
-import SelfInterface from "$/card-game/components/self/SelfInterface.vue";
 import WithEnemiesBySides from "$/card-game/components/enemy/with-enemies-by-sides.vue";
 import WithBoardLayout from "$/card-game/components/game/with-board-layout.vue";
 import GameDiscard from "$/card-game/components/game/GameDiscard.vue";
 import GameTalon from "$/card-game/components/game/GameTalon.vue";
 import GameDesk from "$/card-game/components/game/GameDesk.vue";
+import WithSelfInterface from "$/card-game/components/self/with-self-interface.vue";
+import type { Card } from "@durak-game/durak-dts";
+import SelfDeck from "$/card-game/components/self/SelfDeck.vue";
+import SelfAllowedInterface from "$/card-game/components/self/SelfAllowedInterface.vue";
 
 const props = defineProps<{
   id: string;
 }>();
+
+const self = {
+  isAllowed: true,
+  cards: [
+    {rank: 'K', suit: '♥'},
+    {rank: '7', suit: '♠'},
+    {rank: '9', suit: '♦'},
+    {rank: 'J', suit: '♠'},
+    {rank: 'A', suit: '♠'},
+    {rank: 'K', suit: '♣'},
+  ] satisfies Card[]
+};
 </script>

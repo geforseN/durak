@@ -38,11 +38,9 @@ import type { Card as CardDTO } from "@durak-game/durak-dts";
 import { useGameCard } from "$/card-game/composable/useGameCard";
 import { ref } from "vue";
 import { useEventListener } from "@vueuse/core";
-import { useSharedDurakGame } from "$/card-game/composable/useDurakGame";
 
 const props = defineProps<CardDTO & { index: number }>();
 
-const durakGame = useSharedDurakGame();
 const {
   id,
   isTrump,

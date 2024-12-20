@@ -26,9 +26,11 @@
 <script setup lang="ts">
 import SelfCard from "$/card-game/components/card/SelfCard.vue";
 import type { CardDTO } from "@durak-game/durak-dts";
+import { computed } from "vue";
 
-const { cards, isEmpty } = defineProps<{
+const { cards } = defineProps<{
   cards: CardDTO[];
-  isEmpty: boolean;
 }>();
+
+const isEmpty = computed(() => cards.length === 0);
 </script>
