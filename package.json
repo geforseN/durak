@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@9.15.0",
+  "packageManager": "pnpm@9.15.1",
   "scripts": {
     "dev": "conc \"vite\" \"cd ./server && pnpm dev\" ",
     "build": "vite build",
@@ -71,7 +71,7 @@
     "typescript-eslint": "^8.18.0",
     "unplugin-icons": "^0.22.0",
     "unplugin-vue-components": "^0.28.0",
-    "vite": "6.0.3",
+    "vite": "6.0.5",
     "vitest": "^2.1.8",
     "vue-tsc": "^2.1.10"
   }
