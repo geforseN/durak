@@ -1,9 +1,7 @@
 import { computed, type Ref } from "vue";
-import {
-  BackendPayloadError,
-  UserWrongInputError
-} from "@/utils/errors";
+import { BackendPayloadError, UserWrongInputError } from "@/utils/errors";
 import type { CardDTO } from "@durak-game/durak-dts";
+import { ensureNonNegativeInteger } from "../utils/ensure-non-negative-integer";
 
 export default function useSelfHand(cards: Ref<CardDTO[]>) {
   const isEmpty = computed(() => cards.value.length === 0);
@@ -29,7 +27,7 @@ export default function useSelfHand(cards: Ref<CardDTO[]>) {
   }
 
   function getCardByIndex(indexToFind: number) {
-    ensureValidIndex(indexToFind);
+    ensureNonNegativeInteger(indexToFind);
     const card = cards.value.find((_, index) => index === indexToFind);
     if (!card) {
       throw new UserWrongInputError(
@@ -49,17 +47,4 @@ export default function useSelfHand(cards: Ref<CardDTO[]>) {
     removeCard,
     getCardByIndex,
   };
-}
-
-function ensureValidIndex(index: number) {
-  if (!Number.isInteger(index)) {
-    throw new UserWrongInputError(
-      `No such card by index=${index}, index is is integer`,
-    );
-  }
-  if (index < 0) {
-    throw new UserWrongInputError(
-      `No such card by index=${index}, index is not a negative integer`,
-    );
-  }
 }

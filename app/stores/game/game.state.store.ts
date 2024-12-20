@@ -1,10 +1,9 @@
-import { computed, reactive, type ComputedRef } from "vue";
+import { computed, reactive } from "vue";
 import { defineStore } from "pinia";
 import { useGameDeskStore } from "@/stores/game";
 import type { GameState } from "$/card-game/types";
 import { useGamePlayersStore } from "./players.store";
-import type { DurakGameSocket } from "@durak-game/durak-dts";
-import type { Socket } from "socket.io-client";
+import type { Socket } from "$/card-game/types/socket-io";
 
 const defaultGameState: Omit<GameState, "desk" | "enemies" | "self"> = {
   discard: { isEmpty: true },
@@ -41,10 +40,7 @@ export const useGameStateStore = defineStore("game-state", () => {
     gameSocket
   }: {
     state: GameState;
-    gameSocket: Socket<
-      DurakGameSocket.ServerToClientEvents,
-      DurakGameSocket.ClientToServerEvents
-    >;
+    gameSocket: Socket
   }) => {
     // TODO add isDefenderGaveUp related property (maybe add in state.enemies)
     playersStore.restore(state.self, state.enemies, gameSocket);

@@ -1,12 +1,8 @@
 <template>
   <div
-    class="max-w-xs xs:max-w-md lg:max-w-none grid grid-cols-2 lg:grid-cols-[150px_1fr_150px] gap-y-3 place-items-center rounded-xl py-5 p-2 bg-neutral border-neutral-900 border-2"
+    class="grid max-w-xs grid-cols-2 place-items-center gap-y-3 rounded-xl border-2 border-neutral-900 bg-neutral p-2 py-5 xs:max-w-md lg:max-w-none lg:grid-cols-[150px_1fr_150px]"
   >
-    <game-discard class="row-start-1 col-start-2 lg:col-start-3" />
-    <game-talon class="row-start-1 col-start-1" />
-    <game-desk
-      class="row-start-2 col-span-full lg:row-start-1 lg:col-start-2 lg:col-span-1"
-    />
+
   </div>
 </template>
 
@@ -14,4 +10,26 @@
 import GameDesk from "$/card-game/components/game/GameDesk.vue";
 import GameTalon from "$/card-game/components/game/GameTalon.vue";
 import GameDiscard from "$/card-game/components/game/GameDiscard.vue";
+import { useGameStateStore, useGameDeskStore } from "@/stores/game";
+import { computed } from "vue";
+import { useEventBus } from "@vueuse/core";
+
+const slotDropEvent = useEventBus<number>("game:slot-drop");
+
+const gameStateStore = useGameStateStore();
+const deskStore = useGameDeskStore();
+
+const discard = computed(() => ({
+  isEmpty: gameStateStore.discard.isEmpty,
+}));
+
+const talon = computed(() => ({
+  isEmpty: gameStateStore.talon.isEmpty,
+  hasOneCard: gameStateStore.talon.hasOneCard,
+  trumpCard: gameStateStore.talon.trumpCard,
+}));
+
+const desk = computed(() => ({
+  slots: deskStore.slots,
+}))
 </script>

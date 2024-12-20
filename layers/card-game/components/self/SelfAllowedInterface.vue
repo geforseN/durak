@@ -1,41 +1,41 @@
 <template>
-  <div class="flex justify-center items-baseline mb-4 text-xl gap-2">
-    <span class="flex gap-2 justify-center items-center dark:text-white">
+  <div class="mb-4 flex items-baseline justify-center gap-2 text-xl">
+    <span class="flex items-center justify-center gap-2 dark:text-white">
       Время твоего хода
     </span>
-    <i-rivet-icons-happy />  
+    <i-rivet-icons-happy />
     <button
       v-show="selfStore.self.canMakeMove"
-      class="btn flex flex-col h-max text-white bg-black focus:outline-2 focus:outline-blue-300"
+      class="btn flex h-max flex-col bg-black text-white focus:outline-2 focus:outline-blue-300"
       :class="[
         canSelfEndPursuit && 'bg-rose-900',
         canSelfEndAttack && 'bg-rose-700',
         canSelfGaveUp && 'bg-rose-500',
         selfStore.self.isSurrendered && 'bg-rose-400',
       ]"
-      @click="durakGame.stopMove"
+      @click="emit('stopMove')"
     >
       <span class="text-lg">{{ allowedActionMessage }}</span>
-      <span class="text-xs/3">Нажмите <kbd class="kbd kbd-xs bg-slate-700 rounded">S</kbd></span>
+      <span class="text-xs/3">
+        Нажмите <kbd class="kbd kbd-xs rounded bg-slate-700">S</kbd>
+      </span>
     </button>
   </div>
 </template>
-
+<!-- FIXME: i18n -->
 <script setup lang="ts">
 import { computed } from "vue";
 import { useGamePlayersStore, useGameSelfStore } from "@/stores/game";
 import { useEventListener } from "@vueuse/core";
-import { useSharedDurakGame } from "$/card-game/composable/useDurakGame";
 
-const durakGame = useSharedDurakGame();
+const emit = defineEmits<{
+  stopMove: [];
+}>();
+
 const selfStore = useGameSelfStore();
 const playersStore = useGamePlayersStore();
 
-// TODO
-// TODO
-// TODO
-// TODO
-// REFACTOR all computed below
+// TODO: refactor all computed below
 
 const canSelfEndPursuit = computed(
   () => playersStore.hasSurrenderedDefender && selfStore.self.canMakeAttackMove,
@@ -65,6 +65,6 @@ useEventListener("keyup", (event) => {
   if (event.code !== "KeyS") {
     return;
   }
-  durakGame.stopMove();
+  emit("stopMove");
 });
 </script>

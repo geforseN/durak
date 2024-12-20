@@ -12,14 +12,15 @@
         selfStore.self.isAttacker && 'bg-red-700',
       ]"
     >
-      canMakeMove:
+      Может сделать ход:
       {{ selfStore.self.canMakeMove }}
     </div>
   </div>
 </template>
+<!-- FIXME: i18n -->
 <script setup lang="ts">
-import SelfDeck from "$/card-game/SelfDeck.vue";
-import SelfAllowedInterface from "$/card-game/SelfAllowedInterface.vue";
+import SelfDeck from "$/card-game/components/self/SelfDeck.vue";
+import SelfAllowedInterface from "$/card-game/components/self/SelfAllowedInterface.vue";
 import { useGameSelfStore } from "@/stores/game";
 
 const selfStore = useGameSelfStore();

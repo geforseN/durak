@@ -1,17 +1,16 @@
 import { defineStore } from "pinia";
 import { computed } from "vue";
-import * as v from 'valibot';
-import type { Socket } from "socket.io-client";
+import * as v from "valibot";
 import {
   playerKinds,
   ranks,
   suits,
   type BasePlayer,
   type CardDTO,
-  type DurakGameSocket,
 } from "@durak-game/durak-dts";
 
-import { useGameEnemiesStore, useGameSelfStore } from "./index";
+import { useGameSelfStore } from "./index";
+import type { Socket } from "$/card-game/types/socket-io";
 
 const cardType = v.object({ rank: v.picklist(ranks), suit: v.picklist(suits) });
 const playerKindType = v.picklist(playerKinds);
@@ -63,14 +62,13 @@ const schemas = {
 } as const;
 
 export const useGamePlayersStore = defineStore("players-store", () => {
-  const enemiesStore = useGameEnemiesStore();
   const selfStore = useGameSelfStore();
 
-  // NOTE: it might now work, (idk why, must prev comment here was not helpful with that)
   const hasSurrenderedDefender = computed(() => {
     return (
       selfStore.self.isSurrendered ||
-      enemiesStore.enemies.hasSurrenderedDefender
+      false
+      // enemiesStore.enemies.hasSurrenderedDefender
     );
   });
 
@@ -101,10 +99,7 @@ export const useGamePlayersStore = defineStore("players-store", () => {
   const restore = (
     selfDTO: BasePlayer & { cards: CardDTO[] },
     enemyDTOs: (BasePlayer & { cardCount: number })[],
-    gameSocket: Socket<
-      DurakGameSocket.ServerToClientEvents,
-      DurakGameSocket.ClientToServerEvents
-    >,
+    gameSocket: Socket
   ) => {
     selfStore.restore(selfDTO, gameSocket);
     enemiesStore.restore(enemyDTOs);

@@ -3,14 +3,9 @@
     class="relative"
     draggable="true"
     @dragstart="
-      durakGame.handleCardDrag($event, { rank: props.rank, suit: props.suit })
+      durakGame.selfDraggedCard.onDrag({ rank, suit })
     "
-    @dragend.prevent="
-      durakGame.handleCardDragEnd($event, {
-        rank: props.rank,
-        suit: props.suit,
-      })
-    "
+    @dragend.prevent="durakGame.selfDraggedCard.onDragEnd()"
   >
     <div
       :style="{
@@ -18,20 +13,20 @@
       }"
       :class="[
         isFocused &&
-          '-translate-y-10 outline outline-green-500 outline-4 outline-offset-2',
+          '-translate-y-10 outline outline-4 outline-offset-2 outline-green-500',
         canBeUsedForDefense && !isTrump && 'outline outline-blue-500',
         canBeUsedForDefense &&
           isTrump &&
-          'outline outline-purple-500 outline-4',
-        canBeUsedForTransferMove && 'outline outline-red-500 rotate-2',
+          'outline outline-4 outline-purple-500',
+        canBeUsedForTransferMove && 'rotate-2 outline outline-red-500',
         canBeUsedForAttack && 'outline outline-yellow-500',
       ]"
-      class="cursor-pointer h-[116px] w-[83px] border-2 border-black rounded bg-cover bg-black transition-all ease-out"
+      class="h-[116px] w-[83px] cursor-pointer rounded border-2 border-black bg-black bg-cover transition-all ease-out"
     />
     <input
       type="radio"
       name="self-card"
-      class="z-10 rounded-md w-full h-full appearance-none absolute inset-0 outline-none"
+      class="absolute inset-0 z-10 h-full w-full appearance-none rounded-md outline-none"
       @focus="handleCardFocus"
       @blur="handleCardBlur"
     >

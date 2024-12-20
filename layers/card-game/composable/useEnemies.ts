@@ -1,6 +1,6 @@
 import { BackendPayloadError } from "@/utils/errors";
-import { computed, type Ref } from "vue";
-import type useEnemy from "./useEnemy";
+import { computed, toRaw, toValue, type MaybeRefOrGetter, type Ref } from "vue";
+import type { Enemy } from "@durak-game/durak-dts";
 
 type GroupedEnemies = Partial<{
   top: { start: number; end: number };
@@ -33,11 +33,9 @@ const _groupedEnemiesBySide: Record<0 | 1 | 2 | 3 | 4 | 5, GroupedEnemies> = {
   },
 } as const;
 
-export default function useEnemies(
-  enemies: Ref<ReturnType<typeof useEnemy>[]>,
-) {
+export default function useEnemies(enemies: MaybeRefOrGetter<Enemy[]>) {
   function getById(id: string) {
-    const enemy = enemies.value.find((enemy) => enemy.id === id);
+    const enemy = toValue(enemies).find((enemy) => enemy.id === id);
     if (!enemy) {
       throw new BackendPayloadError();
     }
@@ -53,15 +51,15 @@ export default function useEnemies(
     if (typeof indexes?.start === "undefined") {
       return [];
     }
-    return enemies.value.slice(indexes.start, indexes.end + 1);
+    return toValue(enemies).slice(indexes.start, indexes.end + 1);
   }
 
   const hasAllowedPlayer = computed(() => {
-    return enemies.value.some((enemy) => enemy.canMakeMove);
+    return toValue(enemies).some((enemy) => enemy.canMakeMove);
   });
 
   function allowedPlayer() {
-    const allowed = enemies.value.find((enemy) => enemy.canMakeMove);
+    const allowed = toValue(enemies).find((enemy) => enemy.canMakeMove);
     if (!allowed) {
       throw new Error();
     }
@@ -69,7 +67,7 @@ export default function useEnemies(
   }
 
   function hasSurrenderedDefender() {
-    return enemies.value.some((enemy) => enemy.isSurrendered);
+    return toValue(enemies).some((enemy) => enemy.isSurrendered);
   }
 
   return {

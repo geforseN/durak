@@ -12,7 +12,7 @@
       :has-timer="true"
       class="absolute -bottom-4 right-[4px] grid-in-[role] xxs:left-2 xxs:right-0"
     />
-    <enemy-stacked-cards :count="enemy.cardCount.value" />
+    <enemy-stacked-cards :count="enemy.cardCount" />
     <router-link
       :to="`/profile/${enemy.info.profile.personalLink}`"
       :title="enemy.info.profile.nickname"
@@ -30,9 +30,9 @@
 import EnemyAvatar from "$/card-game/components/enemy/EnemyProfileAvatar.vue";
 import EnemyStackedCards from "$/card-game/components/enemy/EnemyProfileStackedCards.vue";
 import EnemyKindBadge from "$/card-game/components/enemy/EnemyProfileKindBadge.vue";
-import type useEnemy from "../../composable/useEnemy";
+import type { Enemy } from "@durak-game/durak-dts";
 
 const { enemy } = defineProps<{
-  enemy: ReturnType<typeof useEnemy>;
+  enemy: Enemy;
 }>();
 </script>

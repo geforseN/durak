@@ -46,7 +46,6 @@ import type { Card } from "../../types";
 import { ref } from "vue";
 import { useGameSelfStore } from "@/stores/game";
 import { useEventListener } from "@vueuse/core";
-import { useSharedDurakGame } from "$/card-game/composable/useDurakGame";
 import { useNotificationStore } from "@/stores";
 
 const props = defineProps<{
@@ -56,8 +55,6 @@ const props = defineProps<{
 }>();
 
 const isFocused = ref(false);
-
-const durakGame = useSharedDurakGame();
 
 const notificationStore = useNotificationStore();
 const selfStore = useGameSelfStore();
@@ -69,7 +66,7 @@ useEventListener("keyup", async (event) => {
   try {
     const cardIndex = getCardIndex(event);
     const card = selfStore.self.hand.getCardByIndex(cardIndex);
-    durakGame.handleCardDropOnDesk(card, props.index);
+    durakGame.dropCardOnDesk(card, props.index);
   } catch (error) {
     if (!(error instanceof Error) || error instanceof SilentError) {
       return;
