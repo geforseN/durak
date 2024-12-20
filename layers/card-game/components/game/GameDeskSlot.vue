@@ -5,16 +5,16 @@
         class="cursor-auto relative grid place-items-center font-bold text-3xl border sm:border-2 border-primary rounded h-[83px] w-[60px] xxs:h-[116px] xxs:w-[83px] md:h-[132px] md:w-[96px] lg:h-[158px] lg:w-[115px]"
       >
         <span class="w-full h-full grid place-items-center">
-          <span class="opacity-50 select-none">{{ props.index + 1 }}</span>
+          <span class="opacity-50 select-none">{{ index + 1 }}</span>
         </span>
         <game-card
-          v-if="props.attackCard"
-          v-bind="props.attackCard"
+          v-if="attackCard"
+          v-bind="attackCard"
           class="absolute"
         />
         <game-card
-          v-if="props.defendCard"
-          v-bind="props.defendCard"
+          v-if="defendCard"
+          v-bind="defendCard"
           class="absolute translate-x-2.5 xxs:translate-x-3 lg:translate-x-3.5 z-10"
         />
       </div>
