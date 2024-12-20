@@ -23,9 +23,9 @@ const routes = [
     component: () => import("../views/user-profile.vue"),
   },
   {
-    path: "/game/:gameId/",
+    path: "/games/:gameId/",
     name: "durak-game",
-    component: () => import("../views/durak-game.vue"),
+    component: () => import("@/routes/games/[gameId].vue"),
     meta: {
       layout: "",
     },
