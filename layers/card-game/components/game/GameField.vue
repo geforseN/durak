@@ -30,7 +30,6 @@
 
 <script setup lang="ts">
 import EnemyProfile from "$/card-game/components/enemy/EnemyProfile.vue";
-import GameBoard from "$/card-game/components/game/GameBoard.vue";
 import type { Enemy } from "@durak-game/durak-dts";
 
 defineProps<{
