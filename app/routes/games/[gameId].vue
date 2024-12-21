@@ -4,7 +4,7 @@
   </Suspense>
 </template>
 <script setup lang="ts">
-import DurakGame from "./_durak-game.vue";
+import DurakGame from "$/card-game/components/_durak-game.vue";
 import { getRouteStringParam } from "@/router/utils";
 
 const gameId = getRouteStringParam("gameId");
