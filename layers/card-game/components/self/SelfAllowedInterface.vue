@@ -1,6 +1,6 @@
 <template>
   <div class="mb-4 flex items-baseline justify-center gap-2 text-xl">
-    <span class="flex items-center justify-center gap-2 dark:text-white">
+    <span class="select-none flex items-center justify-center gap-2 dark:text-white">
       Время твоего хода
     </span>
     <i-rivet-icons-happy />
