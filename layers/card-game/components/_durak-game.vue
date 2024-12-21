@@ -2,42 +2,17 @@
   <main
     class="flex min-h-[90vh] flex-col items-center justify-evenly gap-y-2 bg-base-100"
   >
-    <with-enemies-by-sides
-      :top="[
-        {
-          cardCount: 6,
-          id: 'asd',
-          isAllowedToMove: false,
-          kind: 'Defender',
-          info: {
-            id: 'asd',
-            isAdmin: false,
-            profile: {
-              connectStatus: 'ONLINE',
-              nickname: 'Anon',
-              personalLink: 'link-asd',
-              photoUrl:
-                'https://cdn.7tv.app/emote/01GB9W6V0000098BZVD7GKTW0F/4x.avif',
-              userId: 'asd',
-            },
-          },
-        },
-      ]"
-      :left="[]"
-      :right="[]"
-    >
+    <with-enemies-by-sides v-bind="enemiesBySides">
       <with-board-layout>
         <template #discard="_props">
           <game-discard
-            :is-empty="false"
+            v-bind="discard"
             :class="_props.class"
           />
         </template>
         <template #talon="_props">
           <game-talon
-            :is-empty="false"
-            :has-one-card="false"
-            :trump-card="{ rank: '10', suit: '♠' }"
+            v-bind="talon"
             :class="_props.class"
           />
         </template>
@@ -66,7 +41,7 @@
 </template>
 <script setup lang="ts">
 import * as v from "valibot";
-import { ref } from "vue";
+import { computed, provide, ref } from "vue";
 import WithEnemiesBySides from "$/card-game/layers/enemy/with-enemies-by-sides.vue";
 import WithBoardLayout from "$/card-game/components/game/with-board-layout.vue";
 import GameDiscard from "$/card-game/components/game/GameDiscard.vue";
@@ -108,11 +83,61 @@ const self = {
 
 const isSelfAllowed = computed(() => self.id === allowed.value?.playerId);
 
+provide(
+  "selfCards",
+  computed(() => self.cards),
+);
+
 const slots = ref(Array.from({ length: 6 }, () => ({})));
 
+provide(
+  "deskSlotKeys",
+  computed(() => Array.from(slots.value).map((_, index) => index + 1)),
+);
+
+const talon = {
+  isEmpty: false,
+  hasOneCard: false,
+  trumpCard: {
+    rank: "10",
+    suit: "♠",
+  } as const,
+};
+
+const discard = {
+  isEmpty: false,
+};
+
+const enemiesBySides = {
+  top: [
+    {
+      cardCount: 6,
+      id: "asd",
+      isAllowedToMove: false,
+      kind: "Defender",
+      info: {
+        id: "asd",
+        isAdmin: false,
+        profile: {
+          connectStatus: "ONLINE",
+          nickname: "Anon",
+          personalLink: "link-asd",
+          photoUrl:
+            "https://cdn.7tv.app/emote/01GB9W6V0000098BZVD7GKTW0F/4x.avif",
+          userId: "asd",
+        },
+      },
+    } as const,
+  ],
+  left: [],
+  right: [],
+};
+
+////////////////////////////////////////////////////////
+
 const cardSchema = v.object({
-  rank: v.string(), // You can refine this further based on your needs
-  suit: v.string(), // Similarly, refine for valid suits
+  rank: v.string(),
+  suit: v.string(),
 });
 
 const eventDetailSchema = v.object({
@@ -125,20 +150,16 @@ const eventDetailSchema = v.object({
   card: cardSchema,
 });
 
-
 document.addEventListener("drop-on-desk", (event) => {
   if (!(event instanceof CustomEvent)) {
     throw new Error("Event is not instance of CustomEvent");
   }
   try {
-    const {
-      card,
-      slotIndex,
-    } = v.parse(eventDetailSchema, event.detail);
+    const { card, slotIndex } = v.parse(eventDetailSchema, event.detail);
     const slot = slots.value[slotIndex];
-    if (!('attackCard' in slot)) {
+    if (!("attackCard" in slot)) {
       slot.attackCard = card;
-    } else if (!('defendCard' in slot)) {
+    } else if (!("defendCard" in slot)) {
       slot.defendCard = card;
     }
   } catch (error) {
