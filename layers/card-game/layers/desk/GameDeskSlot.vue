@@ -1,5 +1,5 @@
 <template>
-  <WithSlotDragAndDrop
+  <with-slot-drag-and-drop
     #="dragAndDrop"
     class="relative rounded-lg bg-neutral text-neutral-content"
     @drop.prevent="onDrop"
@@ -15,49 +15,68 @@
       <span class="grid h-full w-full place-items-center">
         <span class="select-none opacity-50">{{ index + 1 }}</span>
       </span>
-      <game-card v-if="attackCard" v-bind="attackCard" class="absolute" />
+      <game-card
+        v-if="attackCard"
+        v-bind="attackCard"
+        class="absolute"
+      />
       <game-card
         v-if="defendCard"
         v-bind="defendCard"
         class="absolute z-10 translate-x-2.5 xxs:translate-x-3 lg:translate-x-3.5"
       />
     </div>
-    <WithSlotFocus>
-      <mini-card
-        v-for="card of selfStore.self.cards"
+    <with-slot-focus>
+      <div
+        v-for="(card, cardIndex) of selfCards"
         :key="`${card.rank}${card.suit}`"
-        v-bind="card"
-      />
-    </WithSlotFocus>
-  </WithSlotDragAndDrop>
+      >
+        <!-- TODO: implement keyboard listener that will put card on desk when correct keys are pressed -->
+        <!-- NOTE: when more than 9 cards instead of just digit  -->
+        <!-- then must use letter => A1, A2, ..., B2 -->
+        <!-- OR use key modifier => Shift, Control -->
+        <!-- must show it to user -->
+        <span class="text-sm">{{ cardIndex + 1 }}</span>
+        <mini-card v-bind="card" />
+      </div>
+    </with-slot-focus>
+  </with-slot-drag-and-drop>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
-import WithSlotFocus from "../desk/with-game-desk-slot-focus.vue";
-import WithSlotDragAndDrop from "../desk/with-game-desk-slot-drag-and-drop.vue";
+import { type ComputedRef } from "vue";
+import WithSlotFocus from "./with-game-desk-slot-focus.vue";
+import WithSlotDragAndDrop from "./with-game-desk-slot-drag-and-drop.vue";
 import GameCard from "$/card-game/layers/card/game-card.vue";
 import MiniCard from "$/card-game/layers/card/mini-card.vue";
 import type { Card } from "$/card-game/types";
-import { useGameSelfStore } from "@/stores/game";
-import { useEventListener } from "@vueuse/core";
 import { makeDropOnDeskEvent } from "$/card-game/events/self.card.drop-on-desk";
+import { injectOrThrow } from "@/utils/vue/inject-or-throw";
 
 function onDrop(event: DragEvent) {
-  console.debug("onDrop", event);
   try {
-    event.dataTransfer!.items[0].getAsString((data) => {
-      event.target!.dispatchEvent(
-        makeDropOnDeskEvent({
-          card: JSON.parse(data).card,
-          slotIndex: props.index,
-        }),
-      );
+    const dataTransferItem = event.dataTransfer!.items[0];
+    if (!dataTransferItem) {
+      throw new Error("dataTransferItem is not defined");
+    }
+    dataTransferItem.getAsString((data) => {
+      try {
+        event.target!.dispatchEvent(
+          makeDropOnDeskEvent({
+            card: JSON.parse(data).card,
+            slotIndex: props.index,
+          }),
+        );
+      } catch (reason) {
+        console.error("onDrop dataTransferItem error", { reason });
+      }
     });
   } catch (reason) {
     console.error("onDrop error", { reason });
     return;
   }
 }
+
+const selfCards = injectOrThrow<ComputedRef<Card[]>>("selfCards");
 
 const props = defineProps<{
   attackCard?: Card;
