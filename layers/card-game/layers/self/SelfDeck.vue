@@ -30,16 +30,8 @@
 <script setup lang="ts">
 import SelfCard from "$/card-game/layers/self/card/SelfCard.vue";
 import { makeCardId } from "$/card-game/utils/card/make-card-id";
-import { useGameDeskStore } from "@/stores/game";
 import type { Card } from "@durak-game/durak-dts";
-import { computed, provide } from "vue";
-
-const gameDeskStore = useGameDeskStore();
-
-provide(
-  "deskSlotKeys",
-  computed(() => Array.from(gameDeskStore.slots).map((_, index) => index + 1)),
-);
+import { computed } from "vue";
 
 const props = defineProps<{
   cards: Card[];
