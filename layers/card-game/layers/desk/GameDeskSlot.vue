@@ -2,7 +2,7 @@
   <with-slot-drag-and-drop
     #="dragAndDrop"
     class="relative rounded-lg bg-neutral text-neutral-content"
-    @drop.prevent="onDrop"
+    @card-drop="onCardDrop"
   >
     <div
       class="relative grid h-[83px] w-[60px] place-items-center rounded text-3xl font-bold xxs:h-[116px] xxs:w-[83px] sm:border-2 md:h-[132px] md:w-[96px] lg:h-[158px] lg:w-[115px]"
@@ -45,26 +45,16 @@ const props = defineProps<{
   index: number;
 }>();
 
-function onDrop(event: DragEvent) {
+function onCardDrop(event: DragEvent, card: Card) {
   try {
-    const dataTransferItem = event.dataTransfer!.items[0];
-    if (!dataTransferItem) {
-      throw new Error("dataTransferItem is not defined");
-    }
-    dataTransferItem.getAsString((data) => {
-      try {
-        event.target!.dispatchEvent(
-          makeDropOnDeskEvent({
-            card: JSON.parse(data).card,
-            slotIndex: props.index,
-          }),
-        );
-      } catch (reason) {
-        console.error("onDrop dataTransferItem error", { reason });
-      }
-    });
+    event.target!.dispatchEvent(
+      makeDropOnDeskEvent({
+        card,
+        slotIndex: props.index,
+      }),
+    );
   } catch (reason) {
-    console.error("onDrop error", { reason });
+    console.error("onCard error", { reason });
     return;
   }
 }
