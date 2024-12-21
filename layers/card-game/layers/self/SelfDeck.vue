@@ -28,7 +28,7 @@
 </template>
 <!-- FIXME: i18n -->
 <script setup lang="ts">
-import SelfCard from "$/card-game/components/card/SelfCard.vue";
+import SelfCard from "$/card-game/layers/self/card/SelfCard.vue";
 import { makeCardId } from "$/card-game/utils/card/make-card-id";
 import { useGameDeskStore } from "@/stores/game";
 import type { Card } from "@durak-game/durak-dts";

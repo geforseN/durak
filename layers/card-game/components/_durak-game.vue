@@ -62,15 +62,15 @@
 <script setup lang="ts">
 import * as v from "valibot";
 import { ref } from "vue";
-import WithEnemiesBySides from "$/card-game/components/enemy/with-enemies-by-sides.vue";
+import WithEnemiesBySides from "$/card-game/layers/enemy/with-enemies-by-sides.vue";
 import WithBoardLayout from "$/card-game/components/game/with-board-layout.vue";
 import GameDiscard from "$/card-game/components/game/GameDiscard.vue";
 import GameTalon from "$/card-game/components/game/GameTalon.vue";
-import GameDesk from "$/card-game/components/desk/GameDesk.vue";
-import WithSelfInterface from "$/card-game/components/self/with-self-interface.vue";
+import GameDesk from "$/card-game/layers/desk/GameDesk.vue";
+import WithSelfInterface from "$/card-game/layers/self/with-self-interface.vue";
 import type { Card } from "@durak-game/durak-dts";
-import SelfDeck from "$/card-game/components/self/SelfDeck.vue";
-import SelfAllowedInterface from "$/card-game/components/self/SelfAllowedInterface.vue";
+import SelfDeck from "$/card-game/layers/self/SelfDeck.vue";
+import SelfAllowedInterface from "$/card-game/layers/self/SelfAllowedInterface.vue";
 
 const props = defineProps<{
   id: string;

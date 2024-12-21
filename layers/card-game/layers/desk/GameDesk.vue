@@ -12,7 +12,7 @@
 </template>
 <script setup lang="ts">
 import type { Card } from "@durak-game/durak-dts";
-import GameDeskSlot from "$/card-game/components/desk/GameDeskSlot.vue";
+import GameDeskSlot from "$/card-game/layers/desk/GameDeskSlot.vue";
 
 defineProps<{
   slots: {

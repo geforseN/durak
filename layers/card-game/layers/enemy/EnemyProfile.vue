@@ -27,9 +27,9 @@
   </section>
 </template>
 <script setup lang="ts">
-import EnemyAvatar from "$/card-game/components/enemy/EnemyProfileAvatar.vue";
-import EnemyStackedCards from "$/card-game/components/enemy/EnemyProfileStackedCards.vue";
-import EnemyKindBadge from "$/card-game/components/enemy/EnemyProfileKindBadge.vue";
+import EnemyAvatar from "$/card-game/layers/enemy/EnemyProfileAvatar.vue";
+import EnemyStackedCards from "$/card-game/layers/enemy/EnemyProfileStackedCards.vue";
+import EnemyKindBadge from "$/card-game/layers/enemy/EnemyProfileKindBadge.vue";
 import type { Enemy } from "@durak-game/durak-dts";
 
 const { enemy } = defineProps<{

@@ -35,8 +35,8 @@
 import { ref } from "vue";
 import WithSlotFocus from "../desk/with-game-desk-slot-focus.vue";
 import WithSlotDragAndDrop from "../desk/with-game-desk-slot-drag-and-drop.vue";
-import GameCard from "$/card-game/components/card/game-card.vue";
-import MiniCard from "$/card-game/components/card/mini-card.vue";
+import GameCard from "$/card-game/layers/card/game-card.vue";
+import MiniCard from "$/card-game/layers/card/mini-card.vue";
 import type { Card } from "$/card-game/types";
 import { useGameSelfStore } from "@/stores/game";
 import { useEventListener } from "@vueuse/core";

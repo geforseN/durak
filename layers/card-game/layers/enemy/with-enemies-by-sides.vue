@@ -31,7 +31,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import EnemyProfile from "$/card-game/components/enemy/EnemyProfile.vue";
+import EnemyProfile from "$/card-game/layers/enemy/EnemyProfile.vue";
 import type { Enemy } from "@durak-game/durak-dts";
 
 defineProps<{

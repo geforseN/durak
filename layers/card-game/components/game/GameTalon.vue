@@ -13,8 +13,8 @@
 </template>
 
 <script setup lang="ts">
-import GameCard from "$/card-game/components/card/game-card.vue";
-import CardBackground from "$/card-game/components/card/CardBackground.vue";
+import GameCard from "$/card-game/layers/card/game-card.vue";
+import CardBackground from "$/card-game/layers/card/CardBackground.vue";
 import type { Card } from "@durak-game/durak-dts";
 
 defineProps<{
