@@ -1,52 +1,63 @@
 <template>
-  <div class="relative rounded-lg bg-neutral text-neutral-content">
-    <div>
-      <div
-        class="cursor-auto relative grid place-items-center font-bold text-3xl border sm:border-2 border-primary rounded h-[83px] w-[60px] xxs:h-[116px] xxs:w-[83px] md:h-[132px] md:w-[96px] lg:h-[158px] lg:w-[115px]"
-      >
-        <span class="w-full h-full grid place-items-center">
-          <span class="opacity-50 select-none">{{ index + 1 }}</span>
-        </span>
-        <game-card
-          v-if="attackCard"
-          v-bind="attackCard"
-          class="absolute"
-        />
-        <game-card
-          v-if="defendCard"
-          v-bind="defendCard"
-          class="absolute translate-x-2.5 xxs:translate-x-3 lg:translate-x-3.5 z-10"
-        />
-      </div>
-    </div>
+  <WithSlotDragAndDrop
+    #="dragAndDrop"
+    class="relative rounded-lg bg-neutral text-neutral-content"
+    @drop.prevent="onDrop"
+  >
     <div
-      v-if="isFocused"
-      class="flex flex-wrap gap-1 w-full justify-center content-start bottom-0.5 absolute z-10 border-2 border-black content-box"
+      class="relative grid h-[83px] w-[60px] place-items-center rounded text-3xl font-bold xxs:h-[116px] xxs:w-[83px] sm:border-2 md:h-[132px] md:w-[96px] lg:h-[158px] lg:w-[115px]"
+      :class="[
+        dragAndDrop.type === 'dragenter'
+          ? 'border border-accent'
+          : 'border border-primary',
+      ]"
     >
+      <span class="grid h-full w-full place-items-center">
+        <span class="select-none opacity-50">{{ index + 1 }}</span>
+      </span>
+      <game-card v-if="attackCard" v-bind="attackCard" class="absolute" />
+      <game-card
+        v-if="defendCard"
+        v-bind="defendCard"
+        class="absolute z-10 translate-x-2.5 xxs:translate-x-3 lg:translate-x-3.5"
+      />
+    </div>
+    <WithSlotFocus>
       <mini-card
         v-for="card of selfStore.self.cards"
         :key="`${card.rank}${card.suit}`"
         v-bind="card"
       />
-    </div>
-    <input
-      type="radio"
-      name="game-desk-slot"
-      class="focus:outline-accent focus:outline-dashed focus:outline-4 focus:outline-offset-2 z-10 rounded-md w-full h-full appearance-none absolute inset-0"
-      @focus="isFocused = true"
-      @blur="isFocused = false"
-    >
-  </div>
+    </WithSlotFocus>
+  </WithSlotDragAndDrop>
 </template>
-
 <script setup lang="ts">
+import { ref } from "vue";
+import WithSlotFocus from "../desk/with-game-desk-slot-focus.vue";
+import WithSlotDragAndDrop from "../desk/with-game-desk-slot-drag-and-drop.vue";
 import GameCard from "$/card-game/components/card/game-card.vue";
 import MiniCard from "$/card-game/components/card/mini-card.vue";
-import type { Card } from "../../types";
-import { ref } from "vue";
+import type { Card } from "$/card-game/types";
 import { useGameSelfStore } from "@/stores/game";
 import { useEventListener } from "@vueuse/core";
-import { useNotificationStore } from "@/stores";
+import { makeDropOnDeskEvent } from "$/card-game/events/self.card.drop-on-desk";
+
+function onDrop(event: DragEvent) {
+  console.debug("onDrop", event);
+  try {
+    event.dataTransfer!.items[0].getAsString((data) => {
+      event.target!.dispatchEvent(
+        makeDropOnDeskEvent({
+          card: JSON.parse(data).card,
+          slotIndex: props.index,
+        }),
+      );
+    });
+  } catch (reason) {
+    console.error("onDrop error", { reason });
+    return;
+  }
+}
 
 const props = defineProps<{
   attackCard?: Card;
@@ -56,7 +67,6 @@ const props = defineProps<{
 
 const isFocused = ref(false);
 
-const notificationStore = useNotificationStore();
 const selfStore = useGameSelfStore();
 
 useEventListener("keyup", async (event) => {
@@ -68,7 +78,7 @@ useEventListener("keyup", async (event) => {
     const card = selfStore.self.hand.getCardByIndex(cardIndex);
     durakGame.dropCardOnDesk(card, props.index);
   } catch (error) {
-    if (!(error instanceof Error) || error instanceof SilentError) {
+    if (!(error instanceof Error)) {
       return;
     }
     notificationStore.addNotificationInQueue(error);
@@ -86,9 +96,7 @@ function getDigitFromKeyboardEvent(event: KeyboardEvent) {
   const digit = Number(event.code.replace("Digit", "").replace("Numpad", ""));
   if (!isDigit(digit)) {
     if (isValidEvent(event)) {
-      throw new SilentError(
-        "Pressed key is valid, but should not lead to card put",
-      );
+      throw new Error("Pressed key is valid, but should not lead to card put");
     }
     throw new Error("Pressed key must be digit");
   }
@@ -105,9 +113,5 @@ function isValidEvent(event: KeyboardEvent) {
     event.code === "ShiftLeft" ||
     event.code.startsWith("Arrow")
   );
-}
-
-class SilentError extends Error {
-  isSilent = true;
 }
 </script>

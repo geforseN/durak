@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex w-full max-w-5xl border-neutral-900 border-2 p-2 bg-neutral justify-center rounded"
+    class="flex w-full max-w-5xl justify-center rounded border-2 border-neutral-900 bg-neutral p-2"
   >
     <div
       v-if="isEmpty"
@@ -10,27 +10,49 @@
     </div>
     <div
       v-else
-      class="max-w-xl grid grid-flow-col auto-cols-fr justify-center"
+      class="grid max-w-xl auto-cols-fr grid-flow-col justify-center"
     >
       <self-card
-        v-for="(card, index) of cards"
-        :key="card.suit + card.rank"
-        :rank="card.rank"
-        :suit="card.suit"
-        :index="index"
+        v-for="card of cards"
+        :key="card.id"
+        v-bind="card"
       />
+      <!-- 
+        @drop-on-desk="durakGame.selfDraggedCard.onDeskDrop(card.index)"
+        @dragstart="durakGame.selfDraggedCard.onDrag(card)"
+        @dragend.prevent="durakGame.selfDraggedCard.onDragEnd()"
+      
+-->
     </div>
   </div>
 </template>
 <!-- FIXME: i18n -->
 <script setup lang="ts">
 import SelfCard from "$/card-game/components/card/SelfCard.vue";
-import type { CardDTO } from "@durak-game/durak-dts";
-import { computed } from "vue";
+import { makeCardId } from "$/card-game/utils/card/make-card-id";
+import { useGameDeskStore } from "@/stores/game";
+import type { Card } from "@durak-game/durak-dts";
+import { computed, provide } from "vue";
 
-const { cards } = defineProps<{
-  cards: CardDTO[];
+const gameDeskStore = useGameDeskStore();
+
+provide(
+  "deskSlotKeys",
+  computed(() => Array.from(gameDeskStore.slots).map((_, index) => index + 1)),
+);
+
+const props = defineProps<{
+  cards: Card[];
 }>();
 
-const isEmpty = computed(() => cards.length === 0);
+const isEmpty = computed(() => props.cards.length === 0);
+
+const cards = computed(() =>
+  props.cards.map((card, index) => ({
+    id: makeCardId(card.rank, card.suit),
+    suit: card.suit,
+    rank: card.rank,
+    index,
+  })),
+);
 </script>

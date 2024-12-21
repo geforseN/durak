@@ -8,9 +8,6 @@
     >
       <game-desk-slot
         v-bind="slot"
-        @dragenter.prevent
-        @dragover.prevent
-        @drop="$emit('slotDrop', slot.index)"
       />
     </template>
   </div>
