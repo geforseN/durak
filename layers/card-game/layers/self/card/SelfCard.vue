@@ -4,34 +4,23 @@
     draggable
     @dragstart="ondragstart"
   >
-    <self-card-with-keyup-listener
-      :rank
-      :suit
-      is-focused
-      @drop-on-desk="
-        () => {
-          /* TODO */
-        }
+    <component
+      :is="
+        self.isAttacker
+          ? SelfAttackerCard
+          : self.isDefender
+            ? SelfDefenderCard_
+            : SelfBaseCard
       "
-    >
-      <component
-        :is="
-          self.isAttacker
-            ? SelfAttackerCard
-            : self.isDefender
-              ? SelfDefenderCard_
-              : SelfBaseCard
-        "
-        ref="card"
-        v-bind="{
-          id,
-          isFocused,
-          isTrump,
-          rank,
-          suit,
-        }"
-      />
-    </self-card-with-keyup-listener>
+      ref="card"
+      v-bind="{
+        id,
+        isFocused,
+        isTrump,
+        rank,
+        suit,
+      }"
+    />
   </self-card-with-focus>
 </template>
 <script lang="ts">
@@ -56,7 +45,6 @@ function dragstart(
 </script>
 <script setup lang="ts">
 import { computed, useTemplateRef } from "vue";
-import SelfCardWithKeyupListener from "./self-card-with-keyup-listener.vue";
 import SelfCardWithFocus from "./self-card-with-focus.vue";
 import type { Card } from "@durak-game/durak-dts";
 import SelfAttackerCard from "../as-allowed/card/self-attacker-card_.vue";
