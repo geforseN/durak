@@ -6,6 +6,7 @@
       v-for="(slot, index) of values"
       v-bind="slot"
       :key="index"
+      :number="index + 1"
       :index
     />
   </div>
@@ -19,6 +20,11 @@ defineProps<{
 }>();
 
 defineSlots<{
-  default: Slot<DeskSlot & { index: number }>;
-}>()
+  default: Slot<
+    DeskSlot & {
+      number: number;
+      index: number;
+    }
+  >;
+}>();
 </script>

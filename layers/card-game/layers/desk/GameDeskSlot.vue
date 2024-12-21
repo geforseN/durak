@@ -13,7 +13,7 @@
       ]"
     >
       <span class="grid h-full w-full place-items-center">
-        <span class="select-none opacity-50">{{ index + 1 }}</span>
+        <span class="select-none opacity-50">{{ number }}</span>
       </span>
       <game-card
         v-if="attackCard"
@@ -39,10 +39,11 @@ import { makeDropOnDeskEvent } from "$/card-game/events/self.card.drop-on-desk";
 import GameCard from "$/card-game/layers/card/game-card.vue";
 import type { Card } from "$/card-game/types";
 
-const props = defineProps<{
+const { index } = defineProps<{
   attackCard?: Card;
   defendCard?: Card;
   index: number;
+  number: number;
 }>();
 
 function onCardDrop(event: DragEvent, card: Card) {
@@ -50,7 +51,7 @@ function onCardDrop(event: DragEvent, card: Card) {
     event.target!.dispatchEvent(
       makeDropOnDeskEvent({
         card,
-        slotIndex: props.index,
+        slotIndex: index,
       }),
     );
   } catch (reason) {
