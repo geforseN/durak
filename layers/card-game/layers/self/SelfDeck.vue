@@ -17,12 +17,6 @@
         :key="card.id"
         v-bind="card"
       />
-      <!-- 
-        @drop-on-desk="durakGame.selfDraggedCard.onDeskDrop(card.index)"
-        @dragstart="durakGame.selfDraggedCard.onDrag(card)"
-        @dragend.prevent="durakGame.selfDraggedCard.onDragEnd()"
-      
--->
     </div>
   </div>
 </template>
