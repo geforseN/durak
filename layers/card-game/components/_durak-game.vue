@@ -16,11 +16,14 @@
             :class="_props.class"
           />
         </template>
-        <template #desk="_props">
-          <game-desk
-            :slots
+        <template #slots="_props">
+          <with-game-desk-slots
+            :values="slots"
             :class="_props.class"
-          />
+            #="deskSlot"
+          >
+            <game-desk-slot v-bind="deskSlot" />
+          </with-game-desk-slots>
         </template>
       </with-board-layout>
     </with-enemies-by-sides>
@@ -29,7 +32,11 @@
         <with-self-allowed-message-hint v-if="allowed && isSelfAllowed">
           <self-stop-allowed-action-button
             :action="allowed.action"
-            @click="() => {/* TODO: stop move */}"
+            @click="
+              () => {
+                /* TODO: stop move */
+              }
+            "
           />
         </with-self-allowed-message-hint>
       </template>
@@ -46,12 +53,13 @@ import WithEnemiesBySides from "$/card-game/layers/enemy/with-enemies-by-sides.v
 import WithBoardLayout from "$/card-game/components/game/with-board-layout.vue";
 import GameDiscard from "$/card-game/components/game/GameDiscard.vue";
 import GameTalon from "$/card-game/components/game/GameTalon.vue";
-import GameDesk from "$/card-game/layers/desk/GameDesk.vue";
+import WithGameDeskSlots from "$/card-game/layers/desk/with-game-desk-slots.vue";
 import WithSelfInterface from "$/card-game/layers/self/with-self-interface.vue";
 import type { Card } from "@durak-game/durak-dts";
 import SelfDeck from "$/card-game/layers/self/SelfDeck.vue";
 import WithSelfAllowedMessageHint from "$/card-game/layers/self/as-allowed/with-self-allowed-message-hint.vue";
 import SelfStopAllowedActionButton from "$/card-game/layers/self/as-allowed/self-stop-allowed-action-button.vue";
+import GameDeskSlot from "$/card-game/layers/desk/GameDeskSlot.vue";
 
 const props = defineProps<{
   id: string;
@@ -88,7 +96,7 @@ provide(
   computed(() => self.cards),
 );
 
-const slots = ref(Array.from({ length: 6 }, () => ({})));
+const slots = ref(Array.from({ length: 6 }, () => ({ })));
 
 provide(
   "deskSlotKeys",

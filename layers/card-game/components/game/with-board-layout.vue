@@ -11,7 +11,7 @@
       class="col-start-1 row-start-1"
     />
     <slot
-      name="desk"
+      name="slots"
       class="col-span-full row-start-2 lg:col-span-1 lg:col-start-2 lg:row-start-1"
     />
   </div>
@@ -22,6 +22,6 @@ import type { Slot } from "vue";
 defineSlots<{
   discard: Slot<{ class: string }>;
   talon: Slot<{ class: string }>
-  desk: Slot<{ class: string }>
+  slots: Slot<{ class: string }>
 }>();
 </script>
