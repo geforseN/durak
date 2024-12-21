@@ -51,7 +51,12 @@
     </with-enemies-by-sides>
     <with-self-interface>
       <template #top>
-        <self-allowed-interface v-show="self.isAllowed" />
+        <with-self-allowed-message-hint v-if="allowed && isSelfAllowed">
+          <self-stop-allowed-action-button
+            :action="allowed.action"
+            @click="() => {/* TODO: stop move */}"
+          />
+        </with-self-allowed-message-hint>
       </template>
       <template #deck>
         <self-deck :cards="self.cards" />
@@ -70,14 +75,27 @@ import GameDesk from "$/card-game/layers/desk/GameDesk.vue";
 import WithSelfInterface from "$/card-game/layers/self/with-self-interface.vue";
 import type { Card } from "@durak-game/durak-dts";
 import SelfDeck from "$/card-game/layers/self/SelfDeck.vue";
-import SelfAllowedInterface from "$/card-game/layers/self/SelfAllowedInterface.vue";
+import WithSelfAllowedMessageHint from "$/card-game/layers/self/as-allowed/with-self-allowed-message-hint.vue";
+import SelfStopAllowedActionButton from "$/card-game/layers/self/as-allowed/self-stop-allowed-action-button.vue";
 
 const props = defineProps<{
   id: string;
 }>();
 
+const allowed = ref<
+  | {
+      playerId: string;
+      action: "attack" | "defend" | "smash";
+      // TODO: time
+    }
+  | undefined
+>({
+  playerId: "fgh",
+  action: "attack",
+});
+
 const self = {
-  isAllowed: true,
+  id: "fgh",
   cards: [
     { rank: "K", suit: "♥" },
     { rank: "7", suit: "♠" },
@@ -87,6 +105,8 @@ const self = {
     { rank: "K", suit: "♣" },
   ] satisfies Card[],
 };
+
+const isSelfAllowed = computed(() => self.id === allowed.value?.playerId);
 
 const slots = ref(Array.from({ length: 6 }, () => ({})));
 

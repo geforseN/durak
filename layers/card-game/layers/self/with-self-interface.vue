@@ -1,5 +1,5 @@
 <template>
-  <div class="flex w-full max-w-5xl flex-col">
+  <div class="flex w-full max-w-5xl flex-col gap-2 items-center">
     <slot name="top" />
     <slot name="deck" />
   </div>
