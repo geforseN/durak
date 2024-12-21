@@ -26,31 +26,24 @@
         class="absolute z-10 translate-x-2.5 xxs:translate-x-3 lg:translate-x-3.5"
       />
     </div>
-    <with-slot-focus>
-      <div
-        v-for="(card, cardIndex) of selfCards"
-        :key="`${card.rank}${card.suit}`"
-      >
-        <!-- TODO: implement keyboard listener that will put card on desk when correct keys are pressed -->
-        <!-- NOTE: when more than 9 cards instead of just digit  -->
-        <!-- then must use letter => A1, A2, ..., B2 -->
-        <!-- OR use key modifier => Shift, Control -->
-        <!-- must show it to user -->
-        <span class="text-sm">{{ cardIndex + 1 }}</span>
-        <mini-card v-bind="card" />
-      </div>
-    </with-slot-focus>
+    <!-- TODO: implement keyboard listener that will put card on desk when correct keys are pressed -->
+    <!-- NOTE: when more than 9 cards instead of just digit  -->
+    <!-- then must use letter => A1, A2, ..., B2 -->
+    <!-- OR use key modifier => Shift, Control -->
+    <!-- must show it to user -->
   </with-slot-drag-and-drop>
 </template>
 <script setup lang="ts">
-import { type ComputedRef } from "vue";
-import WithSlotFocus from "./with-game-desk-slot-focus.vue";
 import WithSlotDragAndDrop from "./with-game-desk-slot-drag-and-drop.vue";
-import GameCard from "$/card-game/layers/card/game-card.vue";
-import MiniCard from "$/card-game/layers/card/mini-card.vue";
-import type { Card } from "$/card-game/types";
 import { makeDropOnDeskEvent } from "$/card-game/events/self.card.drop-on-desk";
-import { injectOrThrow } from "@/utils/vue/inject-or-throw";
+import GameCard from "$/card-game/layers/card/game-card.vue";
+import type { Card } from "$/card-game/types";
+
+const props = defineProps<{
+  attackCard?: Card;
+  defendCard?: Card;
+  index: number;
+}>();
 
 function onDrop(event: DragEvent) {
   try {
@@ -75,12 +68,4 @@ function onDrop(event: DragEvent) {
     return;
   }
 }
-
-const selfCards = injectOrThrow<ComputedRef<Card[]>>("selfCards");
-
-const props = defineProps<{
-  attackCard?: Card;
-  defendCard?: Card;
-  index: number;
-}>();
 </script>
