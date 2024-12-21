@@ -2,22 +2,19 @@
   <div
     class="grid grid-flow-row grid-cols-2 justify-items-center xs:grid-cols-3"
   >
-    <template
-      v-for="slot of slots_"
-      :key="slot.index"
-    >
-      <game-desk-slot
-        v-bind="slot"
-      />
-    </template>
+    <game-desk-slot
+      v-for="(slot, index) of slots"
+      v-bind="slot"
+      :key="index"
+      :index
+    />
   </div>
 </template>
 <script setup lang="ts">
-import { computed } from "vue";
 import type { Card } from "@durak-game/durak-dts";
 import GameDeskSlot from "$/card-game/components/game/GameDeskSlot.vue";
 
-const props = defineProps<{
+defineProps<{
   slots: {
     attackCard?: Card;
     defendCard?: Card;
@@ -25,10 +22,6 @@ const props = defineProps<{
 }>();
 
 defineEmits<{
-  slotDrop: [slotIndex: number]
-}>()
-
-const slots_ = computed(() =>
-  props.slots.map((slot, index) => ({ ...slot, index })),
-);
+  slotDrop: [slotIndex: number];
+}>();
 </script>
