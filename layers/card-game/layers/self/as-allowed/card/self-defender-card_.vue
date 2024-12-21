@@ -15,7 +15,7 @@
 <!-- NOTE: this component must be used when self is defender -->
 <script setup lang="ts">
 import { computed, useTemplateRef } from "vue";
-import SelfBaseCard, { type SelfBaseCardProps } from "./self-base-card.vue";
+import SelfBaseCard, { type SelfBaseCardProps } from "../../card/self-base-card.vue";
 import { powerOfCard } from "$/card-game/utils/card/powers";
 import type { Card } from "@durak-game/durak-dts";
 

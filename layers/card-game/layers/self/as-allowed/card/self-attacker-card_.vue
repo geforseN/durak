@@ -9,7 +9,7 @@
 <!-- NOTE: this component must be used when self is attacker -->
 <script setup lang="ts">
 import { computed, useTemplateRef } from "vue";
-import SelfBaseCard, { type SelfBaseCardProps } from "./self-base-card.vue";
+import SelfBaseCard, { type SelfBaseCardProps } from "../../card/self-base-card.vue";
 // import { injectOrThrow } from "@/utils/vue/inject-or-throw";
 import type { Rank } from "@durak-game/durak-dts";
 

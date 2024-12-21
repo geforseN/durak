@@ -59,8 +59,8 @@ import { computed, useTemplateRef } from "vue";
 import SelfCardWithKeyupListener from "./self-card-with-keyup-listener.vue";
 import SelfCardWithFocus from "./self-card-with-focus.vue";
 import type { Card } from "@durak-game/durak-dts";
-import SelfAttackerCard from "./self-attacker-card_.vue";
-import SelfDefenderCard_ from "./self-defender-card_.vue";
+import SelfAttackerCard from "../as-allowed/card/self-attacker-card_.vue";
+import SelfDefenderCard_ from "../as-allowed/card/self-defender-card_.vue";
 import SelfBaseCard from "./self-base-card.vue";
 
 const cardRef = useTemplateRef("card");
