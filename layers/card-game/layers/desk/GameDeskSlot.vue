@@ -38,13 +38,14 @@ import WithSlotDragAndDrop from "./with-game-desk-slot-drag-and-drop.vue";
 import { makeDropOnDeskEvent } from "$/card-game/events/self.card.drop-on-desk";
 import GameCard from "$/card-game/layers/card/game-card.vue";
 import type { Card } from "$/card-game/types";
+import type { DeskSlot } from "@durak-game/durak-dts";
 
-const { index } = defineProps<{
-  attackCard?: Card;
-  defendCard?: Card;
-  index: number;
-  number: number;
-}>();
+const { index } = defineProps<
+  DeskSlot & {
+    index: number;
+    number: number;
+  }
+>();
 
 function onCardDrop(event: DragEvent, card: Card) {
   try {
