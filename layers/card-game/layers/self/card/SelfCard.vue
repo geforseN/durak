@@ -4,23 +4,32 @@
     draggable
     @dragstart="ondragstart"
   >
-    <component
-      :is="
-        self.isAttacker
-          ? SelfAttackerCard
-          : self.isDefender
-            ? SelfDefenderCard_
-            : SelfBaseCard
-      "
-      ref="card"
-      v-bind="{
-        id,
-        isFocused,
-        isTrump,
-        rank,
-        suit,
-      }"
-    />
+    <template v-if="self.isAttacker">
+      <SelfAttackerCard
+        :id
+        ref="card"
+        :is-focused
+        :rank
+        :suit
+      />
+    </template>
+    <template v-else-if="self.isDefender">
+      <SelfDefenderCard
+        :id
+        ref="card"
+        :is-focused
+        :rank
+        :suit
+        :is-trump
+      />
+    </template>
+    <template v-else>
+      <SelfBaseCard
+        :id
+        ref="card"
+        :is-focused
+      />
+    </template>
   </self-card-with-focus>
 </template>
 <script lang="ts">
@@ -48,7 +57,7 @@ import { computed, useTemplateRef } from "vue";
 import SelfCardWithFocus from "./self-card-with-focus.vue";
 import type { Card } from "@durak-game/durak-dts";
 import SelfAttackerCard from "../as-allowed/card/self-attacker-card_.vue";
-import SelfDefenderCard_ from "../as-allowed/card/self-defender-card_.vue";
+import SelfDefenderCard from "../as-allowed/card/self-defender-card_.vue";
 import SelfBaseCard from "./self-base-card.vue";
 
 const cardRef = useTemplateRef("card");
