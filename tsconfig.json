@@ -11,8 +11,7 @@
   ],
   "compilerOptions": {
     "lib": [
-      "es2022",
-      "ES2023",
+      "ESNext",
       "DOM"
     ],
     "baseUrl": ".",
