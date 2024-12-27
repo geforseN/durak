@@ -6,7 +6,7 @@
     />
     <game-card
       v-bind="trumpCard"
-      class="absolute top-0 rotate-90"
+      class="absolute top-0 rotate-[270deg]"
       :class="isEmpty && 'opacity-30'"
     />
   </div>

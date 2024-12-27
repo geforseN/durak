@@ -3,8 +3,11 @@
     :style="{
       backgroundImage: `url(https://deckofcardsapi.com/static/img/${id}.png)`,
     }"
-    class="h-[77px] w-[55px] rounded border-2 border-black bg-black bg-cover xxs:h-[96px] xxs:w-[69px] md:h-[105px] md:w-[75px] lg:h-[127px] lg:w-[91px]"
-  />
+    class="h-[77px] w-[55px] rounded border-base-content bg-base-100 bg-cover text-base-content xxs:h-[96px] xxs:w-[69px] md:h-[105px] md:w-[75px] lg:h-[127px] lg:w-[91px]"
+  >
+    {{ suit }}
+    {{ rank }}
+  </div>
 </template>
 <script setup lang="ts">
 import { computed } from "vue";
