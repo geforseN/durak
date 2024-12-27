@@ -1,10 +1,10 @@
 <template>
   <div
-    class="flex w-full max-w-5xl justify-center rounded border-2 border-neutral-900 bg-neutral p-2"
+    class="flex w-3/4 max-w-5xl justify-center rounded border-2 border-neutral-900 bg-neutral p-2 text-neutral-content"
   >
     <div
       v-if="isEmpty"
-      class="text-white"
+      class="text-center"
     >
       У вас нет карт!
     </div>
@@ -12,9 +12,8 @@
       v-else
       class="grid max-w-xl auto-cols-fr grid-flow-col justify-center"
     >
-      <self-card
+      <slot
         v-for="card of cards"
-        :key="card.id"
         v-bind="card"
       />
     </div>
@@ -22,13 +21,21 @@
 </template>
 <!-- FIXME: i18n -->
 <script setup lang="ts">
-import SelfCard from "$/card-game/layers/self/card/SelfCard.vue";
 import { makeCardId } from "$/card-game/utils/card/make-card-id";
 import type { Card } from "@durak-game/durak-dts";
-import { computed } from "vue";
+import { computed, type Slot } from "vue";
 
 const props = defineProps<{
   cards: Card[];
+}>();
+
+defineSlots<{
+  default: Slot<
+    Card & {
+      id: string;
+      index: number;
+    }
+  >;
 }>();
 
 const isEmpty = computed(() => props.cards.length === 0);

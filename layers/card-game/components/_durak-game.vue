@@ -22,7 +22,18 @@
             :class="_props.class"
             #="deskSlot"
           >
-            <game-desk-slot v-bind="deskSlot" />
+            <with-game-desk-slot-drag-and-drop
+              #="_props"
+              class="relative rounded-lg bg-neutral text-neutral-content"
+              @card-drop="
+                (event, card) => onCardDrop(event, card, deskSlot.index)
+              "
+            >
+              <game-desk-slot
+                :class="_props.class"
+                v-bind="deskSlot"
+              />
+            </with-game-desk-slot-drag-and-drop>
           </with-game-desk-slots>
         </template>
       </with-board-layout>
@@ -41,137 +52,52 @@
         </with-self-allowed-message-hint>
       </template>
       <template #deck>
-        <self-deck :cards="self.cards" />
+        <with-self-deck-backdrop
+          :cards="self.cards"
+          #="card"
+        >
+          <self-base-card v-bind="{ ...card, isFocused: false }" />
+        </with-self-deck-backdrop>
       </template>
     </with-self-interface>
   </main>
 </template>
 <script setup lang="ts">
-import * as v from "valibot";
-import { computed, provide, ref } from "vue";
+import type { Card, Enemy, DeskSlot } from "@durak-game/durak-dts";
 import WithEnemiesBySides from "$/card-game/layers/enemy/with-enemies-by-sides.vue";
 import WithBoardLayout from "$/card-game/components/game/with-board-layout.vue";
 import GameDiscard from "$/card-game/components/game/GameDiscard.vue";
-import GameTalon from "$/card-game/components/game/GameTalon.vue";
 import WithGameDeskSlots from "$/card-game/layers/desk/with-game-desk-slots.vue";
 import WithSelfInterface from "$/card-game/layers/self/with-self-interface.vue";
-import type { Card } from "@durak-game/durak-dts";
-import SelfDeck from "$/card-game/layers/self/SelfDeck.vue";
+import WithSelfDeckBackdrop from "$/card-game/layers/self/with-self-deck-backdrop.vue";
 import WithSelfAllowedMessageHint from "$/card-game/layers/self/as-allowed/with-self-allowed-message-hint.vue";
+import WithGameDeskSlotDragAndDrop from "$/card-game/layers/desk/with-game-desk-slot-drag-and-drop.vue";
 import SelfStopAllowedActionButton from "$/card-game/layers/self/as-allowed/self-stop-allowed-action-button.vue";
 import GameDeskSlot from "$/card-game/layers/desk/GameDeskSlot.vue";
+import SelfBaseCard from "$/card-game/layers/self/card/self-base-card.vue";
+import GameTalon from "$/card-game/components/game/GameTalon.vue";
 
-const props = defineProps<{
-  id: string;
+defineProps<{
+  enemiesBySides: {
+    [k in "top" | "left" | "right"]: Enemy[];
+  };
+  discard: {
+    isEmpty: boolean;
+  };
+  talon: {
+    isEmpty: boolean;
+    hasOneCard: boolean;
+    trumpCard: Card;
+  };
+  slots: DeskSlot[];
+  self: {
+    cards: Card[];
+  };
+  isSelfAllowed: boolean;
+  allowed?: {
+    playerId: string;
+    action: "attack" | "defend" | "smash";
+  };
+  onCardDrop: (event: DragEvent, card: Card, slotIndex: number) => void;
 }>();
-
-const allowed = ref<
-  | {
-      playerId: string;
-      action: "attack" | "defend" | "smash";
-      // TODO: time
-    }
-  | undefined
->({
-  playerId: "fgh",
-  action: "attack",
-});
-
-const self = {
-  id: "fgh",
-  cards: [
-    { rank: "K", suit: "♥" },
-    { rank: "7", suit: "♠" },
-    { rank: "9", suit: "♦" },
-    { rank: "J", suit: "♠" },
-    { rank: "A", suit: "♠" },
-    { rank: "K", suit: "♣" },
-  ] satisfies Card[],
-};
-
-const isSelfAllowed = computed(() => self.id === allowed.value?.playerId);
-
-provide(
-  "selfCards",
-  computed(() => self.cards),
-);
-
-const slots = ref(Array.from({ length: 6 }, () => ({ })));
-
-provide(
-  "deskSlotKeys",
-  computed(() => Array.from(slots.value).map((_, index) => index + 1)),
-);
-
-const talon = {
-  isEmpty: false,
-  hasOneCard: false,
-  trumpCard: {
-    rank: "10",
-    suit: "♠",
-  } as const,
-};
-
-const discard = {
-  isEmpty: false,
-};
-
-const enemiesBySides = {
-  top: [
-    {
-      cardCount: 6,
-      id: "asd",
-      isAllowedToMove: false,
-      kind: "Defender",
-      info: {
-        id: "asd",
-        isAdmin: false,
-        profile: {
-          connectStatus: "ONLINE",
-          nickname: "Anon",
-          personalLink: "link-asd",
-          photoUrl:
-            "https://cdn.7tv.app/emote/01GB9W6V0000098BZVD7GKTW0F/4x.avif",
-          userId: "asd",
-        },
-      },
-    } as const,
-  ],
-  left: [],
-  right: [],
-};
-
-////////////////////////////////////////////////////////
-
-const cardSchema = v.object({
-  rank: v.string(),
-  suit: v.string(),
-});
-
-const eventDetailSchema = v.object({
-  slotIndex: v.pipe(
-    v.number(),
-    v.integer(),
-    v.minValue(0),
-    v.check((v) => v < slots.value.length),
-  ),
-  card: cardSchema,
-});
-
-document.addEventListener("drop-on-desk", (event) => {
-  if (!(event instanceof CustomEvent)) {
-    throw new Error("Event is not instance of CustomEvent");
-  }
-  try {
-    const { card, slotIndex } = v.parse(eventDetailSchema, event.detail);
-    const slot = slots.value[slotIndex];
-    if (!("attackCard" in slot)) {
-      slot.attackCard = card;
-    } else if (!("defendCard" in slot)) {
-      slot.defendCard = card;
-    }
-  } catch (error) {
-    console.error("Invalid event detail:", error);
-  }
-});
 </script>

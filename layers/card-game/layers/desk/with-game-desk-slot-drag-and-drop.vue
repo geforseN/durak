@@ -19,7 +19,14 @@
     "
     @drop.prevent="onDrop"
   >
-    <slot :type />
+    <slot
+      :type
+      :class="
+        type === 'dragenter'
+          ? 'border border-accent'
+          : 'border border-primary'
+      "
+    />
   </div>
 </template>
 <script lang="ts" setup>
@@ -35,7 +42,10 @@ const emit = defineEmits<{
 }>();
 
 defineSlots<{
-  default: Slot<{ type: DragAndDropType | undefined }>;
+  default: Slot<{ 
+    type: DragAndDropType | undefined,
+    class: string
+  }>;
 }>();
 
 
