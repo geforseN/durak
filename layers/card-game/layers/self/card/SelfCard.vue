@@ -27,6 +27,8 @@
       <SelfBaseCard
         :id
         ref="card"
+        :rank
+        :suit
         :is-focused
       />
     </template>
@@ -59,6 +61,12 @@ import type { Card } from "@durak-game/durak-dts";
 import SelfAttackerCard from "../as-allowed/card/self-attacker-card_.vue";
 import SelfDefenderCard from "../as-allowed/card/self-defender-card_.vue";
 import SelfBaseCard from "./self-base-card.vue";
+
+const Components = {
+  attacker: SelfAttackerCard,
+  defender: SelfDefenderCard,
+  base: SelfBaseCard,
+}
 
 const cardRef = useTemplateRef("card");
 const self = {

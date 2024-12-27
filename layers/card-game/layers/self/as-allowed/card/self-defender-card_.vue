@@ -1,7 +1,7 @@
 <template>
   <self-base-card
     ref="selfBaseCard"
-    v-bind="baseCardProps"
+    v-bind="{ ...props, suit, rank }"
     class="border-blue-600"
     :class="[
       canBeUsedForDefense && isTrump

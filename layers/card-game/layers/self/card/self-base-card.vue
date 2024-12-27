@@ -6,17 +6,22 @@
     }"
     :class="
       twMerge(
-        'h-[116px] w-[83px] rounded border border-black bg-black bg-cover outline outline-4 outline-offset-2 outline-green-500',
+        'h-[116px] w-[83px] rounded border border-base-content bg-base-100 bg-cover text-base-content',
         isFocused && '-translate-y-10 transition-all ease-out',
       )
     "
-  />
+  >
+    {{ suit }}
+    {{ rank }}
+  </div>
 </template>
 <script lang="ts">
-export interface SelfBaseCardProps {
+import type { Card } from "@durak-game/durak-dts";
+
+export type SelfBaseCardProps = Card & {
   id: string;
   isFocused: boolean;
-}
+};
 </script>
 <script setup lang="ts">
 import { twMerge } from "tailwind-merge";
