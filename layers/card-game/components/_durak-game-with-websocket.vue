@@ -1,38 +1,112 @@
 <template>
-  <!-- <DurakGame>
-      <template #talon>
-        <GameTalon />
-      </template>
-    </DurakGame> -->
-  <pre>
+  <div v-if="!isLoading && gameState">
+    <durak-game
+      :discard="gameState.discard"
+      :self="gameState.self"
+      :talon="gameState.talon"
+      :enemies-by-sides="{
+        top: gameState.enemies.map(
+          (enemy) =>
+            ({
+              id: enemy.id,
+              cardCount: enemy.cardCount,
+              info: enemy.info,
+              isAllowedToMove: enemy.isAllowedToMove,
+              kind: enemy.kind,
+            }) satisfies Enemy,
+        ),
+        left: [],
+        right: [],
+      }"
+      :slots="gameState.desk.slots"
+      :allowed="undefined"
+      :is-self-allowed="false"
+      @card-drop="onCardDrop"
+    />
+    <pre>
     {{ gameId }}
     <JsonViewer
-      v-if="data"
-      :data
+      :data="gameState"
     />
   </pre>
+  </div>
 </template>
 <script setup lang="ts">
-// import DurakGame from "./_durak-game.vue";
-// import GameTalon from "$/card-game/components/game/GameTalon.vue";
-// import { useNoCardCountTalon } from "$/card-game/composable/talon/useNoCardCountTalon";
+import { computed, provide, ref } from "vue";
+import type { Card } from "@durak-game/durak-dts";
 import JsonViewer from "./json-viewer.vue";
 import { useWebSocket } from "@vueuse/core";
-import { ref } from "vue";
-
+import DurakGame from "./_durak-game.vue";
+import type { GameRestoreStateEventPayload } from "../../../server/src/utils/durak-game-state-restore-schema";
+import type { Enemy } from "@durak-game/durak-dts";
 const { gameId } = defineProps<{
   gameId: string;
 }>();
 
-// const socket = makeDurakGameSocket(gameId);
-const data = ref();
-// const asyncGameState = Promise.withResolvers<GameState>();
+const isLoading = ref(true);
+const gameState = ref<GameRestoreStateEventPayload>();
+
 useWebSocket(`ws://localhost:10000/games/${gameId}`, {
-  onMessage(ws, event) {
+  onMessage(_ws, event) {
     console.log(event);
-    data.value = JSON.parse(event.data);
+    let json: { event: string; payload: object };
+    try {
+      json = JSON.parse(event.data);
+      if (!json || typeof json !== "object") {
+        throw new TypeError("WebSocket event data is not an object");
+      }
+      if (!("event" in json) || typeof json.event !== "string") {
+        throw new Error(
+          "WebSocket event data does not have 'event' string property",
+        );
+      }
+      if (!("payload" in json) || typeof json.payload !== "object") {
+        throw new Error(
+          "WebSocket event data does not have 'payload' object property",
+        );
+      }
+    } catch {
+      return;
+    }
+    if (json.event === "game::state::restore") {
+      isLoading.value = false;
+      gameState.value = json.payload as GameRestoreStateEventPayload;
+    }
   },
 });
+
+provide(
+  "selfCards",
+  computed(() => (gameState.value ? gameState.value.self.cards : [])),
+);
+
+provide(
+  "deskSlotKeys",
+  computed(() =>
+    gameState.value
+      ? Array.from(gameState.value.desk.slots).map((slot) => slot.index + 1)
+      : [],
+  ),
+);
+
+function onCardDrop(_: DragEvent, card: Card, slotIndex: number) {
+  if (!gameState.value) {
+    throw new Error("No game state");
+  }
+  try {
+    const slot = gameState.value.desk.slots[slotIndex];
+    // TODO: use below code for optimistic update
+    // TODO: send websocket event, on error rollback
+    if (!("attackCard" in slot)) {
+      slot.attackCard = card;
+    } else if (!("defendCard" in slot)) {
+      slot.defendCard = card;
+    }
+  } catch (reason) {
+    console.error("onCard error", { reason });
+    return;
+  }
+}
 
 // socket.on("connect_error", (err) => {
 //   // the reason of the error, for example "xhr poll error"
