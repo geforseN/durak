@@ -19,7 +19,7 @@ export const useUserStore = defineStore("user", () => {
   );
 
   const goToGame = async ({ gameId }: { gameId: string }) => {
-    const path = `/game/${gameId}`;
+    const path = `/games/${gameId}`;
     try {
       await router.replace({ path });
       // TODO remove code here, add methods for lobby|game state
