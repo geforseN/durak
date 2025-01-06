@@ -46,31 +46,12 @@ const { gameId } = defineProps<{
 const isLoading = ref(true);
 const gameState = ref<GameRestoreStateEventPayload>();
 
-useWebSocket(`ws://localhost:10000/games/${gameId}`, {
+const websocket = useWebSocket(`ws://localhost:10000/games/${gameId}`, {
   onMessage(_ws, event) {
-    console.log(event);
-    let json: { event: string; payload: object };
-    try {
-      json = JSON.parse(event.data);
-      if (!json || typeof json !== "object") {
-        throw new TypeError("WebSocket event data is not an object");
-      }
-      if (!("event" in json) || typeof json.event !== "string") {
-        throw new Error(
-          "WebSocket event data does not have 'event' string property",
-        );
-      }
-      if (!("payload" in json) || typeof json.payload !== "object") {
-        throw new Error(
-          "WebSocket event data does not have 'payload' object property",
-        );
-      }
-    } catch {
-      return;
-    }
-    if (json.event === "game::state::restore") {
+    const data = parseWebSocketEventData(event.data);
+    if (data.event === "game::state::restore") {
       isLoading.value = false;
-      gameState.value = json.payload as GameRestoreStateEventPayload;
+      gameState.value = data.payload as GameRestoreStateEventPayload;
     }
   },
 });
@@ -94,6 +75,15 @@ function onCardDrop(_: DragEvent, card: Card, slotIndex: number) {
     throw new Error("No game state");
   }
   try {
+    websocket.send(
+      JSON.stringify({
+        event: "game::card::drop",
+        payload: {
+          card,
+          slotIndex,
+        },
+      }),
+    );
     const slot = gameState.value.desk.slots[slotIndex];
     // TODO: use below code for optimistic update
     // TODO: send websocket event, on error rollback

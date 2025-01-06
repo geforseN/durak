@@ -53,10 +53,13 @@
       </template>
       <template #deck>
         <with-self-deck-backdrop
+          :trump-suit="talon.trumpCard.suit"  
           :cards="self.cards"
           #="card"
         >
-          <self-base-card v-bind="{ ...card, isFocused: false }" />
+          <self-card
+            v-bind="card"
+          />
         </with-self-deck-backdrop>
       </template>
     </with-self-interface>
@@ -74,7 +77,7 @@ import WithSelfAllowedMessageHint from "$/card-game/layers/self/as-allowed/with-
 import WithGameDeskSlotDragAndDrop from "$/card-game/layers/desk/with-game-desk-slot-drag-and-drop.vue";
 import SelfStopAllowedActionButton from "$/card-game/layers/self/as-allowed/self-stop-allowed-action-button.vue";
 import GameDeskSlot from "$/card-game/layers/desk/GameDeskSlot.vue";
-import SelfBaseCard from "$/card-game/layers/self/card/self-base-card.vue";
+import SelfCard from "../layers/self/card/SelfCard.vue";
 import GameTalon from "$/card-game/components/game/GameTalon.vue";
 
 defineProps<{
