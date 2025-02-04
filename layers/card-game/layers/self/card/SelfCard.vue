@@ -41,6 +41,7 @@ import type { Card } from "@durak-game/durak-dts";
 import SelfAttackerCard from "../as-allowed/card/self-attacker-card_.vue";
 import SelfDefenderCard from "../as-allowed/card/self-defender-card_.vue";
 import SelfBaseCard from "./self-base-card.vue";
+import { injectOrThrow } from "@/utils/vue/inject-or-throw";
 
 const cardRef = useTemplateRef("card");
 
@@ -51,6 +52,10 @@ const { rank, suit } = defineProps<
     isTrump: boolean;
   }
 >();
+
+const self = injectOrThrow<{ isDefender: boolean; isAttacker: boolean }>(
+  "self",
+);
 
 function onDragStart(event: DragEvent) {
   const cardElement = cardRef.value?.element;
