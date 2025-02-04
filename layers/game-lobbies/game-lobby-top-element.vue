@@ -26,7 +26,7 @@
       class="btn btn-sm border-2 border-black bg-info text-black hover:bg-info hover:saturate-[1.3]"
       @click="emit('startGame')"
     >
-      Начать игру
+      Start the Game
     </button>
     <button
       v-if="

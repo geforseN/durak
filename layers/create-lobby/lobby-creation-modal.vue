@@ -57,7 +57,7 @@
             }
           "
         >
-          Создать комнату
+          Create Lobby
         </button>
       </form>
       <button
