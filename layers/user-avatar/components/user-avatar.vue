@@ -1,6 +1,7 @@
 <template>
   <!-- prettier-ignore -->
   <img
+    data-testid="user-avatar"
     :width="size === 'small' ? 36 : 48"
     :height="size === 'small' ? 36 : 48"
     :src="user.profile.photoUrl"
