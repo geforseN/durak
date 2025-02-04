@@ -1,5 +1,17 @@
 <template>
-  <div v-if="!isLoading && gameState">
+  <div
+    v-if="isLoading"
+    data-testid="durak-game-loading-skeleton"
+    :class="
+      isLoading &&
+        'flex h-[92.5dvh] w-full animate-pulse items-center justify-center bg-base-300'
+    "
+  >
+    <div
+      class="size-12 animate-spin rounded-full border-2 border-dashed border-base-content bg-base-100"
+    />
+  </div>
+  <div v-else-if="gameState">
     <durak-game
       :discard="gameState.discard"
       :self="gameState.self"
@@ -24,6 +36,7 @@
       @card-drop="onCardDrop"
     />
     <pre>
+    <div class="h-8" />
     {{ gameId }}
     <JsonViewer
       :data="gameState"
@@ -38,7 +51,10 @@ import JsonViewer from "./json-viewer.vue";
 import { useWebSocket } from "@vueuse/core";
 import DurakGame from "./_durak-game.vue";
 import type { GameRestoreStateEventPayload } from "../../../server/src/utils/durak-game-state-restore-schema";
+import { parseWebSocketEventData } from "../../../shared/src/websocket";
+
 import type { Enemy } from "@durak-game/durak-dts";
+
 const { gameId } = defineProps<{
   gameId: string;
 }>();
@@ -69,6 +85,11 @@ provide(
       : [],
   ),
 );
+
+provide("self", {
+  isDefender: false,
+  isAttacker: false,
+});
 
 function onCardDrop(_: DragEvent, card: Card, slotIndex: number) {
   if (!gameState.value) {
