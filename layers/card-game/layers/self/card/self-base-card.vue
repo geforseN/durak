@@ -1,6 +1,7 @@
 <template>
   <div
     ref="element"
+    aria-label="game-card"
     :style="{
       backgroundImage: `url(https://deckofcardsapi.com/static/img/${id}.png)`,
     }"
