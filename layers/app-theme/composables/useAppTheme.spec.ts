@@ -4,7 +4,7 @@ import { setActivePinia, createPinia } from "pinia";
 import { createApp } from "vue";
 import * as useAppThemeModule from "./useAppTheme";
 import App from "@/App.vue";
-import { router } from "@/router/index.ts";
+import router from "@/router/index.ts";
 
 test("useAppTheme is called once on App mount", () => {
   const useAppTheme = vi.spyOn(useAppThemeModule, "useAppTheme");

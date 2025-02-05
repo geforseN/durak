@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { routes, handleHotUpdate } from "vue-router/auto-routes";
 
-export const router = createRouter({
+const router = createRouter({
   history: createWebHistory(),
   strict: false,
   routes,
