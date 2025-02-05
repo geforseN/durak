@@ -3,7 +3,7 @@ import {
   createWebHistory,
   type RouteRecordRaw,
 } from "vue-router";
-import Index from "@/views/index-page.vue";
+import Index from "@/routes/index.vue";
 
 // TODO
 // https://habr.com/ru/company/ru_mts/blog/645439/
@@ -20,7 +20,7 @@ const routes = [
   {
     path: "/profile/:personalLink/",
     name: "user-profile",
-    component: () => import("../views/user-profile.vue"),
+    component: () => import("@/routes/profile/[personalLink].vue"),
   },
   {
     path: "/games/:gameId/",

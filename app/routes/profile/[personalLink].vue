@@ -10,7 +10,6 @@
     </template>
   </Suspense>
 </template>
-
 <script setup lang="ts">
 import UserProfile from "@/components/user-profile.vue";
 </script>

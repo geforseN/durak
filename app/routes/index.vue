@@ -6,7 +6,6 @@
     <game-lobbies class="w-full sm:w-auto" />
   </div>
 </template>
-
 <script setup lang="ts">
 import GameLobbies from "$/game-lobbies/game-lobbies.vue";
 import GlobalChat from "$/global-chat/global-chat.vue";
