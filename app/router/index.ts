@@ -5,12 +5,6 @@ import {
 } from "vue-router";
 import Index from "@/routes/index.vue";
 
-// TODO
-// https://habr.com/ru/company/ru_mts/blog/645439/
-// https://webliberty.ru/oauth/
-// https://habr.com/ru/post/491116/
-// https://github.com/TomDoesTech/Google-OAuth-NodeJS
-
 const routes = [
   {
     path: "/",
