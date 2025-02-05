@@ -1,3 +1,4 @@
+import { requireEnv } from "@@/env-utils";
 import { assertIsObject, assertIsString } from "@/utils/type-assert";
 import {
   useWebSocket as _useWebSocket,
@@ -49,19 +50,17 @@ export function dispatchMessage(
     handleError(error);
   }
 }
-
-const WS_BASE = import.meta.env.VITE_SERVER_WS_BASE;
+export const basePath = requireEnv("VITE_SERVER_WS_BASE", import.meta.env);
 
 function withWebSocketBasePath(string: string) {
-  return WS_BASE + string.startsWith("/") ? string : "/" + string;
+  const path = string.startsWith("/") ? string : "/" + string;
+  return basePath + path;
 }
 
 export function useWebSocket(
   url: MaybeRefOrGetter<string>,
   options?: UseWebSocketOptions,
 ): UseWebSocketReturn<unknown> {
-  const url_ = computed(() =>
-    withWebSocketBasePath(toValue(url)),
-  );
+  const url_ = computed(() => withWebSocketBasePath(toValue(url)));
   return _useWebSocket(url_, options);
 }
