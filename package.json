@@ -53,7 +53,6 @@
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "0.7.0",
     "autoprefixer": "^10.4.15",
-    "concurrently": "^9.1.0",
     "dotenv": "^16.3.1",
     "eslint": "^9.19.0",
     "eslint-config-prettier": "^10.0.1",
