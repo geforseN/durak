@@ -20,32 +20,17 @@
     </button>
   </div>
   <template v-else>
-    <button
-      class="btn btn-primary text-xl gap-0.5"
-      @click="lobbyCreationModalRef?.modalRef?.show()"
-    >
-      Create Game
-      <i-material-symbols-light-playing-cards-sharp />
-    </button>
-
-    <teleport to="#app">
-      <lobby-creation-modal
-        ref="lobbyCreationModal"
-        @create-lobby="
-          (settings) => lobbiesStore.ws.emits.createLobby(settings)
-        "
-      />
-    </teleport>
+    <create-game-lobby-button @click="createGameLobbyModal.show()" />
   </template>
 </template>
 <!-- FIXME: i18n -->
 <!-- FIXME: refactor, add responsive -->
 <script lang="ts" setup>
-import { useTemplateRef } from "vue";
-import LobbyCreationModal from "$/create-lobby/lobby-creation-modal.vue";
 import { useLobbiesStore, useUserStore } from "@/stores";
+import CreateGameLobbyButton from "$/create-lobby/create-game-lobby-button.vue";
+import { injectCreateGameLobbyModalOrThrow } from "$/create-lobby/modal/create-game-lobby-modal-provide-inject";
 
-const lobbyCreationModalRef = useTemplateRef("lobbyCreationModal");
+const createGameLobbyModal = injectCreateGameLobbyModalOrThrow();
 
 const userStore = useUserStore();
 const lobbiesStore = useLobbiesStore();

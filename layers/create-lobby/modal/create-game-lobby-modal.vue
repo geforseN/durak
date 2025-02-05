@@ -20,23 +20,23 @@
           </button>
         </form>
       </div>
-      <radio-input-group
+      <LobbyCreationRadioInputGroup
         v-model.number="lobbySettings.state.playerCount"
         name="player-count"
         class="my-2"
         :input-values="lobbySettings.allowedValues.playerCount"
       >
         Количество игроков
-      </radio-input-group>
-      <radio-input-group
+      </LobbyCreationRadioInputGroup>
+      <LobbyCreationRadioInputGroup
         v-model.number="lobbySettings.state.talonCardCount"
         class="my-2"
         name="card-count"
         :input-values="lobbySettings.allowedValues.talonCardCount.value"
       >
         Количество карт
-      </radio-input-group>
-      <select-group
+      </LobbyCreationRadioInputGroup>
+      <LobbyCreationSelect
         id="game-type"
         v-model="lobbySettings.state.gameType"
         class="my-2"
@@ -44,7 +44,7 @@
         :options-dictionary="gameTypesDictionary"
       >
         Тип игры
-      </select-group>
+      </LobbyCreationSelect>
       <form method="dialog">
         <button
           class="btn btn-accent btn-lg h-auto w-full text-3xl"
@@ -82,9 +82,9 @@ import type { InitialGameSettings } from "@durak-game/durak-dts";
 
 import gameTypesDictionary from "@/utils/dictionary/game-types.dictionary";
 
-import useLobbySettings from "./useLobbySettings";
-import RadioInputGroup from "./lobby-creation-radio-input-group.vue";
-import SelectGroup from "./lobby-creation-select.vue";
+import useLobbySettings from "$/create-lobby/useLobbySettings";
+import LobbyCreationRadioInputGroup from "$/create-lobby/lobby-creation-radio-input-group.vue";
+import LobbyCreationSelect from "$/create-lobby/lobby-creation-select.vue";
 
 const lobbySettings = useLobbySettings();
 
@@ -95,5 +95,12 @@ const emit = defineEmits<{
 
 const modalRef = ref<HTMLDialogElement | null>(null);
 
-defineExpose({ modalRef });
+defineExpose({
+  show() {
+    modalRef.value?.show();
+  },
+  close() {
+    modalRef.value?.close();
+  },
+});
 </script>
