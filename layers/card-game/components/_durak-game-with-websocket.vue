@@ -46,14 +46,12 @@
 </template>
 <script setup lang="ts">
 import { computed, provide, ref } from "vue";
-import type { Card } from "@durak-game/durak-dts";
+import type { Card, Enemy } from "@durak-game/durak-dts";
 import JsonViewer from "./json-viewer.vue";
-import { useWebSocket } from "@vueuse/core";
 import DurakGame from "./_durak-game.vue";
-import type { GameRestoreStateEventPayload } from "../../../server/src/utils/durak-game-state-restore-schema";
-import { parseWebSocketEventData } from "../../../shared/src/websocket";
-
-import type { Enemy } from "@durak-game/durak-dts";
+import type { GameRestoreStateEventPayload } from "@@/server/src/utils/durak-game-state-restore-schema";
+import { parseWebSocketEventData } from "@@/shared/src/websocket";
+import { useWebSocket } from "@/api/websocket";
 
 const { gameId } = defineProps<{
   gameId: string;
@@ -62,7 +60,7 @@ const { gameId } = defineProps<{
 const isLoading = ref(true);
 const gameState = ref<GameRestoreStateEventPayload>();
 
-const websocket = useWebSocket(`ws://localhost:10000/games/${gameId}`, {
+const websocket = useWebSocket(`games/${gameId}`, {
   onMessage(_ws, event) {
     const data = parseWebSocketEventData(event.data);
     if (data.event === "game::state::restore") {

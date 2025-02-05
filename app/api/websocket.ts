@@ -1,5 +1,11 @@
 import { assertIsObject, assertIsString } from "@/utils/type-assert";
-
+import {
+  useWebSocket as _useWebSocket,
+  type MaybeRefOrGetter,
+  type UseWebSocketOptions,
+  type UseWebSocketReturn,
+} from "@vueuse/core";
+import { computed, toValue } from "vue";
 export class CustomWebsocketEvent {
   constructor(public eventName: string) {}
   asString() {
@@ -44,4 +50,18 @@ export function dispatchMessage(
   }
 }
 
-export const WS_BASE = import.meta.env.VITE_SERVER_WS_BASE;
+const WS_BASE = import.meta.env.VITE_SERVER_WS_BASE;
+
+function withWebSocketBasePath(string: string) {
+  return WS_BASE + string.startsWith("/") ? string : "/" + string;
+}
+
+export function useWebSocket(
+  url: MaybeRefOrGetter<string>,
+  options?: UseWebSocketOptions,
+): UseWebSocketReturn<unknown> {
+  const url_ = computed(() =>
+    withWebSocketBasePath(toValue(url)),
+  );
+  return _useWebSocket(url_, options);
+}
