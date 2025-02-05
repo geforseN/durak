@@ -20,7 +20,6 @@
       :size="isSmall ? 'small' : 'medium'"
     />
     <user-avatar-as-link
-      v-if="userStore.user.state"
       :user="userStore.user.state"
       :size="isSmall ? 'small' : 'medium'"
     />
