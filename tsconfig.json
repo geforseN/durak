@@ -3,7 +3,8 @@
   "include": [
     "env.d.ts",
     "app/**/*",
-    "layers/**/*"
+    "layers/**/*",
+    "typed-router.d.ts"
   ],
   "exclude": [
     "node_modules",
@@ -32,6 +33,7 @@
     },
     "types": [
       "unplugin-icons/types/vue",
+      "unplugin-vue-router/client"
     ],
   },
 }
