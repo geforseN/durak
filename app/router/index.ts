@@ -3,7 +3,7 @@ import {
   createWebHistory,
   type RouteRecordRaw,
 } from "vue-router";
-import Index from "@/routes/index.vue";
+import Index from "@/pages/index.vue";
 
 const routes = [
   {
@@ -14,12 +14,12 @@ const routes = [
   {
     path: "/profile/:personalLink/",
     name: "user-profile",
-    component: () => import("@/routes/profile/[personalLink].vue"),
+    component: () => import("@/pages/profile/[personalLink].vue"),
   },
   {
     path: "/games/:gameId/",
     name: "durak-game",
-    component: () => import("@/routes/games/[gameId].vue"),
+    component: () => import("@/pages/games/[gameId].vue"),
     meta: {
       layout: "",
     },
