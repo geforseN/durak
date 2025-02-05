@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import { useRouter } from "vue-router";
 
 import { getMe } from "@/api/rest";
+import { computed } from "vue";
 
 export const useUserStore = defineStore("user", () => {
   const router = useRouter();
@@ -31,8 +32,13 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
+  const isUserAuthenticated = computed(
+    () => !user.error.value && !!user.state.value,
+  );
+
   return {
     user,
     goToGame,
+    isUserAuthenticated,
   };
 });
