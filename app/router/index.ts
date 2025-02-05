@@ -1,35 +1,14 @@
-import {
-  createRouter,
-  createWebHistory,
-  type RouteRecordRaw,
-} from "vue-router";
-import Index from "@/pages/index.vue";
-
-const routes = [
-  {
-    path: "/",
-    name: "home",
-    component: Index,
-  },
-  {
-    path: "/profile/:personalLink/",
-    name: "user-profile",
-    component: () => import("@/pages/profile/[personalLink].vue"),
-  },
-  {
-    path: "/games/:gameId/",
-    name: "durak-game",
-    component: () => import("@/pages/games/[gameId].vue"),
-    meta: {
-      layout: "",
-    },
-  },
-] satisfies RouteRecordRaw[];
+import { createRouter, createWebHistory } from "vue-router";
+import { routes, handleHotUpdate } from "vue-router/auto-routes";
 
 export const router = createRouter({
   history: createWebHistory(),
   strict: false,
   routes,
 });
+
+if (import.meta.hot) {
+  handleHotUpdate(router);
+}
 
 export default router;
