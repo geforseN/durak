@@ -1,42 +1,25 @@
-import { test, expect, type Page, type BrowserContext } from "@playwright/test";
+import { test, expect } from "@playwright/test";
+import {
+  createAuthenticatedRootPage,
+  createGameLobby,
+  expectJoinLobbyButtonsCount,
+  getEnterLobbyButton,
+  getStartGameButton,
+} from "@@/e2e/utils/from-root-page-to-game-page";
 
-const getButton = (page: Page, name: string | RegExp) =>
-  page.getByRole("button", { name });
-
-const createAuthenticatedRootPage = async (context: BrowserContext) => {
-  const page = await context.newPage();
-  await page.goto("/");
-  await getButton(page, /Create Anonymous Account/i).click();
-  await page.goto("/");
-  return page;
-};
-
-/** `Create Game` button opens modal where user can set game setting and create game lobby */
-const getCreateGameButton = (page: Page) => getButton(page, /Create Game/i);
-
-/** `Create Lobby` button exist in modal and after click it will add game lobby where other user can connect via `Enter the Lobby` button */
-const getCreateLobbyButton = (page: Page) => getButton(page, /Create Lobby/i);
-
-/** `Enter the Lobby` button on click will make game lobby empty slot filled with user that clicked the button */
-const getEnterLobbyButton = (page: Page) => getButton(page, /Enter the Lobby/i);
-
-/** `Start the Game` button is visible only for lobby admin and when all slots are filled. on click all lobby users must be redirected to the game page */
-const getStartGameButton = (page: Page) => getButton(page, /Start the Game/i);
-
-const expectJoinLobbyButtonsCount = async (
-  count: number,
-  pages: readonly Page[],
-) => {
-  for (const page of pages) {
-    await expect(getEnterLobbyButton(page)).toHaveCount(count);
+test("2 players game can be created", async ({
+  context,
+  browser,
+  browserName,
+}) => {
+  if (browserName === "webkit") {
+    // webkit prevents session cookie save - can not make authentication
+    // https://github.com/microsoft/playwright/issues/17368
+    // when will be closes that should add flag to allow cookie
+    return test.skip();
   }
-};
-
-test("2 players game can be created", async ({ context, browser }) => {
   const lobbyAdminPage = await createAuthenticatedRootPage(context);
-  // must add timeout because this button lazy loaded component
-  await getCreateGameButton(lobbyAdminPage).click({ timeout: 1000 });
-  await getCreateLobbyButton(lobbyAdminPage).click();
+  await createGameLobby(lobbyAdminPage);
 
   const otherContext = await browser.newContext();
   const otherPlayerPage = await createAuthenticatedRootPage(otherContext);
