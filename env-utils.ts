@@ -30,3 +30,40 @@ export function requireEnv<
   }
   return value;
 }
+
+export function forEnv<T extends ImportMeta["env"]>(env: T) {
+  return {
+    require<K extends keyof T & string>(key: K) {
+      const value = requireEnv(key, env);
+
+      return {
+        value() {
+          return value;
+        },
+        transform<V>(transform: (value: string) => V) {
+          const transformedValue = transform(value);
+          return {
+            value() {
+              return transformedValue;
+            },
+          };
+        },
+      };
+    },
+    try<K extends keyof T & string>(key: K) {
+      const value = env[key];
+
+      return {
+        value() {
+          return value;
+        },
+        orElse<R>(makeDefaultValue: () => R): R {
+          if (typeof value !== "string") {
+            return makeDefaultValue();
+          }
+          return value;
+        },
+      };
+    },
+  };
+}
