@@ -6,7 +6,7 @@ import { ChatMessage } from "$/global-chat/ws-events";
 import type { UserMessage } from "$/global-chat/types";
 
 import { useNotificationStore } from "@/stores";
-import { dispatchMessage, useWebSocket } from "@/api/websocket";
+import { dispatchMessage, useWebSocket } from "@/utils/api/websocket";
 
 
 export const useGlobalChatStore = defineStore("global-chat", () => {

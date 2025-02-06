@@ -1,4 +1,4 @@
-import { CustomWebsocketEvent } from "@/api/websocket";
+import { CustomWebsocketEvent } from "@/utils/api/websocket";
 import assertInputLength from "@/utils/assert-input-length";
 import type { Ref } from "vue";
 

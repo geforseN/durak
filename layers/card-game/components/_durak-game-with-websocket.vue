@@ -51,7 +51,7 @@ import JsonViewer from "./json-viewer.vue";
 import DurakGame from "./_durak-game.vue";
 import type { GameRestoreStateEventPayload } from "@@/server/src/utils/durak-game-state-restore-schema";
 import { parseWebSocketEventData } from "@@/shared/src/websocket";
-import { useWebSocket } from "@/api/websocket";
+import { useWebSocket } from "@/utils/api/websocket";
 
 const { gameId } = defineProps<{
   gameId: string;

@@ -1,6 +1,6 @@
 import type { InitialGameSettings } from "@durak-game/durak-dts";
 
-import { dispatchMessage, useWebSocket } from "@/api/websocket";
+import { dispatchMessage, useWebSocket } from "@/utils/api/websocket";
 import {
   CreateLobbyEvent,
   JoinLobbyEvent,

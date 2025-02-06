@@ -7,6 +7,7 @@ import {
   type UseWebSocketReturn,
 } from "@vueuse/core";
 import { computed, toValue } from "vue";
+
 export class CustomWebsocketEvent {
   constructor(public eventName: string) {}
   asString() {
