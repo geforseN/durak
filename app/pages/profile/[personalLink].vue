@@ -11,5 +11,5 @@
   </Suspense>
 </template>
 <script setup lang="ts">
-import UserProfile from "@/components/user-profile.vue";
+import UserProfile from "$/user-profile/components/user-profile.vue";
 </script>

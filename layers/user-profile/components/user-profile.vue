@@ -48,15 +48,17 @@
 </template>
 <!-- FIXME: i18n -->
 <script setup lang="ts">
-import { computed, onUnmounted, reactive } from "vue";
+import { computed, onUnmounted } from "vue";
 import { getRouteStringParam } from "@/router/utils";
-import { getProfileByLink } from "@/api/rest";
 import { calculateWinRatePercent } from "@/utils/calculate-win-rate-percent";
+import userProfile from "$/user-profile/api/user-profile";
 
 const personalLink = getRouteStringParam("personalLink");
 
 const controller = new AbortController();
-const profile = await reactive(getProfileByLink(personalLink, { controller }));
+onUnmounted(() => controller.abort());
+
+const profile = await userProfile.get(personalLink, { controller });
 
 const indicatorColor = {
   ONLINE: "bg-green-400",
@@ -64,7 +66,6 @@ const indicatorColor = {
   OFFLINE: "bg-gray-400",
 };
 
-onUnmounted(() => controller.abort());
 
 const userWinRatePercent = computed(() =>
   calculateWinRatePercent({
