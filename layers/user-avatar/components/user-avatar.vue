@@ -12,7 +12,7 @@
 </template>
 <!-- FIXME: i18n -->
 <script lang="ts">
-import type { User } from "@/api/rest";
+import type { User } from "$/user-auth/types/user";
 
 export type UserAvatarProps = {
   user: User;

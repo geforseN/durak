@@ -1,16 +1,15 @@
 <template>
-  <!-- prettier-ignore -->
   <app-button
-    v-bind="{...$props, variant: 'accent'}"
+    :size="appStore.screen.isExtraSmall ? 'small' : 'medium'"
+    variant="accent"
   >
     Create anonymous account
   </app-button>
 </template>
 <!-- FIXME: i18n -->
 <script setup lang="ts">
-import AppButton, {
-  type AppButtonProps,
-} from "@/components/app-button/app-button.vue";
+import { useAppStore } from "@/stores";
+import AppButton from "@/components/app-button/app-button.vue";
 
-defineProps<AppButtonProps>();
+const appStore = useAppStore();
 </script>

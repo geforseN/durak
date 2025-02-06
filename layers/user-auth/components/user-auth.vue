@@ -1,14 +1,6 @@
 <template>
   <template v-if="userStore.user.error">
-    <form
-      :action="CREATE_ANON_USER_URL"
-      method="post"
-    >
-      <app-button-create-anonymous-user
-        type="submit"
-        @click="isCreatingAnonymousAccount = true"
-      />
-    </form>
+    <create-anonymous-account-form />
   </template>
   <div
     v-else-if="userStore.user.state"
@@ -27,18 +19,16 @@
 </template>
 <!-- TODO: refactor -->
 <script lang="ts" setup>
-import { computed, ref, defineAsyncComponent } from "vue";
-import UserAvatarAsLink from "$/user-avatar/components/user-avatar-as-link.vue";
-import AppButtonCreateAnonymousUser from "$/user-auth/components/app-button-create-anonymous-user.vue";
-import LobbiesTopNav from "$/game-lobbies/components/lobbies-top-nav.vue";
+import { computed, defineAsyncComponent } from "vue";
 import { useUserStore, useAppStore } from "@/stores";
-import { CREATE_ANON_USER_URL } from "@/api/rest";
+import UserAvatarAsLink from "$/user-avatar/components/user-avatar-as-link.vue";
+import LobbiesTopNav from "$/game-lobbies/components/lobbies-top-nav.vue";
+import CreateAnonymousAccountForm from "$/user-auth/components/create-anonymous-account-form.vue";
 
 const AnonymousUserCaption = defineAsyncComponent(
   () => import("$/user-auth/components/anonymous-user-caption.vue"),
 );
 
-const isCreatingAnonymousAccount = ref(false);
 const userStore = useUserStore();
 
 const appStore = useAppStore();
