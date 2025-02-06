@@ -3,20 +3,20 @@
 export function requireEnv<
   T extends ImportMeta["env"],
   K extends keyof T & string,
->(key: K, importMeta: T, transform?: undefined): string;
+>(key: K, env: T, transform?: undefined): string;
 
 export function requireEnv<
   T extends ImportMeta["env"],
   K extends keyof T & string,
   V,
->(key: K, importMeta: T, transform: (value: T[K]) => V): V;
+>(key: K, env: T, transform: (value: T[K]) => V): V;
 
 export function requireEnv<
   T extends ImportMeta["env"],
   K extends keyof T & string,
   V,
->(key: K, importMeta: T, transform?: (value: T[K]) => V): V {
-  const value = importMeta[key];
+>(key: K, env: T, transform?: (value: T[K]) => V): V {
+  const value = env[key];
   if (value === undefined) {
     throw new Error(`${key} environment variable is equal to undefined`);
   }
