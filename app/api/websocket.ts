@@ -1,4 +1,4 @@
-import { requireEnv } from "@@/env-utils";
+import { requireEnv } from "@/utils/env";
 import { assertIsObject, assertIsString } from "@/utils/type-assert";
 import {
   useWebSocket as _useWebSocket,
