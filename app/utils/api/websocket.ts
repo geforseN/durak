@@ -1,4 +1,4 @@
-import { forEnv } from "@/utils/env";
+import env from "@/utils/env";
 import { assertIsObject, assertIsString } from "@/utils/type-assert";
 import {
   useWebSocket as _useWebSocket,
@@ -52,7 +52,7 @@ export function dispatchMessage(
     handleError(error);
   }
 }
-export const webSocketApiBasePath = forEnv(import.meta.env)
+export const webSocketApiBasePath = env(import.meta.env)
   .require("VITE_SERVER_WS_BASE")
   .value();
 

@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 
-export function forEnv<T extends ImportMeta["env"]>(env: T) {
+export default function<T extends ImportMeta["env"]>(env: T) {
   return {
     require<K extends keyof T & string>(key: K) {
       const value = env[key];

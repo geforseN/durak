@@ -1,6 +1,6 @@
-import { forEnv } from "@/utils/env";
+import env from "@/utils/env";
 
-export const __baseURL = forEnv(import.meta.env)
+export const __baseURL = env(import.meta.env)
   .require("VITE_SERVER_REST_BASE")
   .value();
 
