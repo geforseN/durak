@@ -7,6 +7,7 @@ import {
   type UseWebSocketReturn,
 } from "@vueuse/core";
 import { computed, toValue } from "vue";
+import { makeWithBase, withSlashAtStart } from "../string";
 
 export class CustomWebsocketEvent {
   constructor(public eventName: string) {}
@@ -51,17 +52,16 @@ export function dispatchMessage(
     handleError(error);
   }
 }
-export const basePath = requireEnv("VITE_SERVER_WS_BASE", import.meta.env);
+export const webSocketApiBasePath = requireEnv("VITE_SERVER_WS_BASE", import.meta.env);
 
-function withWebSocketBasePath(string: string) {
-  const path = string.startsWith("/") ? string : "/" + string;
-  return basePath + path;
-}
+const withBaseWebSocketPath = makeWithBase(webSocketApiBasePath);
 
 export function useWebSocket(
   url: MaybeRefOrGetter<string>,
   options?: UseWebSocketOptions,
 ): UseWebSocketReturn<unknown> {
-  const url_ = computed(() => withWebSocketBasePath(toValue(url)));
+  const url_ = computed(() =>
+    withBaseWebSocketPath(withSlashAtStart(toValue(url))),
+  );
   return _useWebSocket(url_, options);
 }
