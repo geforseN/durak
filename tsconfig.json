@@ -3,15 +3,20 @@
   "include": [
     "env.d.ts",
     "app/**/*",
-    "layers/**/*"
+    "layers/**/*",
+    "typed-router.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "server/**/*",
   ],
   "compilerOptions": {
     "lib": [
-      "es2022",
-      "ES2023",
+      "ESNext",
       "DOM"
     ],
     "baseUrl": ".",
+    "outDir": "dist",
     "paths": {
       "@/*": [
         "./app/*"
@@ -21,10 +26,14 @@
       ],
       "@@/*": [
         "./*"
-      ]
+      ],
+      "game/*":  [
+        "./layers/card-game/*"
+      ],
     },
     "types": [
       "unplugin-icons/types/vue",
+      "unplugin-vue-router/client"
     ],
   },
 }

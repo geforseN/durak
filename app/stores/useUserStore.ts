@@ -1,15 +1,15 @@
-import { useAsyncState } from "@vueuse/core";
+import { computed } from "vue";
 import { defineStore } from "pinia";
 import { useRouter } from "vue-router";
-
-import { getMe } from "@/api/rest";
+import { useAsyncState } from "@vueuse/core";
+import me from "$/user-auth/api/me";
 
 export const useUserStore = defineStore("user", () => {
   const router = useRouter();
 
   const user = useAsyncState(
     () => {
-      return getMe();
+      return me.get();
     },
     null,
     {
@@ -19,7 +19,7 @@ export const useUserStore = defineStore("user", () => {
   );
 
   const goToGame = async ({ gameId }: { gameId: string }) => {
-    const path = `/game/${gameId}`;
+    const path = `/games/${gameId}`;
     try {
       await router.replace({ path });
       // TODO remove code here, add methods for lobby|game state
@@ -31,8 +31,13 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
+  const isUserAuthenticated = computed(
+    () => !user.error.value && !!user.state.value,
+  );
+
   return {
     user,
     goToGame,
+    isUserAuthenticated,
   };
 });

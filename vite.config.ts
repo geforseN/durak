@@ -1,5 +1,6 @@
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig, loadEnv } from "vite";
+import VueRouter from "unplugin-vue-router/vite";
 import Vue from "@vitejs/plugin-vue";
 import Icons from "unplugin-icons/vite";
 import IconsResolver from "unplugin-icons/resolver";
@@ -10,6 +11,9 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   return {
     plugins: [
+      VueRouter({
+        routesFolder: './app/pages'
+      }),
       Vue({
         script: {
           propsDestructure: true,

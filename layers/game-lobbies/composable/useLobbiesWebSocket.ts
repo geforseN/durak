@@ -1,7 +1,6 @@
-import { useWebSocket } from "@vueuse/core";
 import type { InitialGameSettings } from "@durak-game/durak-dts";
 
-import { WS_BASE, dispatchMessage } from "@/api/websocket";
+import { dispatchMessage, useWebSocket } from "@/utils/api/websocket";
 import {
   CreateLobbyEvent,
   JoinLobbyEvent,
@@ -10,10 +9,11 @@ import {
 } from "../ws-events";
 
 export const useLobbiesWebSocket = (
-  listeners: Record<string, Function>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- have to use any, unknown[] will not work
+  listeners: Record<string, (...args: any[]) => any>,
   onError: (error: unknown) => void = () => {},
 ) => {
-  const ws = useWebSocket(`${WS_BASE}/game-lobbies`, {
+  const ws = useWebSocket(`game-lobbies`, {
     onConnected(websocket) {
       websocket.addEventListener("message", (event) => {
         dispatchMessage.call(websocket, listeners, onError, event);

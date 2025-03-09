@@ -1,6 +1,6 @@
 import type { InitialGameSettings } from "@durak-game/durak-dts";
 
-import { CustomWebsocketEvent } from "@/api/websocket";
+import { CustomWebsocketEvent } from "@/utils/api/websocket";
 
 export class LeaveLobbyEvent extends CustomWebsocketEvent {
   eventName = "lobby::user::leave";

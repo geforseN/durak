@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex items-center rounded border border-black"
+    class="flex items-center rounded border border-black bg-base-100 text-base-content"
     :class="size === 'small' ? 'h-8 px-1 text-xs' : 'h-12 gap-2 px-2 text-base'"
   >
     <div class="flex max-w-[6rem] flex-wrap justify-center gap-x-1 font-bold">

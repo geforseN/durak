@@ -7,5 +7,5 @@ export type {
   DeskSlot,
   Card,
   Rank,
-  Suit,
+  _Suit as Suit,
 } from "@durak-game/durak-dts";

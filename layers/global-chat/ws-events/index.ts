@@ -1,5 +1,5 @@
-import { CustomWebsocketEvent } from "@/api/websocket";
-import assertInputLength from "@/utils/assert-input-length";
+import { CustomWebsocketEvent } from "@/utils/api/websocket";
+import assertInputLength from "$/global-chat/utils/assert-input-length";
 import type { Ref } from "vue";
 
 export class ChatMessage extends CustomWebsocketEvent {

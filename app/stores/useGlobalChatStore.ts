@@ -1,13 +1,12 @@
 import { ref, type Ref } from "vue";
 import { defineStore } from "pinia";
-import { useWebSocket } from "@vueuse/core";
 
 import formatTime from "@/utils/intl/format-time";
 import { ChatMessage } from "$/global-chat/ws-events";
 import type { UserMessage } from "$/global-chat/types";
 
 import { useNotificationStore } from "@/stores";
-import { dispatchMessage, WS_BASE } from "@/api/websocket";
+import { dispatchMessage, useWebSocket } from "@/utils/api/websocket";
 
 
 export const useGlobalChatStore = defineStore("global-chat", () => {
@@ -39,7 +38,7 @@ export const useGlobalChatStore = defineStore("global-chat", () => {
     );
   }
 
-  const websocket = useWebSocket(`${WS_BASE}/global-chat`, { onConnected });
+  const websocket = useWebSocket(`global-chat`, { onConnected });
 
   return {
     sendMessage(input: Ref<string>) {

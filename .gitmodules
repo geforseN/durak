@@ -1,3 +1,6 @@
 [submodule "durak-server"]
 	path = server
 	url = https://github.com/geforseN/durak-server
+[submodule "shared"]
+	path = shared
+	url = https://github.com/geforsen/durak-shared

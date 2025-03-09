@@ -40,17 +40,25 @@
       />
     </div>
     <div class="mx-2 flex flex-col items-stretch">
-      <lobbies-top-nav v-if="userStore.user.state" />
+      <div
+        v-if="userStore.isUserAuthenticated"
+      >
+        <create-game-lobby-button
+          class="w-full"
+          @click="createGameLobbyModal.show()"
+        />
+      </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import { computed, defineAsyncComponent, useId } from "vue";
+import { useAppStore, useUserStore } from "@/stores";
 import AppDrawerCloseButton from "$/app-drawer/components/app-drawer-close-button.vue";
 import UserAvatarAsLink from "$/user-avatar/components/user-avatar-as-link.vue";
 import AppThemeSelect from "$/app-theme/components/app-theme-select.vue";
-import LobbiesTopNav from "$/game-lobbies/components/lobbies-top-nav.vue";
-import { useAppStore, useUserStore } from "@/stores";
+import CreateGameLobbyButton from "$/create-lobby/create-game-lobby-button.vue";
+import { injectCreateGameLobbyModalOrThrow } from "$/create-lobby/modal/create-game-lobby-modal-provide-inject";
 
 const AnonymousUserCaption = defineAsyncComponent(
   () => import("$/user-auth/components/anonymous-user-caption.vue"),
@@ -58,6 +66,8 @@ const AnonymousUserCaption = defineAsyncComponent(
 
 const appStore = useAppStore();
 const userStore = useUserStore();
+
+const createGameLobbyModal = injectCreateGameLobbyModalOrThrow()
 
 const appThemeSelectId = useId();
 

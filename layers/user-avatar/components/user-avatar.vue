@@ -1,6 +1,7 @@
 <template>
   <!-- prettier-ignore -->
   <img
+    data-testid="user-avatar"
     :width="size === 'small' ? 36 : 48"
     :height="size === 'small' ? 36 : 48"
     :src="user.profile.photoUrl"
@@ -11,7 +12,7 @@
 </template>
 <!-- FIXME: i18n -->
 <script lang="ts">
-import type { User } from "@/api/rest";
+import type { User } from "$/user-auth/types/user";
 
 export type UserAvatarProps = {
   user: User;

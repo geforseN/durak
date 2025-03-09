@@ -18,7 +18,7 @@
         <span
           class="w-3/4 rounded bg-white px-1 py-2 text-xs font-bold text-black sm:border-2 sm:border-primary md:text-base lg:text-lg"
         >
-          Войти в лобби
+          Enter the Lobby
         </span>
       </button>
     </template>

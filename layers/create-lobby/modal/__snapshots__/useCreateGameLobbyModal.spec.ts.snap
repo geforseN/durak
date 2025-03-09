@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`useCreateGameLobbyModal > \`element\` arg is ref with null value > must throw when \`close\` method called 1`] = `[TypeError: Cannot read properties of null (reading 'close')]`;
+
+exports[`useCreateGameLobbyModal > \`element\` arg is ref with null value > must throw when \`show\` method called 1`] = `[TypeError: Cannot read properties of null (reading 'show')]`;
+
+exports[`useCreateGameLobbyModal > \`element\` arg is ref with undefined value > must throw when \`close\` method called 1`] = `[TypeError: Cannot read properties of undefined (reading 'close')]`;
+
+exports[`useCreateGameLobbyModal > \`element\` arg is ref with undefined value > must throw when \`show\` method called 1`] = `[TypeError: Cannot read properties of undefined (reading 'show')]`;
