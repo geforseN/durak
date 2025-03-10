@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@9.15.0",
+  "packageManager": "pnpm@10.6.2",
   "scripts": {
     "dev": "conc \"vite\" \"cd ./server && pnpm dev\" ",
     "build": "vite build",
