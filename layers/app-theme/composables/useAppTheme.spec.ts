@@ -16,5 +16,5 @@ test("useAppTheme is called once on App mount", () => {
       plugins: [router],
     },
   });
-  expect(useAppTheme).toHaveBeenCalledOnce();
+  expect(useAppTheme).toHaveBeenCalledOnceExactlyOnceWith();
 });
